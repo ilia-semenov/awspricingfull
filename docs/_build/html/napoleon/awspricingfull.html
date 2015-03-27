@@ -1,0 +1,1607 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>awspricingfull module &mdash; awspricingfull 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="awspricingfull 1.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">awspricingfull 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-awspricingfull">
+<span id="awspricingfull-module"></span><h1>awspricingfull module<a class="headerlink" href="#module-awspricingfull" title="Permalink to this headline">¶</a></h1>
+<p>AWS Instances (EC2, ElastiCachep, RDS, Redshift) pricing retrieval project.</p>
+<p>Project contains one module which is designed to retrieve the AWS prices for
+four major AWS services that have reserved instances involved: EC2, ElastiCache,
+RDS and Redshift. The prices either On-Demand or Reserved (specified by user) can
+be retrieved to Command Line in JSON, Table (Prettytable) or CSV formats. CSV format
+option also saves the csv file to the folder specified by user, which is the main
+use case.
+The undocumented AWS pricing APIa are used as the sources. The same APIs  serve
+the data to the AWS pricing pages.
+Both current and previous generation instance prices are retrieved.</p>
+<p>Created on 25 March 2015
+&#64;author: Ilia Semenov</p>
+<dl class="class">
+<dt id="awspricingfull.AWSPrices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AWSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Abstract class - base for the pricing retrieval classes for different
+services.</p>
+<dl class="attribute">
+<dt id="awspricingfull.AWSPrices.DEFAULT_CURRENCY">
+<tt class="descname">DEFAULT_CURRENCY</tt><a class="headerlink" href="#awspricingfull.AWSPrices.DEFAULT_CURRENCY" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>USD Currency used in every AWS pricing by
+default.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.AWSPrices.REGIONS">
+<tt class="descname">REGIONS</tt><a class="headerlink" href="#awspricingfull.AWSPrices.REGIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list of str</em></p>
+<p>List of AWS regions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.AWSPrices.JSON_NAME_TO_REGIONS_API">
+<tt class="descname">JSON_NAME_TO_REGIONS_API</tt><a class="headerlink" href="#awspricingfull.AWSPrices.JSON_NAME_TO_REGIONS_API" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of some internal
+AWS region names used in few sources to the conventional ones.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AWSPrices.get_ondemand_instances_prices">
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Abstract method for getting On-Demand pricing.</dt>
+<dd>Implemented in child classes.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></tt> &#8211;
+Abstract method is not implemented.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AWSPrices.get_reserved_instances_prices">
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Abstract method for getting Reserved pricing.</dt>
+<dd>Implemented in child classes.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></tt> &#8211;
+Abstract method is not implemented.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AWSPrices.load_data">
+<tt class="descname">load_data</tt><big>(</big><em>url</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for retrieving the pricing data in a clean dictionary format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> &#8211; The pricing source url.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>data</strong> &#8211;
+Pricing data in a dictionary format</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict of dict: dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AWSPrices.none_as_string">
+<tt class="descname">none_as_string</tt><big>(</big><em>v</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.none_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.none_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for returning a blank string instead of None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; The value to be checked for None.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">v or &#8220;&#8221; is v is None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AWSPrices.print_json">
+<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method printing the pricing data in JSON format to Console.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>Pricing data in JSON string format or an error message.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="awspricingfull.AllAWSPrices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AllAWSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
+<dl class="docutils">
+<dt>Class for retrieving the instance pricing for 4 AWS Services:</dt>
+<dd>EC2, RDS, ElastiCache and Redshift. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</dd>
+</dl>
+<dl class="attribute">
+<dt id="awspricingfull.AllAWSPrices.ec2">
+<tt class="descname">ec2</tt><a class="headerlink" href="#awspricingfull.AllAWSPrices.ec2" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>EC2Prices</em></p>
+<p>instance of <a class="reference internal" href="#awspricingfull.EC2Prices" title="awspricingfull.EC2Prices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.EC2Prices</span></tt></a> class containing methods
+for EC2 pricing retrieval.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.AllAWSPrices.elc">
+<tt class="descname">elc</tt><a class="headerlink" href="#awspricingfull.AllAWSPrices.elc" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>ELCPrices</em></p>
+<p>instance of <a class="reference internal" href="#awspricingfull.ELCPrices" title="awspricingfull.ELCPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.ELCPrices</span></tt></a> class containing methods
+for ElastiCache pricing retrieval.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.AllAWSPrices.rds">
+<tt class="descname">rds</tt><a class="headerlink" href="#awspricingfull.AllAWSPrices.rds" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>RDSPrices</em></p>
+<p>instance of <a class="reference internal" href="#awspricingfull.RDSPrices" title="awspricingfull.RDSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.RDSPrices</span></tt></a> class containing methods
+for RDS pricing retrieval.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.AllAWSPrices.rs">
+<tt class="descname">rs</tt><a class="headerlink" href="#awspricingfull.AllAWSPrices.rs" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>RSPrices</em></p>
+<p>instance of <a class="reference internal" href="#awspricingfull.RSPrices" title="awspricingfull.RSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.RSPrices</span></tt></a> class containing methods
+for Redshift pricing retrieval.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AllAWSPrices.print_json">
+<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices.print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method printing the pricing data in JSON format to Console.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;),
+Reserved (&#8220;reserved&#8221;) or both (&#8220;all&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>Pricing data in JSON string format or an error message.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.AllAWSPrices.save_csv">
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method saving the full pricing data in CSV format to the</dt>
+<dd>cpecified location.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;),
+Reserved (&#8220;reserved&#8221;) or both (&#8220;all&#8221;) pricing option.</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; System path for saving the data file. Current
+directory is the the defauilt value.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; The desired name of the file. The default
+values are &#8220;FULL_reserved_pricing.csv&#8221; for Reserved,
+&#8220;FULL_ondemand_pricing.csv&#8221; for On-Demand and
+&#8220;FULL_all_pricing.csv&#8221; for both.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>Full pricing in the CSV format (console).</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="awspricingfull.EC2Prices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">EC2Prices</tt><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
+<p>Class for retrieving the EC2 pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_LINUX_URL">
+<tt class="descname">INSTANCES_RESERVED_LINUX_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Linux Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_RHEL_URL">
+<tt class="descname">INSTANCES_RESERVED_RHEL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 RHEL Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_SLES_URL">
+<tt class="descname">INSTANCES_RESERVED_SLES_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 SLES Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_WINDOWS_URL">
+<tt class="descname">INSTANCES_RESERVED_WINDOWS_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_WINSQL_URL">
+<tt class="descname">INSTANCES_RESERVED_WINSQL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_WINSQLWEB_URL">
+<tt class="descname">INSTANCES_RESERVED_WINSQLWEB_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Web Reserved, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_LINUX_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_LINUX_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Linux Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_RHEL_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_RHEL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 RHEL Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_SLES_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_SLES_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 SLES Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINDOWS_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_WINDOWS_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINSQL_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_WINSQL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINSQLWEB_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_WINSQLWEB_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_RESERVED_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Web Reserved, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_LINUX_URL">
+<tt class="descname">INSTANCES_ONDEMAND_LINUX_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Linux On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_RHEL_URL">
+<tt class="descname">INSTANCES_ONDEMAND_RHEL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 RHEL On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_SLES_URL">
+<tt class="descname">INSTANCES_ONDEMAND_SLES_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 SLES On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINDOWS_URL">
+<tt class="descname">INSTANCES_ONDEMAND_WINDOWS_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINSQL_URL">
+<tt class="descname">INSTANCES_ONDEMAND_WINSQL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINSQLWEB_URL">
+<tt class="descname">INSTANCES_ONDEMAND_WINSQLWEB_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Web On-Demand, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_LINUX_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_LINUX_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Linux On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_RHEL_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_RHEL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 RHEL On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_SLES_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_SLES_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 SLES On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINDOWS_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_WINDOWS_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINSQL_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_WINSQL_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINSQLWEB_URL">
+<tt class="descname">PG_INSTANCES_ONDEMAND_WINSQLWEB_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ONDEMAND_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing
+API URL - EC2 Windows SQL Web On-Demand, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ONDEMAND_OS_TYPE_BY_URL">
+<tt class="descname">INSTANCES_ONDEMAND_OS_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ONDEMAND_OS_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of
+On-Dermand urls to OS types.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_RESERVED_OS_TYPE_BY_URL">
+<tt class="descname">INSTANCES_RESERVED_OS_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_RESERVED_OS_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of
+Reserved urls to OS types.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.EC2Prices.get_ondemand_instances_prices">
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting EC2 On-Demand pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">EC2 On-Demand pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.EC2Prices.get_reserved_instances_prices">
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting EC2 Reserved pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">EC2 Reserved pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.EC2Prices.print_table">
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.print_table" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method printing the EC2 pricing data to the console</dt>
+<dd>in the Pretty Table format (requires Pretty Table
+import).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>EC2 pricing in the Pretty Table format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.EC2Prices.save_csv">
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method saving the EC2 pricing data in CSV format to the</dt>
+<dd>cpecified location.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; System path for saving the data file. Current
+directory is the the defauilt value.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; The desired name of the file. The default
+values are &#8220;EC2_reserved_pricing.csv&#8221; for Reserved
+and &#8220;EC2_ondemand_pricing.csv&#8221; for On-Demand.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>EC2 pricing in the CSV format (console).</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="awspricingfull.ELCPrices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">ELCPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
+<p>Class for retrieving the ElastiCache pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCES_ON_DEMAND_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCES_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing API URL -
+On-Demand ELC Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.PG_INSTANCES_ON_DEMAND_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.PG_INSTANCES_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing API
+URL - On-Demand ELC Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCES_RESERVED_LIGHT_UTILIZATION_URL">
+<tt class="descname">INSTANCES_RESERVED_LIGHT_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCES_RESERVED_LIGHT_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing - Light Reserved ELC Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL">
+<tt class="descname">INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing- Medium Reserved ELC Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_URL">
+<tt class="descname">INSTANCES_RESERVED_HEAVY_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing- Heavy Reserved ELC Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_LIGHT_UTILIZATION_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_LIGHT_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_LIGHT_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing- Light Reserved ELC Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing- Medium Reserved ELC Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_HEAVY_UTILIZATION_URL">
+<tt class="descname">PG_INSTANCES_RESERVED_HEAVY_UTILIZATION_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.PG_INSTANCES_RESERVED_HEAVY_UTILIZATION_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+Pricing- Heavy Reserved ELC Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL">
+<tt class="descname">INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of
+Reserved urls to Reservation types.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.ELCPrices.INSTANCE_TYPE_MAPPING">
+<tt class="descname">INSTANCE_TYPE_MAPPING</tt><a class="headerlink" href="#awspricingfull.ELCPrices.INSTANCE_TYPE_MAPPING" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of internal AWS ELC
+Type names to the conventional analogs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.ELCPrices.get_ondemand_instances_prices">
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting ELC On-Denand pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ELC On-Denand pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.ELCPrices.get_reserved_instances_prices">
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting ELC Reserved pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ELC Reserved pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.ELCPrices.print_table">
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method printing the ELC pricing data to the console</dt>
+<dd>in the Pretty Table format (requires Pretty Table
+import).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>ELC pricing in the Pretty Table format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.ELCPrices.save_csv">
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method saving the ELC pricing data in CSV format to the</dt>
+<dd>cpecified location.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; System path for saving the data file. Current
+directory is the the defauilt value.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; The desired name of the file. The default
+values are &#8220;ELC_reserved_pricing.csv&#8221; for Reserved
+and &#8220;ELC_ondemand_pricing.csv&#8221; for On-Demand.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>ELC pricing in the CSV format (console).</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="awspricingfull.RDSPrices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RDSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
+<p>Class for retrieving the RDS pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MYSQL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_MYSQL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MYSQL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MySQL GPL, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Postgres On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Oracle Licensed, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Oracle BYOL, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL">
+<tt class="descname">RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL">
+<tt class="descname">RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MYSQL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">RDS_MYSQL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MYSQL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ MySQL GPL, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Postgres, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Oracle Licensed, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Oracle BYOL, On-Demand, Current Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MySQL GPL, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Postgres On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Oracle Licensed, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ Oracle BYOL, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ MySQL GPL, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Postgres, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Oracle Licensed, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL">
+<tt class="descname">PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Multi AZ Oracle BYOL, On-Demand, Previous Generation..</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_MYSQL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_MYSQL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_MYSQL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MYSQL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_POSTGRESQL_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_POSTGRESQL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_POSTGRESQL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Postgres, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ORACLE_BYOL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_EX_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_LIGHT_URL">
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Light, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL">
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Medium, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_HEAVY_URL">
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_SQLSERVER_SE_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Heavy, Current Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_MYSQL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_MYSQL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_MYSQL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_MYSQL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MySQL GPL, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Postgres, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle Licensed, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS Oracle BYOL, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server BYOL, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server Express Licensed, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server WEB Licensed, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL">
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Light, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL">
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Medium, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL">
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS
+API URL - RDS MS SQL Server SE Licensed, Reserved Heavy, Previous Generation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ENGINE_TYPES">
+<tt class="descname">RDS_ENGINE_TYPES</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ENGINE_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list of str</em></p>
+<p>List of RDS engines.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MULTIAZ_TYPES">
+<tt class="descname">RDS_MULTIAZ_TYPES</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MULTIAZ_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list of str</em></p>
+<p>List of RDS Multi-AZ options.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_MULTIAZ_MAPPING">
+<tt class="descname">RDS_MULTIAZ_MAPPING</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_MULTIAZ_MAPPING" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of internal AWS RDS
+Family names to the cvonventional Multi-AZ tag.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ONDEMAND_STANDARD_TYPE_BY_URL">
+<tt class="descname">RDS_ONDEMAND_STANDARD_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ONDEMAND_STANDARD_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: list of str</em></p>
+<p>Mapping of AWS RDS URLs
+(On-Demand, Single AZ) to corresponding engine and license type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL">
+<tt class="descname">RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: list of str</em></p>
+<p>Mapping of AWS RDS URLs
+(On-Demand, Multi AZ) to corresponding engine and license type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.RDS_RESERVED_TYPE_BY_URL">
+<tt class="descname">RDS_RESERVED_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.RDSPrices.RDS_RESERVED_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: list of str</em></p>
+<p>Mapping of AWS RDS URLs
+(Reserved) to corresponding engine and license type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RDSPrices.INSTANCE_TYPE_MAPPING">
+<tt class="descname">INSTANCE_TYPE_MAPPING</tt><a class="headerlink" href="#awspricingfull.RDSPrices.INSTANCE_TYPE_MAPPING" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of internal AWS RDS
+Type names to the cvonventional analogs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RDSPrices.get_ondemand_instances_prices">
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting RDS On-Denand pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">RDS On-Denand pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RDSPrices.get_reserved_instances_prices">
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting RDS Reserved pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">RDS Reserved pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RDSPrices.print_table">
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method printing the RDS pricing data to the console</dt>
+<dd>in the Pretty Table format (requires Pretty Table
+import).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>RDS pricing in the Pretty Table format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RDSPrices.save_csv">
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method saving the RDS pricing data in CSV format to the</dt>
+<dd>cpecified location.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; System path for saving the data file. Current
+directory is the the defauilt value.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; The desired name of the file. The default
+values are &#8220;RDS_reserved_pricing.csv&#8221; for Reserved
+and &#8220;RDS_ondemand_pricing.csv&#8221; for On-Demand.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>RDS pricing in the CSV format (console).</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="awspricingfull.RSPrices">
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
+<p>Class for retrieving the Redshift pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
+<dl class="attribute">
+<dt id="awspricingfull.RSPrices.INSTANCES_ON_DEMAND_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing API
+URL - On-Demand RS</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RSPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL">
+<tt class="descname">INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing API
+URL - Reserved RS Heavy 1 Year.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RSPrices.NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL">
+<tt class="descname">NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em></p>
+<p>Undocumented AWS Pricing API
+URL - Reserved RS Heavy 3 Year.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RSPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL">
+<tt class="descname">INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict of str: str</em></p>
+<p>Mapping of
+Reserved urls to Reservation types.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RSPrices.get_ondemand_instances_prices">
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting Redshift On-Denand pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Redshift On-Denand pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RSPrices.get_reserved_instances_prices">
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of method for getting Redshift Reserved pricing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Redshift Reserved pricing in dictionary format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RSPrices.print_table">
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method printing the Redshift pricing data to the console</dt>
+<dd>in the Pretty Table format (requires Pretty Table
+import).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>Redshift pricing in the Pretty Table format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="awspricingfull.RSPrices.save_csv">
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method saving the Redshift pricing data in CSV format to the</dt>
+<dd>cpecified location.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>str</em>) &#8211; Parameter specifying On-Demand (&#8220;ondemand&#8221;) or
+Reserved (&#8220;reserved&#8221;) pricing option.</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; System path for saving the data file. Current
+directory is the the defauilt value.</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; The desired name of the file. The default
+values are &#8220;Redshift_reserved_pricing.csv&#8221; for Reserved
+and &#8220;Redshift_ondemand_pricing.csv&#8221; for On-Demand.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Prints:</dt>
+<dd>Redshift pricing in the CSV format (console).</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/napoleon/awspricingfull.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">awspricingfull 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Ilia Semenov.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
