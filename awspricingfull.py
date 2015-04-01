@@ -2622,7 +2622,7 @@ class AllAWSPrices(AWSPrices):
                                                                        "", 
                                                                        it["utilization"], 
                                                                        term, 
-                                                                       "partialUpfront",
+                                                                       "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
                                                                        self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["elasticache",
@@ -2633,7 +2633,8 @@ class AllAWSPrices(AWSPrices):
                                          "",
                                          "", 
                                          it["utilization"], 
-                                         term, 
+                                         term,
+                                         "", 
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
                         
@@ -2649,7 +2650,7 @@ class AllAWSPrices(AWSPrices):
                                                                        it["db"], 
                                                                        "", 
                                                                        it["utilization"], 
-                                                                       term, "partialUpfront",
+                                                                       term, "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
                                                                        self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["rds",
@@ -2660,7 +2661,7 @@ class AllAWSPrices(AWSPrices):
                                          it["db"],"", 
                                          it["utilization"], 
                                          term, 
-                                         "partialUpfront",
+                                         "",
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
                         
@@ -2678,7 +2679,7 @@ class AllAWSPrices(AWSPrices):
                                                                        "", 
                                                                        it["utilization"], 
                                                                        term, 
-                                                                       "partialUpfront",
+                                                                       "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
                                                                        self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["redshift",
@@ -2690,7 +2691,7 @@ class AllAWSPrices(AWSPrices):
                                          "",
                                          it["utilization"], 
                                          term, 
-                                         "partialUpfront",
+                                         "",
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
         elif u=="all":
@@ -2897,7 +2898,7 @@ class AllAWSPrices(AWSPrices):
                                                                           "", 
                                                                           it["utilization"], 
                                                                           term, 
-                                                                          "partialUpfront",
+                                                                          "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
                                                                           self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["reserved",
@@ -2909,7 +2910,8 @@ class AllAWSPrices(AWSPrices):
                                          "",
                                          "", 
                                          it["utilization"], 
-                                         term, 
+                                         term,
+                                         "", 
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
                         
@@ -2926,7 +2928,7 @@ class AllAWSPrices(AWSPrices):
                                                                           it["db"], 
                                                                           "", 
                                                                           it["utilization"], 
-                                                                          term, "partialUpfront",
+                                                                          term, "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
                                                                           self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["reserved",
@@ -2938,7 +2940,7 @@ class AllAWSPrices(AWSPrices):
                                          it["db"],"", 
                                          it["utilization"], 
                                          term, 
-                                         "partialUpfront",
+                                         "",
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
                         
@@ -2957,7 +2959,7 @@ class AllAWSPrices(AWSPrices):
                                                                           "", 
                                                                           it["utilization"], 
                                                                           term, 
-                                                                          "partialUpfront",
+                                                                          "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
                                                                           self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["reserved",
@@ -2970,7 +2972,7 @@ class AllAWSPrices(AWSPrices):
                                          "",
                                          it["utilization"], 
                                          term, 
-                                         "partialUpfront",
+                                         "",
                                          self.none_as_string(it["prices"][term]["hourly"]), 
                                          self.none_as_string(it["prices"][term]["upfront"])])
     
