@@ -7,6 +7,6 @@ import awspricingfull
 
 
 if __name__ == '__main__':
-    awspf= awspricingfull.AllAWSPrices()
-    awspf.print_json("reserved")
+    awspf=awspricingfull.AllAWSPrices()
+    awspf.save_csv("all","C:\\AWS_DATA\\pricing_data\\")
     

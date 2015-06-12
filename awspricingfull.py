@@ -429,22 +429,19 @@ class EC2Prices(AWSPrices):
                                     "os" : os_type,
                                     "prices" : prices
                                 })
-                                        
-        
-    
+                                          
                                 if "terms" in it:
                                     for s in it["terms"]:
                                         term=s["term"]
-                                        
-        
-        
+                                          
                                         for po_data in s["purchaseOptions"]:
                                             po=po_data["purchaseOption"]
                                             
                                             for price_data in po_data["valueColumns"]:
                                                 price = None
                                                 try:
-                                                    price = float(price_data["prices"][currency])
+                                                    price = float(re.sub("[^0-9\.]", "", 
+                                                                 price_data["prices"][currency]))
                                                 except ValueError:
                                                     price = None
                                                         
@@ -517,7 +514,8 @@ class EC2Prices(AWSPrices):
                                         for price_data in s["valueColumns"]:
                                             price = None
                                             try:
-                                                price =float(price_data["prices"][currency])
+                                                price =float(re.sub("[^0-9\.]", "",
+                                                                    price_data["prices"][currency]))
                                             except:
                                                 price = None
                                             _type = instance_type
@@ -1979,30 +1977,26 @@ class RSPrices(AWSPrices):
     Class for retrieving the Redshift pricing. Child of :class:`awspricingfull.AWSPrices` class.
     
     Attributes:
-        INSTANCES_ON_DEMAND_URL (str): Undocumented AWS Pricing API 
-            URL - On-Demand RS
-        INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL (str): Undocumented AWS Pricing API
-            URL - Reserved RS Heavy 1 Year.
-        NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL (str): Undocumented AWS Pricing API
-            URL - Reserved RS Heavy 3 Year.
-        INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL (dict of str: str): Mapping of 
-            Reserved urls to Reservation types.
+        RS_ON_DEMAND_URL (str): Undocumented AWS Pricing API 
+            URL - On-Demand Redshift Nodes
+        PG_RS_ON_DEMAND_URL (str): Undocumented AWS Pricing API
+            URL - Reserved Redshift Nodes, Previous Generation
+        RS_RESERVED_URL (str): Undocumented AWS Pricing API
+            URL - Reserved Redshift Nodes, Previous Generation
                        
     """
 
        
-    INSTANCES_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
+    RS_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
                              "pricing-on-demand-redshift-instances.min.js")
-    INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
-                                                "pricing-one-year-heavy-reserved-instances.min.js")
-    INSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
-                                                "pricing-three-years-heavy-reserved-instances.min.js")
+    PG_RS_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
+                             "previous-generation/pricing-on-demand-redshift-instances.min.js")
+    RS_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
+                                                "pricing-reserved-redshift-instances.min.js")
+    PG_RS_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/redshift/"+
+                                                "previous-generation/pricing-reserved-redshift-instances.min.js")
     
     
-    INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL = {
-        INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL : "heavy",
-        INSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL : "heavy"
-    }
     
     
     def get_reserved_instances_prices(self):
@@ -2018,9 +2012,9 @@ class RSPrices(AWSPrices):
         currency = self.DEFAULT_CURRENCY
     
         urls = [
-            self.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL,
-            self.INSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL
-        ]
+            self.RS_RESERVED_URL,
+            self.PG_RS_RESERVED_URL
+            ]
     
         result_regions = []
         result_regions_index = {}
@@ -2030,15 +2024,14 @@ class RSPrices(AWSPrices):
             },
             "regions" : result_regions
         }
-    
+        
         for u in urls:
-            utilization_type = self.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL[u]
+           
             data = self.load_data(u)
-    
-            if ("config" in data and data["config"] and "regions"
+            if ("config" in data and data["config"] and "regions" 
                 in data["config"] and data["config"]["regions"]):
                 for r in data["config"]["regions"]:
-                    if "region" in r and r["region"]:  
+                    if "region" in r and r["region"]:
                         region_name = r["region"]
                         if region_name in result_regions_index:
                             instance_types = result_regions_index[region_name]["instanceTypes"]
@@ -2049,67 +2042,88 @@ class RSPrices(AWSPrices):
                                 "instanceTypes" : instance_types
                             })
                             result_regions_index[region_name] = result_regions[-1]
-                        
+    
                         if "instanceTypes" in r:
                             for it in r["instanceTypes"]:
+                                instance_type = it["type"]
+                                prices = {
+                                                      "1" : {
+                                                             "noUpfront" : {
+                                                                            "hourly" : None,
+                                                                            "upfront" : None
+                                                                            },
+                                                             "partialUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               },
+                                                             "allUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               }
+                                                             },
+                                                      "3" : {
+                                                             "noUpfront" : {
+                                                                            "hourly" : None,
+                                                                            "upfront" : None
+                                                                            },
+                                                             "partialUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               },
+                                                             "allUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               }
+                                                             }
+                                                      }
+                                instance_types.append({
+                                    "type" : instance_type,
+                                    "prices" : prices
+                                })
+                                        
+          
+                                if "terms" in it:
+                                    for s in it["terms"]:
+                                        term=s["term"]
+                                        
+        
+        
+                                        for po_data in s["purchaseOptions"]:
+                                            po=po_data["purchaseOption"]
+                                            upfr_temp=0
+                                            for price_data in po_data["valueColumns"]:
+                                                price = None
+                                                try:
+                                                    price = float(re.sub("[^0-9\.]", "",
+                                                                         price_data["prices"][currency]))
+                                                except ValueError:
+                                                    price = None
+                                                        
+                                                if term=="yrTerm1":
+                                                    if price_data["name"] == "upfront":
+                                                        prices["1"][po]["upfront"] = price
+                                                        upfr_temp=price
+                                                    elif price_data["name"] == "monthlyStar":
+                                                        if price!=0:
+                                                            #Monthly pricing for new Redshift nodes is calculated 
+                                                            #based on effective rates on the AWS website; so the
+                                                            #calculation is used to find the "clean" hourly rate
+                                                            prices["1"][po]["hourly"] = (price*12-upfr_temp)/(12*730)
+                                                        else:
+                                                            prices["1"][po]["hourly"] = price
+                                                        upfr_temp=0
+                                                elif term=="yrTerm3":
+                                                    if price_data["name"] == "upfront":
+                                                        prices["3"][po]["upfront"] = price
+                                                        upfr_temp=price
+                                                    elif price_data["name"] == "monthlyStar":
+                                                        if price!=0:
+                                                            prices["3"][po]["hourly"] = (price*36-upfr_temp)/(36*730)
+                                                            upfr_temp=0
+                                                        else:
+                                                            prices["3"][po]["hourly"]=price
 
-                                if "tiers" in it:
-                                    for s in it["tiers"]:                                      
-                                        _type = s["size"]
-                                        
-                                        if u==self.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL:    
-                                            prices = {
-                                                "1" : {
-                                                    "hourly" : None,
-                                                    "upfront" : None
-                                                }
-                                            }
-        
-                                            instance_types.append({
-                                                "type" : _type,
-                                                "utilization" : utilization_type,
-                                                "prices" : prices
-                                            })
-            
-                                            for price_data in s["valueColumns"]:
-                                                price = None
-                                                try:
-                                                    price = float(re.sub("[^0-9\\.]", "", 
-                                                                         price_data["prices"][currency]))
-                                                except ValueError:
-                                                    price = None
-            
-                                                if price_data["name"] == "yrTerm1":
-                                                    prices["1"]["upfront"] = price
-                                                elif price_data["name"] == "yrTerm1Hourly":
-                                                    prices["1"]["hourly"] = price     
-                                        
-                                        elif u==self.INSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL:    
-                                            prices = {
-                                                "3" : {
-                                                    "hourly" : None,
-                                                    "upfront" : None
-                                                }
-                                            }
-        
-                                            instance_types.append({
-                                                "type" : _type,
-                                                "utilization" : utilization_type,
-                                                "prices" : prices
-                                            })
-            
-                                            for price_data in s["valueColumns"]:
-                                                price = None
-                                                try:
-                                                    price = float(re.sub("[^0-9\\.]", "", 
-                                                                         price_data["prices"][currency]))
-                                                except ValueError:
-                                                    price = None
-            
-                                                if price_data["name"] == "yrTerm3":
-                                                    prices["3"]["upfront"] = price
-                                                elif price_data["name"] == "yrTerm3Hourly":
-                                                    prices["3"]["hourly"] = price
+    
         return result
     
     def get_ondemand_instances_prices(self):
@@ -2120,14 +2134,13 @@ class RSPrices(AWSPrices):
            result: Redshift On-Denand pricing in dictionary format.
                 
         """
+        currency = self.DEFAULT_CURRENCY
         
         urls = [
-            self.INSTANCES_ON_DEMAND_URL,
+            self.RS_ON_DEMAND_URL,
+            self.PG_RS_ON_DEMAND_URL
         ]
-       
-    
-        currency = self.DEFAULT_CURRENCY
-    
+         
         result_regions = []
         result = {
             "config" : {
@@ -2136,43 +2149,42 @@ class RSPrices(AWSPrices):
             },
             "regions" : result_regions
         }
-        
+    
         for u in urls:
     
+    
             data = self.load_data(u)
-            
             if ("config" in data and data["config"] and "regions" 
                 in data["config"] and data["config"]["regions"]):
                 for r in data["config"]["regions"]:
                     if "region" in r and r["region"]:
+    
                         region_name = r["region"]
                         instance_types = []
                         if "instanceTypes" in r:
                             for it in r["instanceTypes"]:
                                 if "tiers" in it:
                                     for s in it["tiers"]:
-                                        _type = s["size"]
-                                        
-
-                                        
+                                        instance_type = s["size"]
+    
                                         for price_data in s["valueColumns"]:
                                             price = None
                                             try:
-                                                price = float(re.sub("[^0-9\\.]", "", 
-                                                                     price_data["prices"][currency]))
-                                            except ValueError:
+                                                price =float(re.sub("[^0-9\.]", "",
+                                                                    price_data["prices"][currency]))
+                                            except:
                                                 price = None
-                                                
-                                        instance_types.append({
-                                            "type" : _type,
-                                            "price" : price
-                                        })      
-            
-                                
-                        result_regions.append({
-                            "region" : region_name,
-                            "instanceTypes" : instance_types
-                        })       
+                                            _type = instance_type
+                                            instance_types.append({
+                                                "type" : _type,
+                                                "price" : price
+                                            })
+    
+                            result_regions.append({
+                                "region" : region_name,
+                                "instanceTypes" : instance_types
+                            })
+    
         return result
 
     
@@ -2205,45 +2217,30 @@ class RSPrices(AWSPrices):
         else:
             
             if u == "ondemand":
-                x = PrettyTable()
                 data = self.get_ondemand_instances_prices()
-                try:            
-                    x.set_field_names(["region", 
-                                       "type", 
-                                       "price"])
+                x = PrettyTable()
+                try:
+                    x.set_field_names(["region", "type", "price"])
                 except AttributeError:
-                    x.field_names = ["region", 
-                                     "type", 
-                                     "price"]
-                
+                    x.field_names = ["region", "type", "price"]
+    
                 try:
                     x.aligns[-1] = "l"
                 except AttributeError:
                     x.align["price"] = "l"
-                
+    
                 for r in data["regions"]:
                     region_name = r["region"]
                     for it in r["instanceTypes"]:
-                        x.add_row([region_name, it["type"], 
-                                   self.none_as_string(it["price"])])
-                   
+                        x.add_row([region_name, it["type"], self.none_as_string(it["price"])])
+                  
             elif u == "reserved":
-                x = PrettyTable()
                 data = self.get_reserved_instances_prices()
+                x = PrettyTable()
                 try:
-                    x.set_field_names(["region", 
-                                       "type", 
-                                       "utilization", 
-                                       "term", 
-                                       "price", 
-                                       "upfront"])
+                    x.set_field_names(["region", "type", "utilization", "term", "price", "upfront"])
                 except AttributeError:
-                    x.field_names = ["region", 
-                                     "type", 
-                                     "utilization", 
-                                     "term", 
-                                     "price", 
-                                     "upfront"]
+                    x.field_names = ["region", "type", "utilization", "term", "price", "upfront"]
     
                 try:
                     x.aligns[-1] = "l"
@@ -2251,16 +2248,13 @@ class RSPrices(AWSPrices):
                 except AttributeError:
                     x.align["price"] = "l"
                     x.align["upfront"] = "l"
-                
+    
                 for r in data["regions"]:
                     region_name = r["region"]
                     for it in r["instanceTypes"]:
                         for term in it["prices"]:
-                            x.add_row([region_name, 
-                                       it["type"], 
-                                       it["utilization"], 
-                                       term, 
-                                       self.none_as_string(it["prices"][term]["hourly"]), 
+                            x.add_row([region_name, it["type"], it["utilization"], 
+                                       term, self.none_as_string(it["prices"][term]["hourly"]), 
                                        self.none_as_string(it["prices"][term]["upfront"])])
     
             print x
@@ -2292,45 +2286,42 @@ class RSPrices(AWSPrices):
         elif u == "ondemand":
             if name is None:
                 name="RS_ondemand_pricing.csv"
-            data = self.get_ondemand_instances_prices()         
+            data = self.get_ondemand_instances_prices()
             writer = csv.writer(open(path+name, 'wb'))
             print "region,type,price"
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    writer.writerow([region_name,it["type"],
-                                     self.none_as_string(it["price"])])
-                    print "%s,%s,%s" % (region_name, it["type"], 
-                                        self.none_as_string(it["price"]))
+                    writer.writerow([region_name,it["type"],self.none_as_string(it["price"])])
+                    print "%s,%s,%s" % (region_name, 
+                                           it["type"], 
+                                           self.none_as_string(it["price"]))
         elif u == "reserved":
             if name is None:
                 name="RS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
             writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,utilization,term,price,upfront"
-            writer.writerow(["region",
-                             "type",
-                             "utilization",
-                             "term",
-                             "price",
-                             "upfront"])
+            print "region,type,term,paymentType,price,upfront"
+            writer.writerow(["region","type","term","paymentType","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s" % (region_name, 
-                                                     it["type"], 
-                                                     it["utilization"], 
-                                                     term, 
-                                                     self.none_as_string(it["prices"][term]["hourly"]), 
-                                                     self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow([region_name, 
-                                         it["type"], 
-                                         it["utilization"], 
-                                         term, 
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s" % (region_name, 
+                                                            it["type"],  
+                                                            term, 
+                                                            po, 
+                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                            self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow([region_name, 
+                                             it["type"],
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+
     
     
 
@@ -2463,7 +2454,7 @@ class AllAWSPrices(AWSPrices):
             rs_data=self.rs.get_ondemand_instances_prices()
                        
             writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,multiaz,license,db,price"
+            print "service,region,type,multiaz,license,db,os,price"
             writer.writerow(["service",
                              "region",
                              "type",
@@ -2547,11 +2538,11 @@ class AllAWSPrices(AWSPrices):
                                      self.none_as_string(it["price"])])
                     print "%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
                                                        region_name, 
-                                                       it["type"],
+                                                       it["type"], 
                                                        "",
                                                        "",
                                                        "",
-                                                       "",
+                                                       "", 
                                                        self.none_as_string(it["price"]))
         
         elif u=="reserved":
@@ -2650,7 +2641,8 @@ class AllAWSPrices(AWSPrices):
                                                                        it["db"], 
                                                                        "", 
                                                                        it["utilization"], 
-                                                                       term, "",
+                                                                       term, 
+                                                                       "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
                                                                        self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["rds",
@@ -2658,7 +2650,8 @@ class AllAWSPrices(AWSPrices):
                                          it["type"], 
                                          it["multiaz"], 
                                          it["license"], 
-                                         it["db"],"", 
+                                         it["db"],
+                                         "", 
                                          it["utilization"], 
                                          term, 
                                          "",
@@ -2670,30 +2663,31 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
-                                                                       region_name, 
-                                                                       it["type"],
-                                                                       "",
-                                                                       "",
-                                                                       "",
-                                                                       "", 
-                                                                       it["utilization"], 
-                                                                       term, 
-                                                                       "",
-                                                                       self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                       self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow(["redshift",
-                                         region_name, 
-                                         it["type"], 
-                                         "",
-                                         "",
-                                         "",
-                                         "",
-                                         it["utilization"], 
-                                         term, 
-                                         "",
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                                                                           region_name, 
+                                                                           it["type"], 
+                                                                           "",
+                                                                           "",
+                                                                           "",
+                                                                           "", 
+                                                                           "heavy", 
+                                                                           term, 
+                                                                           po, 
+                                                                           self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["redshift",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             "",
+                                             "", 
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
         elif u=="all":
             if name is None:
                 name="FULL_all_pricing.csv"
@@ -2823,32 +2817,33 @@ class AllAWSPrices(AWSPrices):
             for r in rs_data_od["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
-                                                                      "redshift",
-                                                                      region_name, 
-                                                                      it["type"],
-                                                                      "",
-                                                                      "",
-                                                                      "",
-                                                                      "", 
-                                                                      "", 
-                                                                      "", 
-                                                                      "",
-                                                                      self.none_as_string(it["price"]), 
-                                                                      "")
                     writer.writerow(["ondemand",
                                       "redshift",
                                       region_name, 
-                                      it["type"],
+                                      it["type"], 
                                       "",
                                       "",
                                       "",
                                       "", 
                                       "", 
                                       "", 
-                                      "",
+                                      "", 
                                       self.none_as_string(it["price"]), 
                                       ""])
+                    
+                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                                                                      "redshift",
+                                                                      region_name, 
+                                                                      it["type"], 
+                                                                      "",
+                                                                      "",
+                                                                      "",
+                                                                      "", 
+                                                                      "", 
+                                                                      "", 
+                                                                      "", 
+                                                                      self.none_as_string(it["price"]), 
+                                                                      "")
 
             
             
@@ -2928,7 +2923,8 @@ class AllAWSPrices(AWSPrices):
                                                                           it["db"], 
                                                                           "", 
                                                                           it["utilization"], 
-                                                                          term, "",
+                                                                          term, 
+                                                                          "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
                                                                           self.none_as_string(it["prices"][term]["upfront"]))
                         writer.writerow(["reserved",
@@ -2937,7 +2933,8 @@ class AllAWSPrices(AWSPrices):
                                          it["type"], 
                                          it["multiaz"], 
                                          it["license"], 
-                                         it["db"],"", 
+                                         it["db"],
+                                         "", 
                                          it["utilization"], 
                                          term, 
                                          "",
@@ -2949,32 +2946,33 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
-                                                                          "redshift",
-                                                                          region_name, 
-                                                                          it["type"],
-                                                                          "",
-                                                                          "",
-                                                                          "",
-                                                                          "", 
-                                                                          it["utilization"], 
-                                                                          term, 
-                                                                          "",
-                                                                          self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                          self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow(["reserved",
-                                         "redshift",
-                                         region_name, 
-                                         it["type"], 
-                                         "",
-                                         "",
-                                         "",
-                                         "",
-                                         it["utilization"], 
-                                         term, 
-                                         "",
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                                                                              "redshift",
+                                                                              region_name, 
+                                                                              it["type"], 
+                                                                              "",
+                                                                              "",
+                                                                              "",
+                                                                              "", 
+                                                                              "heavy", 
+                                                                              term, 
+                                                                              po, 
+                                                                              self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["reserved",
+                                             "redshift",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             "",
+                                             "", 
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
     
     
     

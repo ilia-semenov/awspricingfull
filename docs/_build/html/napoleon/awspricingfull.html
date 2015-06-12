@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>awspricingfull module &mdash; awspricingfull 1.0 documentation</title>
+    <title>awspricingfull module &mdash; awspricingfull 2.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0',
+        VERSION:     '2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="awspricingfull 1.0 documentation" href="../index.html" /> 
+    <link rel="top" title="awspricingfull 2.0 documentation" href="../index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">awspricingfull 1.0 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">awspricingfull 2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -60,7 +60,7 @@ Both current and previous generation instance prices are retrieved.</p>
 &#64;author: Ilia Semenov</p>
 <dl class="class">
 <dt id="awspricingfull.AWSPrices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AWSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AWSPrices</tt><a class="headerlink" href="#awspricingfull.AWSPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Abstract class - base for the pricing retrieval classes for different
 services.</p>
@@ -87,9 +87,24 @@ default.</p>
 AWS region names used in few sources to the conventional ones.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">DEFAULT_CURRENCY</tt><em class="property"> = 'USD'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">JSON_NAME_TO_REGIONS_API</tt><em class="property"> = {'apac-sin': 'ap-southeast-1', 'us-west': 'us-west-1', 'us-east-1': 'us-east-1', 'ap-northeast-1': 'ap-northeast-1', 'sa-east-1': 'sa-east-1', 'eu-frankfurt': 'eu-central-1', 'apac-syd': 'ap-southeast-2', 'eu-ireland': 'eu-west-1', 'ap-southeast-1': 'ap-southeast-1', 'us-east': 'us-east-1', 'ap-southeast-2': 'ap-southeast-2', 'us-west-2': 'us-west-2', 'apac-tokyo': 'ap-northeast-1', 'us-gov-west-1': 'us-gov-west-1', 'us-west-1': 'us-west-1', 'eu-central-1': 'eu-central-1', 'eu-west-1': 'eu-west-1'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">REGIONS</tt><em class="property"> = ['us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1', 'eu-central-1', 'us-gov-west-1']</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.AWSPrices.get_ondemand_instances_prices">
-<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.AWSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Abstract method for getting On-Demand pricing.</dt>
 <dd>Implemented in child classes.</dd>
@@ -107,7 +122,7 @@ Abstract method is not implemented.</td>
 
 <dl class="method">
 <dt id="awspricingfull.AWSPrices.get_reserved_instances_prices">
-<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.AWSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Abstract method for getting Reserved pricing.</dt>
 <dd>Implemented in child classes.</dd>
@@ -125,7 +140,7 @@ Abstract method is not implemented.</td>
 
 <dl class="method">
 <dt id="awspricingfull.AWSPrices.load_data">
-<tt class="descname">load_data</tt><big>(</big><em>url</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.load_data" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load_data</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#awspricingfull.AWSPrices.load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for retrieving the pricing data in a clean dictionary format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -144,7 +159,7 @@ Pricing data in a dictionary format</td>
 
 <dl class="method">
 <dt id="awspricingfull.AWSPrices.none_as_string">
-<tt class="descname">none_as_string</tt><big>(</big><em>v</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.none_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.none_as_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">none_as_string</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#awspricingfull.AWSPrices.none_as_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for returning a blank string instead of None.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -160,7 +175,7 @@ Pricing data in a dictionary format</td>
 
 <dl class="method">
 <dt id="awspricingfull.AWSPrices.print_json">
-<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AWSPrices.print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.AWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method printing the pricing data in JSON format to Console.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -181,7 +196,7 @@ Reserved (&#8220;reserved&#8221;) pricing option.</td>
 
 <dl class="class">
 <dt id="awspricingfull.AllAWSPrices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AllAWSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">AllAWSPrices</tt><a class="headerlink" href="#awspricingfull.AllAWSPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
 <dl class="docutils">
 <dt>Class for retrieving the instance pricing for 4 AWS Services:</dt>
@@ -219,9 +234,19 @@ for RDS pricing retrieval.</p>
 for Redshift pricing retrieval.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">ec2</tt><em class="property"> = &lt;awspricingfull.EC2Prices object at 0x0000000003FCCF98&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">elc</tt><em class="property"> = &lt;awspricingfull.ELCPrices object at 0x0000000003C205F8&gt;</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.AllAWSPrices.print_json">
-<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices.print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_json</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.AllAWSPrices.print_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method printing the pricing data in JSON format to Console.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -238,9 +263,19 @@ Reserved (&#8220;reserved&#8221;) or both (&#8220;all&#8221;) pricing option.</t
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">rds</tt><em class="property"> = &lt;awspricingfull.RDSPrices object at 0x0000000003C20208&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">rs</tt><em class="property"> = &lt;awspricingfull.RSPrices object at 0x0000000003C205C0&gt;</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.AllAWSPrices.save_csv">
-<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#AllAWSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.AllAWSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#awspricingfull.AllAWSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method saving the full pricing data in CSV format to the</dt>
 <dd>cpecified location.</dd>
@@ -273,7 +308,7 @@ values are &#8220;FULL_reserved_pricing.csv&#8221; for Reserved,
 
 <dl class="class">
 <dt id="awspricingfull.EC2Prices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">EC2Prices</tt><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">EC2Prices</tt><a class="headerlink" href="#awspricingfull.EC2Prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
 <p>Class for retrieving the EC2 pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
 <dl class="attribute">
@@ -484,9 +519,139 @@ On-Dermand urls to OS types.</p>
 Reserved urls to OS types.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_ONDEMAND_OS_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/linux-od.min.js': 'linux', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswin-od.min.js': 'mswin', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswinSQL-od.min.js': 'mswinSQL', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/sles-od.min.js': 'sles', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswinSQLWeb-od.min.js': 'mswinSQLWeb', 'http://a0.awsstatic.com/pricing/1/ec2/mswinSQLWeb-od.min.js': 'mswinSQLWeb', 'http://a0.awsstatic.com/pricing/1/ec2/linux-od.min.js': 'linux', 'http://a0.awsstatic.com/pricing/1/ec2/sles-od.min.js': 'sles', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/rhel-od.min.js': 'rhel', 'http://a0.awsstatic.com/pricing/1/ec2/mswinSQL-od.min.js': 'mswinSQL', 'http://a0.awsstatic.com/pricing/1/ec2/mswin-od.min.js': 'mswin', 'http://a0.awsstatic.com/pricing/1/ec2/rhel-od.min.js': 'rhel'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_LINUX_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_LINUX_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/linux-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_RHEL_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_RHEL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/rhel-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_SLES_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_SLES_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/sles-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINDOWS_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_WINDOWS_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/mswin-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINSQLWEB_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_WINSQLWEB_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/mswinSQLWeb-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINSQL_URL">
+<tt class="descname">INSTANCES_ON_DEMAND_WINSQL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/mswinSQL-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.INSTANCES_ON_DEMAND_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_LINUX_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/linux-unix-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_OS_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-with-sql-server-standard-shared.min.js': 'mswinSQL', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/suse-linux-shared.min.js': 'sles', 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/red-hat-enterprise-linux-shared.min.js': 'rhel', 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-with-sql-server-web-shared.min.js': 'mswinSQLWeb', 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/linux-unix-shared.min.js': 'linux', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-with-sql-server-standard-shared.min.js': 'mswinSQL', 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/suse-linux-shared.min.js': 'sles', 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-shared.min.js': 'mswin', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-with-sql-server-web-shared.min.js': 'mswinSQLWeb', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/linux-unix-shared.min.js': 'linux', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/red-hat-enterprise-linux-shared.min.js': 'rhel', 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-shared.min.js': 'mswin'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_RHEL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/red-hat-enterprise-linux-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_SLES_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/suse-linux-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_WINDOWS_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_WINSQLWEB_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-with-sql-server-web-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_WINSQL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/ri-v2/windows-with-sql-server-standard-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_LINUX_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_LINUX_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/linux-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_LINUX_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_RHEL_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_RHEL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/rhel-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_RHEL_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_SLES_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_SLES_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/sles-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_SLES_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINDOWS_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_WINDOWS_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswin-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINDOWS_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswinSQLWeb-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINSQL_URL">
+<tt class="descname">PG_INSTANCES_ON_DEMAND_WINSQL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/mswinSQL-od.min.js'</em><a class="headerlink" href="#awspricingfull.EC2Prices.PG_INSTANCES_ON_DEMAND_WINSQL_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_LINUX_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/linux-unix-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_RHEL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/red-hat-enterprise-linux-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_SLES_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/suse-linux-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_WINDOWS_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_WINSQLWEB_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-with-sql-server-web-shared.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_WINSQL_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/ec2/previous-generation/ri-v2/windows-with-sql-server-standard-shared.min.js'</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.EC2Prices.get_ondemand_instances_prices">
-<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.EC2Prices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting EC2 On-Demand pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -502,7 +667,7 @@ Reserved urls to OS types.</p>
 
 <dl class="method">
 <dt id="awspricingfull.EC2Prices.get_reserved_instances_prices">
-<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.EC2Prices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting EC2 Reserved pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -518,7 +683,7 @@ Reserved urls to OS types.</p>
 
 <dl class="method">
 <dt id="awspricingfull.EC2Prices.print_table">
-<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.print_table" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.EC2Prices.print_table" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method printing the EC2 pricing data to the console</dt>
 <dd>in the Pretty Table format (requires Pretty Table
@@ -541,7 +706,7 @@ Reserved (&#8220;reserved&#8221;) pricing option.</td>
 
 <dl class="method">
 <dt id="awspricingfull.EC2Prices.save_csv">
-<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#EC2Prices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.EC2Prices.save_csv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#awspricingfull.EC2Prices.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method saving the EC2 pricing data in CSV format to the</dt>
 <dd>cpecified location.</dd>
@@ -573,7 +738,7 @@ and &#8220;EC2_ondemand_pricing.csv&#8221; for On-Demand.</li>
 
 <dl class="class">
 <dt id="awspricingfull.ELCPrices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">ELCPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">ELCPrices</tt><a class="headerlink" href="#awspricingfull.ELCPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
 <p>Class for retrieving the ElastiCache pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
 <dl class="attribute">
@@ -656,9 +821,59 @@ Reserved urls to Reservation types.</p>
 Type names to the conventional analogs.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-standard-deployments-elasticache.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_HEAVY_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-heavy-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_LIGHT_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-light-standard-deployments-elasticache.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-medium-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-light-standard-deployments.min.js': 'light', 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-heavy-standard-deployments.min.js': 'heavy', 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-heavy-standard-deployments.min.js': 'heavy', 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-light-standard-deployments-elasticache.min.js': 'light', 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-medium-standard-deployments.min.js': 'medium', 'http://a0.awsstatic.com/pricing/1/elasticache/pricing-elasticache-medium-standard-deployments.min.js': 'medium'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCE_TYPE_MAPPING</tt><em class="property"> = {'xxlHiMem': 'cache.m2.2xlarge', 'sCacheNode.medInst': 'cache.m1.medium', 'xl': 'cache.m1.xlarge', 'enInstClass2.xxl': 'cache.m3.2xlarge', 'hiMemCacheClass.xl': 'cache.m2.xlarge', 'lg': 'cache.m1.large', 'hiCPUDBInstClass.hiCPUxlDBInst': 'cache.c1.xlarge', 'mic': 'cache.t1.micro', 'sCacheNode.lg': 'cache.m1.large', 'hiMemCacheClass.xxl': 'cache.m2.2xlarge', 'microInstClass.microInst': 'cache.t1.micro', 'sCacheNode.xl': 'cache.m1.xlarge', 'xxxxlHiMem': 'cache.m2.4xlarge', 'xxlEn': 'cache.m3.2xlarge', 'medInst': 'cache.m1.medium', 'xlHiMem': 'cache.m2.xlarge', 'hiMemCacheClass.xxxxl': 'cache.m2.4xlarge', 'sCacheNode.sm': 'cache.m1.small', 'xlHiCPU': 'cache.c1.xlarge', 'xlEn': 'cache.m3.xlarge', 'sm': 'cache.m1.small', 'enInstClass2.xl': 'cache.m3.xlarge'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-standard-deployments-elasticache.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_HEAVY_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-heavy-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_LIGHT_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-light-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_INSTANCES_RESERVED_MEDIUM_UTILIZATION_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/elasticache/previous-generation/pricing-elasticache-medium-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.ELCPrices.get_ondemand_instances_prices">
-<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.ELCPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting ELC On-Denand pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -674,7 +889,7 @@ Type names to the conventional analogs.</p>
 
 <dl class="method">
 <dt id="awspricingfull.ELCPrices.get_reserved_instances_prices">
-<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.ELCPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting ELC Reserved pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -690,7 +905,7 @@ Type names to the conventional analogs.</p>
 
 <dl class="method">
 <dt id="awspricingfull.ELCPrices.print_table">
-<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.ELCPrices.print_table" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method printing the ELC pricing data to the console</dt>
 <dd>in the Pretty Table format (requires Pretty Table
@@ -713,7 +928,7 @@ Reserved (&#8220;reserved&#8221;) pricing option.</td>
 
 <dl class="method">
 <dt id="awspricingfull.ELCPrices.save_csv">
-<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#ELCPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.ELCPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#awspricingfull.ELCPrices.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method saving the ELC pricing data in CSV format to the</dt>
 <dd>cpecified location.</dd>
@@ -745,7 +960,7 @@ and &#8220;ELC_ondemand_pricing.csv&#8221; for On-Demand.</li>
 
 <dl class="class">
 <dt id="awspricingfull.RDSPrices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RDSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RDSPrices</tt><a class="headerlink" href="#awspricingfull.RDSPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
 <p>Class for retrieving the RDS pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
 <dl class="attribute">
@@ -1346,9 +1561,384 @@ Family names to the cvonventional Multi-AZ tag.</p>
 Type names to the cvonventional analogs.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<tt class="descname">INSTANCE_TYPE_MAPPING</tt><em class="property"> = {'hiMemDBInstClass.xlDBInst': 'db.m2.xlarge', 'memDBCurrentGen.db.m2.xlarge': 'db.m2.xlarge', 'multiAZdeployRes.u': 'db.t1.micro', 'dbInstClass.db.m1.medium': 'db.m1.medium', 'multiAZHiMemInstClass.xxlDBInst': 'db.m2.2xlarge', 'dbInstClass.db.m1.large': 'db.m1.large', 'stdDeployRes.xxxxxxxxl': 'db.cr1.8xlarge', 'stdDeployRes.u': 'db.t1.micro', 'dbInstClass.db.m3.xlarge': 'db.m3.xlarge', 'multiAZDBInstClass.db.m3.xlarge': 'db.m3.xlarge', 'multiAZDBInstClass.smDBInst': 'db.m1.small', 'multiAZDBInstClass.db.m3.medium': 'db.m3.medium', 'dbInstClass.db.m3.2xlarge': 'db.m3.2xlarge', 'stdDeployRes.xxlHiMem': 'db.m2.2xlarge', 'dbInstClass.db.t1.micro': 'db.t1.micro', 'memDBCurrentGen.db.cr1.8xl': 'db.cr1.8xlarge', 'multiAZDBInstClass.medDBInst': 'db.m1.medium', 'stdDeployRes.xlHiMem': 'db.m2.xlarge', 'multiAZDBInstClass.db.m3.2xlarge': 'db.m3.2xlarge', 'multiAZDBInstClass.db.m1.large': 'db.m1.large', 'dbInstClass.xlDBInst': 'db.m1.xlarge', 'multiAZDBInstClass.lgDBInst': 'db.m1.large', 'dbInstClass.db.m1.xlarge': 'db.m1.xlarge', 'multiAZdeployRes.xxxxlHiMem': 'db.m2.4xlarge', 'stdDeployRes.xxxxlHiMem': 'db.m2.4xlarge', 'multiAZdeployRes.xlHiMem': 'db.m2.xlarge', 'stdDeployRes.lg': 'db.m1.large', 'dbInstClass.uDBInst': 'db.t1.micro', 'memDBCurrentGen.db.m2.4xlarge': 'db.m2.4xlarge', 'dbInstClass.db.m3.large': 'db.m3.large', 'dbInstClass.medDBInst': 'db.m1.medium', 'stdDeployRes.xl': 'db.m1.xlarge', 'dbInstClass.lgDBInst': 'db.m1.large', 'multiAZdeployRes.med': 'db.m1.medium', 'stdDeployRes.sm': 'db.m1.small', 'multiAZdeployRes.xxxxxxxxl': 'db.cr1.8xlarge', 'multiAZDBInstClass.db.m1.xlarge': 'db.m1.xlarge', 'multiAZDBInstClass.db.t1.micro': 'db.t1.micro', 'multiAZDBInstClass.db.m1.medium': 'db.m1.medium', 'multiAZDBInstClass.db.m1.small': 'db.m1.small', 'stdDeployRes.med': 'db.m1.medium', 'multiAZDBInstClass.uDBInst': 'db.t1.micro', 'multiAZClusterHiMemDB.xxxxxxxxl': 'db.cr1.8xlarge', 'hiMemDBInstClass.xxlDBInst': 'db.m2.2xlarge', 'dbInstClass.db.m1.small': 'db.m1.small', 'multiAZdeployRes.xl': 'db.m1.xlarge', 'multiAZdeployRes.xxlHiMem': 'db.m2.2xlarge', 'dbInstClass.db.m3.medium': 'db.m3.medium', 'hiMemDBInstClass.xxxxDBInst': 'db.m2.4xlarge', 'multiAZdeployRes.lg': 'db.m1.large', 'dbInstClass.smDBInst': 'db.m1.small', 'udbInstClass.uDBInst': 'db.t1.micro', 'multiAZHiMemInstClass.xlDBInst': 'db.m2.xlarge', 'memDBCurrentGen.db.m2.2xlarge': 'db.m2.2xlarge', 'multiAZdeployRes.sm': 'db.m1.small', 'clusterHiMemDB.xxxxxxxxl': 'db.cr1.8xlarge', 'multiAZDBInstClass.xlDBInst': 'db.m1.xlarge', 'stdDeployRes.micro': 'db.t1.micro', 'multiAZHiMemInstClass.xxxxDBInst': 'db.m2.4xlarge', 'multiAZDBInstClass.db.m3.large': 'db.m3.large'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MYSQL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MYSQL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MYSQL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ENGINE_TYPES</tt><em class="property"> = ['mysql', 'postgres', 'oracle-se1', 'oracle', 'sqlserver-ex', 'sqlserver-web', 'sqlserver-se', 'sqlserver']</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-ondemand.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MULTIAZ_MAPPING</tt><em class="property"> = {'Micro and Small Instances - Previous Generation - Multi-AZ': 'multi-az', 'Standard Instances - Previous Generation - Multi-AZ': 'multi-az', 'Standard Instances - Current Generation - Single-AZ': 'single', 'Memory Optimized Instances - Previous Generation - Multi-AZ': 'multi-az', 'Micro and Small Instances - Current Generation - Single-AZ': 'single', 'Memory Optimized Instances - Current Generation - Multi-AZ': 'multi-az', 'Micro and Small Instances - Current Generation - Multi-AZ': 'multi-az', 'Memory Optimized Instances - Previous Generation - Single-AZ': 'single', 'Micro Instances - Previous Generation - Single-AZ': 'single', 'Micro Instances - Previous Generation - Multi-AZ': 'multi-az', 'Standard Instances - Previous Generation - Single-AZ': 'single', 'Memory Optimized Instances - Current Generation - Single-AZ': 'single', 'Micro and Small Instances - Previous Generation - Single-AZ': 'single', 'Standard Instances - Current Generation - Multi-AZ': 'multi-az'}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MULTIAZ_TYPES</tt><em class="property"> = ['single', 'multi-az']</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MYSQL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MYSQL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MYSQL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MYSQL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_MYSQL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-multiAZ-deployments.min.js': ['postgresql', 'postgres'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-multiAZ-deployments.min.js': ['included', 'oracle-se1'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-multiAZ-deployments.min.js': ['gpl', 'mysql'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-multiAZ-deployments.min.js': ['byol', 'oracle'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-multiAZ-deployments.min.js': ['included', 'oracle-se1'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-multiAZ-deployments.min.js': ['gpl', 'mysql'], 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-multiAZ-deployments.min.js': ['postgresql', 'postgres'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-multiAZ-deployments.min.js': ['byol', 'oracle']}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ONDEMAND_STANDARD_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-ondemand.min.js': ['included', 'sqlserver-se'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-ondemand.min.js': ['included', 'sqlserver-se'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-ondemand.min.js': ['byol', 'sqlserver'], 'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-standard-deployments.min.js': ['postgresql', 'postgres'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-ondemand.min.js': ['included', 'sqlserver-ex'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-standard-deployments.min.js': ['included', 'oracle-se1'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-standard-deployments.min.js': ['byol', 'oracle'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-standard-deployments.min.js': ['gpl', 'mysql'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-ondemand.min.js': ['included', 'sqlserver-ex'], 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-standard-deployments.min.js': ['postgresql', 'postgres'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-standard-deployments.min.js': ['gpl', 'mysql'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-ondemand.min.js': ['included', 'sqlserver-web'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-ondemand.min.js': ['included', 'sqlserver-web'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-ondemand.min.js': ['byol', 'sqlserver'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-standard-deployments.min.js': ['included', 'oracle-se1'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-standard-deployments.min.js': ['byol', 'oracle']}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-light-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-medium-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-multiAZ-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_POSTGRESQL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-heavy-utilization-reserved-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-standard-deployments.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_RESERVED_TYPE_BY_URL</tt><em class="property"> = {'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-medium-ri.min.js': ['byol', 'sqlserver', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-medium-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-heavy-utilization-reserved-instances.min.js': ['byol', 'oracle', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-light-utilization-reserved-instances.min.js': ['byol', 'oracle', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-light-ri.min.js': ['included', 'sqlserver-web', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-medium-utilization-reserved-instances.min.js': ['byol', 'oracle', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-heavy-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-light-ri.min.js': ['byol', 'sqlserver', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-light-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-medium-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-light-ri.min.js': ['included', 'sqlserver-se', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/postgresql/pricing-heavy-utilization-reserved-instances.min.js': ['postgresql', 'postgres', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-medium-ri.min.js': ['included', 'sqlserver-web', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/postgresql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js': ['postgresql', 'postgres', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-heavy-ri.min.js': ['included', 'sqlserver-se', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-medium-ri.min.js': ['byol', 'sqlserver', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-byol-medium-utilization-reserved-instances.min.js': ['byol', 'oracle', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-medium-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-medium-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-light-ri.min.js': ['included', 'sqlserver-web', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-heavy-ri.min.js': ['included', 'sqlserver-se', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-medium-ri.min.js': ['included', 'sqlserver-ex', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-heavy-ri.min.js': ['byol', 'sqlserver', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-light-ri.min.js': ['included', 'sqlserver-se', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/previous-generation/pricing-li-light-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-se-medium-ri.min.js': ['included', 'sqlserver-se', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-heavy-ri.min.js': ['included', 'sqlserver-ex', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-medium-ri.min.js': ['included', 'sqlserver-se', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-medium-ri.min.js': ['included', 'sqlserver-ex', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-medium-ri.min.js': ['included', 'sqlserver-web', 'medium'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-heavy-utilization-reserved-instances.min.js': ['byol', 'oracle', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-heavy-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-byol-heavy-ri.min.js': ['byol', 'sqlserver', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-byol-light-utilization-reserved-instances.min.js': ['byol', 'oracle', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-web-heavy-ri.min.js': ['included', 'sqlserver-web', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-heavy-ri.min.js': ['included', 'sqlserver-web', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-heavy-ri.min.js': ['included', 'sqlserver-ex', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'heavy'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-light-ri.min.js': ['included', 'sqlserver-ex', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/oracle/pricing-li-light-utilization-reserved-instances.min.js': ['included', 'oracle-se1', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/previous-generation/sqlserver-li-ex-light-ri.min.js': ['included', 'sqlserver-ex', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-light-ri.min.js': ['byol', 'sqlserver', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/previous-generation/pricing-light-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'light'], 'http://a0.awsstatic.com/pricing/1/rds/mysql/pricing-heavy-utilization-reserved-instances.min.js': ['gpl', 'mysql', 'heavy']}</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-byol-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-ex-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-se-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-heavy-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-light-ri.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/rds/sqlserver/sqlserver-li-web-medium-ri.min.js'</em></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="awspricingfull.RDSPrices.get_ondemand_instances_prices">
-<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.RDSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting RDS On-Denand pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1364,7 +1954,7 @@ Type names to the cvonventional analogs.</p>
 
 <dl class="method">
 <dt id="awspricingfull.RDSPrices.get_reserved_instances_prices">
-<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.RDSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting RDS Reserved pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1380,7 +1970,7 @@ Type names to the cvonventional analogs.</p>
 
 <dl class="method">
 <dt id="awspricingfull.RDSPrices.print_table">
-<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.RDSPrices.print_table" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method printing the RDS pricing data to the console</dt>
 <dd>in the Pretty Table format (requires Pretty Table
@@ -1403,7 +1993,7 @@ Reserved (&#8220;reserved&#8221;) pricing option.</td>
 
 <dl class="method">
 <dt id="awspricingfull.RDSPrices.save_csv">
-<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RDSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RDSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#awspricingfull.RDSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method saving the RDS pricing data in CSV format to the</dt>
 <dd>cpecified location.</dd>
@@ -1435,44 +2025,56 @@ and &#8220;RDS_ondemand_pricing.csv&#8221; for On-Demand.</li>
 
 <dl class="class">
 <dt id="awspricingfull.RSPrices">
-<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RSPrices</tt><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">awspricingfull.</tt><tt class="descname">RSPrices</tt><a class="headerlink" href="#awspricingfull.RSPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a></p>
 <p>Class for retrieving the Redshift pricing. Child of <a class="reference internal" href="#awspricingfull.AWSPrices" title="awspricingfull.AWSPrices"><tt class="xref py py-class docutils literal"><span class="pre">awspricingfull.AWSPrices</span></tt></a> class.</p>
 <dl class="attribute">
-<dt id="awspricingfull.RSPrices.INSTANCES_ON_DEMAND_URL">
-<tt class="descname">INSTANCES_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
+<dt id="awspricingfull.RSPrices.RS_ON_DEMAND_URL">
+<tt class="descname">RS_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.RS_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em></p>
 <p>Undocumented AWS Pricing API
-URL - On-Demand RS</p>
+URL - On-Demand Redshift Nodes</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="awspricingfull.RSPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL">
-<tt class="descname">INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_RESERVED_HEAVY_UTILIZATION_1_URL" title="Permalink to this definition">¶</a></dt>
+<dt id="awspricingfull.RSPrices.PG_RS_ON_DEMAND_URL">
+<tt class="descname">PG_RS_ON_DEMAND_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.PG_RS_ON_DEMAND_URL" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em></p>
 <p>Undocumented AWS Pricing API
-URL - Reserved RS Heavy 1 Year.</p>
+URL - Reserved Redshift Nodes, Previous Generation</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="awspricingfull.RSPrices.NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL">
-<tt class="descname">NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.NSTANCES_RESERVED_HEAVY_UTILIZATION_3_URL" title="Permalink to this definition">¶</a></dt>
+<dt id="awspricingfull.RSPrices.RS_RESERVED_URL">
+<tt class="descname">RS_RESERVED_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.RS_RESERVED_URL" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em></p>
 <p>Undocumented AWS Pricing API
-URL - Reserved RS Heavy 3 Year.</p>
+URL - Reserved Redshift Nodes, Previous Generation</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="awspricingfull.RSPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL">
-<tt class="descname">INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL</tt><a class="headerlink" href="#awspricingfull.RSPrices.INSTANCES_RESERVED_UTILIZATION_TYPE_BY_URL" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict of str: str</em></p>
-<p>Mapping of
-Reserved urls to Reservation types.</p>
-</dd></dl>
+<dt>
+<tt class="descname">PG_RS_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/redshift/previous-generation/pricing-on-demand-redshift-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="awspricingfull.RSPrices.PG_RS_RESERVED_URL">
+<tt class="descname">PG_RS_RESERVED_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/redshift/previous-generation/pricing-reserved-redshift-instances.min.js'</em><a class="headerlink" href="#awspricingfull.RSPrices.PG_RS_RESERVED_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RS_ON_DEMAND_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/redshift/pricing-on-demand-redshift-instances.min.js'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">RS_RESERVED_URL</tt><em class="property"> = 'http://a0.awsstatic.com/pricing/1/redshift/pricing-reserved-redshift-instances.min.js'</em></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="awspricingfull.RSPrices.get_ondemand_instances_prices">
-<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.get_ondemand_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_ondemand_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.RSPrices.get_ondemand_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting Redshift On-Denand pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1488,7 +2090,7 @@ Reserved urls to Reservation types.</p>
 
 <dl class="method">
 <dt id="awspricingfull.RSPrices.get_reserved_instances_prices">
-<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.get_reserved_instances_prices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_reserved_instances_prices</tt><big>(</big><big>)</big><a class="headerlink" href="#awspricingfull.RSPrices.get_reserved_instances_prices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of method for getting Redshift Reserved pricing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1504,7 +2106,7 @@ Reserved urls to Reservation types.</p>
 
 <dl class="method">
 <dt id="awspricingfull.RSPrices.print_table">
-<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.print_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.print_table" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">print_table</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#awspricingfull.RSPrices.print_table" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method printing the Redshift pricing data to the console</dt>
 <dd>in the Pretty Table format (requires Pretty Table
@@ -1527,7 +2129,7 @@ Reserved (&#8220;reserved&#8221;) pricing option.</td>
 
 <dl class="method">
 <dt id="awspricingfull.RSPrices.save_csv">
-<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../_modules/awspricingfull.html#RSPrices.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#awspricingfull.RSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_csv</tt><big>(</big><em>u</em>, <em>path='C:\\Users\\isemenov\\workspace\\awspricingfull\\docs\\'</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#awspricingfull.RSPrices.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Method saving the Redshift pricing data in CSV format to the</dt>
 <dd>cpecified location.</dd>
@@ -1596,7 +2198,7 @@ and &#8220;Redshift_ondemand_pricing.csv&#8221; for On-Demand.</li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">awspricingfull 1.0 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">awspricingfull 2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
