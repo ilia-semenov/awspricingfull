@@ -1,4 +1,7 @@
 # awspricingfull.py
+
+http://ilia-semenov.github.io/awspricingfull
+
 Written by Ilia Semenov (@ilia-semenov)
 
 Based on the project by Eran Sandler (@erans): https://github.com/erans/ec2instancespricing
