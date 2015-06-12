@@ -1982,6 +1982,8 @@ class RSPrices(AWSPrices):
         PG_RS_ON_DEMAND_URL (str): Undocumented AWS Pricing API
             URL - Reserved Redshift Nodes, Previous Generation
         RS_RESERVED_URL (str): Undocumented AWS Pricing API
+            URL - Reserved Redshift Nodes
+        PG_RS_RESERVED_URL (str): Undocumented AWS Pricing API
             URL - Reserved Redshift Nodes, Previous Generation
                        
     """
