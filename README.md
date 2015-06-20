@@ -1,5 +1,22 @@
 # awspricingfull.py
 
+-------------------------------------
+
+**MAJOR UPDATE 06/19/2015: Version 2.0 of program**
+
+* New RDS pricing scheme is added (noUpfront, partialUpfront, allUpfront)
+* Thorough testing is performed and major bugs fixed:
+  * Redshift "clean" hourly price calculation (from monthly cost) is corrected following AWS correcting it on their pricing website
+  * Output pricing is checked by random sampling and proven to be accurate
+  * PrettyTable representation is now fully functional
+  * JSON functionality now returns the JSON string instead of just printing it to console
+  * Documentation is accurate and informative
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------
+
+
 http://ilia-semenov.github.io/awspricingfull
 
 Written by Ilia Semenov (@ilia-semenov)
