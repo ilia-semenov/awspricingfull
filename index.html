@@ -19,10 +19,32 @@
     </section>
 
     <section class="main-content">
-      <p><strong>UPDATE 06/12/2015: New Redshift pricing schema added</strong></p>
-
-<h1>
+      <h1>
 <a id="awspricingfullpy" class="anchor" href="#awspricingfullpy" aria-hidden="true"><span class="octicon octicon-link"></span></a>awspricingfull.py</h1>
+
+<hr>
+
+<p><strong>MAJOR UPDATE 06/19/2015: Version 2.0 of program</strong></p>
+
+<ul>
+<li>New RDS pricing scheme is added (noUpfront, partialUpfront, allUpfront)</li>
+<li>Thorough testing is performed and major bugs fixed:
+
+<ul>
+<li>Redshift "clean" hourly price calculation (from monthly cost) is corrected following AWS correcting it on their pricing website</li>
+<li>Output pricing is checked by random sampling and proven to be accurate</li>
+<li>PrettyTable representation is now fully functional</li>
+<li>JSON functionality now returns the JSON string instead of just printing it to console</li>
+<li>Documentation is accurate and informative</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Program is fully functional and up-to-date.</strong></p>
+
+<hr>
+
+<p><a href="http://ilia-semenov.github.io/awspricingfull">http://ilia-semenov.github.io/awspricingfull</a></p>
 
 <p>Written by Ilia Semenov (<a href="https://github.com/ilia-semenov" class="user-mention">@ilia-semenov</a>)</p>
 
@@ -44,7 +66,7 @@ the data to the AWS pricing pages.</p>
 
 <p>Both current and previous generation instance prices are retrieved.</p>
 
-<p>More information and description of classes contained in the module can be found in Sphinx documentation HTML located at <a href="https://github.com/ilia-semenov/awspricingfull/blob/master/docs/_build/html/">https://github.com/ilia-semenov/awspricingfull/blob/master/docs/_build/html/</a> folder.</p>
+<p>More information and description of classes contained in the module can be found in Sphinx documentation HTML located at <a href="https://github.com/ilia-semenov/awspricingfull/tree/master/docs_html">https://github.com/ilia-semenov/awspricingfull/tree/master/docs_html</a> folder.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ilia-semenov/awspricingfull">Awspricingfull: Full AWS Instance Pricing in CSV and JSON formats (EC2, RDS, ElastiCache, Redshift)</a> is maintained by <a href="https://github.com/ilia-semenov">ilia-semenov</a>.</span>
