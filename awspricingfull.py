@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-"""AWS Instances (EC2, ElastiCachep, RDS, Redshift) pricing retrieval project.
+"""AWS Instances (EC2, ElastiCache, RDS, Redshift) pricing retrieval project.
 
 Project contains one module which is designed to retrieve the AWS prices for 
 four major AWS services that have reserved instances involved: EC2, ElastiCache, 
@@ -30,12 +30,20 @@ RDS and Redshift. The prices either On-Demand or Reserved (specified by user) ca
 be retrieved to Command Line in JSON, Table (Prettytable) or CSV formats. CSV format 
 option also saves the csv file to the folder specified by user, which is the main 
 use case.
+
 The undocumented AWS pricing APIa are used as the sources. The same APIs  serve
 the data to the AWS pricing pages.
 Both current and previous generation instance prices are retrieved.
 
-Created on 25 March 2015
+Latest update: New pricing scheme (noUpfront, allUpfront, PartialUpfront) compatibility for RDS and Redshift is added. Minor bugs fixed.
+
+Created: 25 March, 2015
+
+Updated: 19 June, 2015
+
 @author: Ilia Semenov
+
+@version: 2.0
 """
 
 
@@ -162,7 +170,7 @@ class AWSPrices(object):
         raise NotImplementedError( "Should have implemented this" )
     
 
-    def print_json(self,u):
+    def return_json(self,u):
         """
         Method printing the pricing data in JSON format to Console.
         
@@ -170,8 +178,8 @@ class AWSPrices(object):
             u (str): Parameter specifying On-Demand ("ondemand") or 
                 Reserved ("reserved") pricing option.
         
-        Prints:
-           Pricing data in JSON string format or an error message.
+        Returns:
+           str: Pricing data in JSON string format or an error message.
                 
         """
         if u not in ["ondemand","reserved"]:
@@ -182,7 +190,7 @@ class AWSPrices(object):
                 data = self.get_ondemand_instances_prices()
             elif u == "reserved":
                 data = self.get_reserved_instances_prices()           
-            print(json.dumps(data))
+            return (json.dumps(data))
         
 
 
@@ -341,7 +349,7 @@ class EC2Prices(AWSPrices):
         Implementation of method for getting EC2 Reserved pricing. 
         
         Returns:
-           result: EC2 Reserved pricing in dictionary format.
+           result (dict of dict: dict): EC2 Reserved pricing in dictionary format.
                 
         """
    
@@ -463,7 +471,7 @@ class EC2Prices(AWSPrices):
         Implementation of method for getting EC2 On-Demand pricing. 
         
         Returns:
-           result: EC2 On-Demand pricing in dictionary format.
+           result (dict of dict: dict): EC2 On-Demand pricing in dictionary format.
                 
         """
     
@@ -542,8 +550,8 @@ class EC2Prices(AWSPrices):
             u (str): Parameter specifying On-Demand ("ondemand") or 
                 Reserved ("reserved") pricing option.
         
-        Prints:
-           EC2 pricing in the Pretty Table format.
+        Returns:
+           Prints EC2 pricing in the Pretty Table format.
                 
         """
                        
@@ -582,9 +590,9 @@ class EC2Prices(AWSPrices):
                 data = self.get_reserved_instances_prices()
                 x = PrettyTable()
                 try:
-                    x.set_field_names(["region", "type", "os", "utilization", "term", "price", "upfront"])
+                    x.set_field_names(["region", "type", "os", "term", "payment_type", "price", "upfront"])
                 except AttributeError:
-                    x.field_names = ["region", "type", "os", "utilization", "term", "price", "upfront"]
+                    x.field_names = ["region", "type", "os", "term", "payment_type", "price", "upfront"]
     
                 try:
                     x.aligns[-1] = "l"
@@ -597,9 +605,14 @@ class EC2Prices(AWSPrices):
                     region_name = r["region"]
                     for it in r["instanceTypes"]:
                         for term in it["prices"]:
-                            x.add_row([region_name, it["type"], it["os"], it["utilization"], 
-                                       term, self.none_as_string(it["prices"][term]["hourly"]), 
-                                       self.none_as_string(it["prices"][term]["upfront"])])
+                            for po in it["prices"][term]:
+                                x.add_row ([region_name,
+                                            it["type"],
+                                            it["os"],
+                                            term, 
+                                            po,
+                                            self.none_as_string(it["prices"][term][po]["hourly"]),
+                                            self.none_as_string(it["prices"][term][po]["upfront"])])                    
     
             print x
 
@@ -618,8 +631,8 @@ class EC2Prices(AWSPrices):
                 values are "EC2_reserved_pricing.csv" for Reserved
                 and "EC2_ondemand_pricing.csv" for On-Demand.
         
-        Prints:
-           EC2 pricing in the CSV format (console).
+        Returns:
+           Prints EC2 pricing in the CSV format (console).
                 
         """
         if u not in ["ondemand","reserved"]:
@@ -646,8 +659,8 @@ class EC2Prices(AWSPrices):
                 name="EC2_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
             writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,os,term,paymentType,price,upfront"
-            writer.writerow(["region","type","os","term","paymentType","price","upfront"])
+            print "region,type,os,term,payment_type,price,upfront"
+            writer.writerow(["region","type","os","term","payment_type","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
@@ -757,7 +770,7 @@ class ELCPrices(AWSPrices):
         Implementation of method for getting ELC Reserved pricing. 
         
         Returns:
-           result: ELC Reserved pricing in dictionary format.
+           result (dict of dict: dict): ELC Reserved pricing in dictionary format.
                 
         """
 
@@ -854,7 +867,7 @@ class ELCPrices(AWSPrices):
         Implementation of method for getting ELC On-Denand pricing. 
         
         Returns:
-           result: ELC On-Denand pricing in dictionary format.
+           result (dict of dict: dict): ELC On-Denand pricing in dictionary format.
                 
         """
         
@@ -921,8 +934,8 @@ class ELCPrices(AWSPrices):
             u (str): Parameter specifying On-Demand ("ondemand") or 
                 Reserved ("reserved") pricing option.
         
-        Prints:
-           ELC pricing in the Pretty Table format.
+        Returns:
+           Prints ELC pricing in the Pretty Table format.
                 
         """
         try:
@@ -1000,8 +1013,8 @@ class ELCPrices(AWSPrices):
                 values are "ELC_reserved_pricing.csv" for Reserved
                 and "ELC_ondemand_pricing.csv" for On-Demand.
         
-        Prints:
-           ELC pricing in the CSV format (console).
+        Returns:
+           Prints ELC pricing in the CSV format (console).
                 
         """
         if u not in ["ondemand","reserved"]:
@@ -1053,152 +1066,152 @@ class RDSPrices(AWSPrices):
     Class for retrieving the RDS pricing. Child of :class:`awspricingfull.AWSPrices` class.
     
     Attributes:
-        RDS_MYSQL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MySQL GPL, On-Demand, Current Generation..             
-        RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Postgres On-Demand, Current Generation..
-        RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Oracle Licensed, On-Demand, Current Generation..
-        RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Oracle BYOL, On-Demand, Current Generation..
-        RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Current Generation..
-        RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Current Generation..
-        RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Current Generation..
-        RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Current Generation..
+        RDS_MYSQL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MySQL GPL, On-Demand, Current Generation.   
         RDS_MYSQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ MySQL GPL, On-Demand, Current Generation..
-        RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Postgres, On-Demand, Current Generation..
+            API URL - RDS Multi AZ MySQL GPL, On-Demand, Current Generation.
+        RDS_ORACLE_LICENSED_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle Licensed, On-Demand, Current Generation.
         RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Oracle Licensed, On-Demand, Current Generation..
+            API URL - RDS Multi AZ Oracle Licensed, On-Demand, Current Generation.
+        RDS_ORACLE_BYOL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle BYOL, On-Demand, Current Generation.
         RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Oracle BYOL, On-Demand, Current Generation..              
-        PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MySQL GPL, On-Demand, Previous Generation..             
-        PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Postgres On-Demand, Previous Generation..
-        PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Oracle Licensed, On-Demand, Previous Generation..
-        PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ Oracle BYOL, On-Demand, Previous Generation..
-        PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Previous Generation..
-        PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Previous Generation..
-        PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Previous Generation..
-        PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Previous Generation..
+            API URL - RDS Multi AZ Oracle BYOL, On-Demand, Current Generation.   
+        RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Current Generation.
+        RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Current Generation.
+        RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Current Generation.
+        RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server SE Licensed, On-Demand, Current Generation.
+        RDS_MSSQL_BYOL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Current Generation.
+        RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server BYOL, On-Demand, Current Generation.
+        RDS_POSTGRESQL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Postgres On-Demand, Current Generation.
+        RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Postgres, On-Demand, Current Generation.
+        PG_RDS_MYSQL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MySQL GPL, On-Demand, Previous Generation.   
         PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ MySQL GPL, On-Demand, Previous Generation..
-        PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Postgres, On-Demand, Previous Generation..
+            API URL - RDS Multi AZ MySQL GPL, On-Demand, Previous Generation.
+        PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle Licensed, On-Demand, Previous Generation.
         PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Oracle Licensed, On-Demand, Previous Generation..
+            API URL - RDS Multi AZ Oracle Licensed, On-Demand, Previous Generation.
+        PG_RDS_ORACLE_BYOL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle BYOL, On-Demand, Previous Generation.
         PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
-            API URL - RDS Multi AZ Oracle BYOL, On-Demand, Previous Generation..         
-        RDS_MYSQL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Light, Current Generation.
-        RDS_MYSQL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Medium, Current Generation.
-        RDS_MYSQL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Heavy, Current Generation.
-        RDS_POSTGRESQL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Postgres, Reserved Heavy, Current Generation.
-        RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Light, Current Generation.
-        RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Medium, Current Generation.
-        RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Heavy, Current Generation.
-        RDS_ORACLE_BYOL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Light, Current Generation.
-        RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Medium, Current Generation.
-        RDS_ORACLE_BYOL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Heavy, Current Generation.
-        RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Light, Current Generation.
-        RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Medium, Current Generation.
-        RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Heavy, Current Generation.
-        RDS_SQLSERVER_EX_RESERVED_LIGHT_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Oracle BYOL, On-Demand, Previous Generation.   
+        PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server Express Licensed, On-Demand, Previous Generation.
+        PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server WEB Licensed, On-Demand, Previous Generation.
+        PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server SE Licensed, On-Demand, Previous Generation.
+        PG_RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server SE Licensed, On-Demand, Previous Generation.
+        PG_RDS_MSSQL_BYOL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server BYOL, On-Demand, Previous Generation.
+        PG_RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server BYOL, On-Demand, Previous Generation.
+        PG_RDS_POSTGRESQL_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Postgres On-Demand, Previous Generation.
+        PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Postgres, On-Demand, Previous Generation.
+        RDS_MYSQL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MySQL GPL, Reserved, Current Generation.
+        RDS_MYSQL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MySQL GPL, Reserved, Current Generation.
+        RDS_ORACLE_LICENSED_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle Licensed, Reserved, Current Generation.
+        RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Oracle Licensed, Reserved, Current Generation.
+        RDS_ORACLE_BYOL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle BYOL, Reserved, Current Generation.
+        RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Oracle BYOL, Reserved, Current Generation.
+        RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Light, Current Generation.
-        RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Medium, Current Generation.
-        RDS_SQLSERVER_EX_RESERVED_HEAVY_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Heavy, Current Generation.
-        RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Light, Current Generation.
-        RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Medium, Current Generation.
-        RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Heavy, Current Generation.
-        RDS_SQLSERVER_SE_RESERVED_LIGHT_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server SE Licensed, Reserved Light, Current Generation.
-        RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server SE Licensed, Reserved Medium, Current Generation.
-        RDS_SQLSERVER_SE_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server SE Licensed, Reserved Heavy, Current Generation.        
-        PG_RDS_MYSQL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Light, Previous Generation.
-        PG_RDS_MYSQL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Medium, Previous Generation.
-        PG_RDS_MYSQL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS MySQL GPL, Reserved Heavy, Previous Generation.
-        PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Postgres, Reserved Heavy, Previous Generation.
-        PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Light, Previous Generation.
-        PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Medium, Previous Generation.
-        PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Oracle Licensed, Reserved Heavy, Previous Generation.
-        PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Light, Previous Generation.
-        PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Medium, Previous Generation.
-        PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS Oracle BYOL, Reserved Heavy, Previous Generation.
-        PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Light, Previous Generation.
-        PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Medium, Previous Generation.
-        PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL (str): Undocumented AWS
-            API URL - RDS MS SQL Server BYOL, Reserved Heavy, Previous Generation.
-        PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL (str): Undocumented AWS
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL (str): Undocumented AWS
+            API URL - RDS MS SQL Server SE Licensed, Reserved Heavy, Current Generation.
+        RDS_MSSQL_BYOL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server BYOL, Reserved, Current Generation.
+        RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server BYOL, Reserved, Current Generation.
+        RDS_POSTGRESQL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Postgres, Reserved, Current Generation.
+        RDS_POSTGRESQL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Postgres, Reserved, Current Generation.
+        PG_RDS_MYSQL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MySQL GPL, Reserved, Previous Generation.
+        PG_RDS_MYSQL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MySQL GPL, Reserved, Previous Generation.
+        PG_RDS_ORACLE_LICENSED_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle Licensed, Reserved, Previous Generation.
+        PG_RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Oracle Licensed, Reserved, Previous Generation.
+        PG_RDS_ORACLE_BYOL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Oracle BYOL, Reserved, Previous Generation.
+        PG_RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Oracle BYOL, Reserved, Previous Generation.
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Light, Previous Generation.
-        PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Medium, Previous Generation.
-        PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server Express Licensed, Reserved Heavy, Previous Generation.
-        PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Light, Previous Generation.
-        PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Medium, Previous Generation.
-        PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server WEB Licensed, Reserved Heavy, Previous Generation.
-        PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server SE Licensed, Reserved Light, Previous Generation.
-        PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server SE Licensed, Reserved Medium, Previous Generation.
-        PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL (str): Undocumented AWS
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL (str): Undocumented AWS
             API URL - RDS MS SQL Server SE Licensed, Reserved Heavy, Previous Generation.
+        PG_RDS_MSSQL_BYOL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ MS SQL Server BYOL, Reserved, Previous Generation.
+        PG_RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ MS SQL Server BYOL, Reserved, Previous Generation.
+        PG_RDS_POSTGRESQL_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Single AZ Postgres, Reserved, Previous Generation.
+        PG_RDS_POSTGRESQL_MULTIAZ_RESERVED_URL (str): Undocumented AWS
+            API URL - RDS Multi AZ Postgres, Reserved, Previous Generation.
         RDS_ENGINE_TYPES (list of str): List of RDS engines.
         RDS_MULTIAZ_TYPES (list of str): List of RDS Multi-AZ options.
         RDS_MULTIAZ_MAPPING (dict of str: str): Mapping of internal AWS RDS
             Family names to the cvonventional Multi-AZ tag.    
-        RDS_ONDEMAND_STANDARD_TYPE_BY_URL (dict of str: list of str): Mapping of AWS RDS URLs
+        RDS_ONDEMAND_TYPE_BY_URL (dict of str: list of str): Mapping of AWS RDS URLs
             (On-Demand, Single AZ) to corresponding engine and license type.
         RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL (dict of str: list of str): Mapping of AWS RDS URLs
             (On-Demand, Multi AZ) to corresponding engine and license type.
-        RDS_RESERVED_TYPE_BY_URL (dict of str: list of str): Mapping of AWS RDS URLs
-            (Reserved) to corresponding engine and license type.
+        RDS_RESERVED_TYPE_BY_URL_NEW (dict of str: list of str): Mapping of AWS RDS URLs
+            (Reserved, Single AZ, New Pricing Scheme) to corresponding engine and license type.
+        RDS_RESERVED_MULTIAZ_TYPE_BY_URL_NEW (dict of str: list of str): Mapping of AWS RDS URLs
+            (Reserved, Multi AZ, New Pricing Scheme) to corresponding engine and license type.
+        RDS_RESERVED_TYPE_BY_URL_OLD (dict of str: list of str): Mapping of AWS RDS URLs
+            (Reserved, Old Pricing Scheme) to corresponding engine and license type.            
         INSTANCE_TYPE_MAPPING (dict of str: str): Mapping of internal AWS RDS
             Type names to the cvonventional analogs.
                 
@@ -1221,145 +1234,143 @@ class RDSPrices(AWSPrices):
     
 
     
-    RDS_MYSQL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MYSQL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/mysql/pricing-standard-deployments.min.js")
-    RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
-        "rds/postgresql/pricing-standard-deployments.min.js")
-    RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MYSQL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/mysql/pricing-multiAZ-deployments.min.js")     
+    RDS_ORACLE_LICENSED_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/oracle/pricing-li-standard-deployments.min.js")
-    RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/oracle/pricing-li-multiAZ-deployments.min.js")
+    RDS_ORACLE_BYOL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/oracle/pricing-byol-standard-deployments.min.js")
+    RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/oracle/pricing-byol-multiAZ-deployments.min.js")    
     RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-ex-ondemand.min.js")
     RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-web-ondemand.min.js")
     RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-se-ondemand.min.js")
-    RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/sqlserver-li-se-ondemand-maz.min.js")
+    RDS_MSSQL_BYOL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-byol-ondemand.min.js")
-    RDS_MYSQL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/pricing-multiAZ-deployments.min.js")
+    RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/sqlserver-byol-ondemand-maz.min.js")    
+    RDS_POSTGRESQL_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/postgresql/pricing-standard-deployments.min.js")
     RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
         "rds/postgresql/pricing-multiAZ-deployments.min.js")
-    RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-li-multiAZ-deployments.min.js")
-    RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-byol-multiAZ-deployments.min.js")
-    
-    PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+  
+    PG_RDS_MYSQL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/mysql/previous-generation/pricing-standard-deployments.min.js")
-    PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
-        "rds/postgresql/previous-generation/pricing-standard-deployments.min.js")
-    PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/mysql/previous-generation/pricing-multiAZ-deployments.min.js")     
+    PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/oracle/previous-generation/pricing-li-standard-deployments.min.js")
-    PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/oracle/previous-generation/pricing-li-multiAZ-deployments.min.js")
+    PG_RDS_ORACLE_BYOL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/oracle/previous-generation/pricing-byol-standard-deployments.min.js")
+    PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/oracle/previous-generation/pricing-byol-multiAZ-deployments.min.js")    
     PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-ex-ondemand.min.js")
     PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-web-ondemand.min.js")
     PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-se-ondemand.min.js")
-    PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/previous-generation/sqlserver-li-se-ondemand-maz.min.js")
+    PG_RDS_MSSQL_BYOL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-byol-ondemand.min.js")
-    PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/previous-generation/pricing-multiAZ-deployments.min.js")
+    PG_RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/previous-generation/sqlserver-byol-ondemand-maz.min.js")    
+    PG_RDS_POSTGRESQL_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/postgresql/previous-generation/pricing-standard-deployments.min.js")
     PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
         "rds/postgresql/previous-generation/pricing-multiAZ-deployments.min.js")
-    PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-li-multiAZ-deployments.min.js")
-    PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-byol-multiAZ-deployments.min.js")
+
     
-    RDS_MYSQL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/pricing-light-utilization-reserved-instances.min.js")
-    RDS_MYSQL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/pricing-medium-utilization-reserved-instances.min.js")
-    RDS_MYSQL_RESERVED_HEAVY_URL= ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/pricing-heavy-utilization-reserved-instances.min.js")
-    RDS_POSTGRESQL_RESERVED_HEAVY_URL=("http://a0.awsstatic.com/pricing/1/"+
-        "rds/postgresql/pricing-heavy-utilization-reserved-instances.min.js")
-    RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-li-light-utilization-reserved-instances.min.js")
-    RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-li-medium-utilization-reserved-instances.min.js")
-    RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-li-heavy-utilization-reserved-instances.min.js")
-    RDS_ORACLE_BYOL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-byol-light-utilization-reserved-instances.min.js")
-    RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-byol-medium-utilization-reserved-instances.min.js")
-    RDS_ORACLE_BYOL_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/pricing-byol-heavy-utilization-reserved-instances.min.js")
-    RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/sqlserver-byol-light-ri.min.js")
-    RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/sqlserver-byol-medium-ri.min.js")
-    RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/sqlserver-byol-heavy-ri.min.js")
-    RDS_SQLSERVER_EX_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MYSQL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/mysql-standard.min.js")
+    RDS_MYSQL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/mysql-multiAZ.min.js")        
+    RDS_ORACLE_LICENSED_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/oracle-se1-license-included-standard.min.js")
+    RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/oracle-se1-license-included-multiAZ.min.js")    
+    RDS_ORACLE_BYOL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/oracle-se-byol-standard.min.js")
+    RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/oracle-se-byol-multiAZ.min.js")
+    RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-ex-light-ri.min.js")
-    RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-ex-medium-ri.min.js")
-    RDS_SQLSERVER_EX_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-ex-heavy-ri.min.js")
-    RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-web-light-ri.min.js")
-    RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-web-medium-ri.min.js")
-    RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-web-heavy-ri.min.js")
-    RDS_SQLSERVER_SE_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-se-light-ri.min.js")
-    RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/sqlserver-li-se-medium-ri.min.js")
-    RDS_SQLSERVER_SE_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/sqlserver-li-se-heavy-ri.min.js")
+    RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/sqlserver-li-se-heavy-ri.min.js")        
+    RDS_MSSQL_BYOL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/sql-server-se-byol-standard.min.js")
+    RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/sql-server-se-byol-multiAZ.min.js")    
+    RDS_POSTGRESQL_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/postgresql-standard.min.js")
+    RDS_POSTGRESQL_MULTIAZ_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/postgresql-multiAZ.min.js")            
     
-    PG_RDS_MYSQL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/previous-generation/pricing-light-utilization-reserved-instances.min.js")
-    PG_RDS_MYSQL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/previous-generation/pricing-medium-utilization-reserved-instances.min.js")
-    PG_RDS_MYSQL_RESERVED_HEAVY_URL= ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/mysql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js")
-    PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL=("http://a0.awsstatic.com/pricing/1/"+
-        "rds/postgresql/previous-generation/pricing-heavy-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-li-light-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-li-medium-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-li-heavy-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-byol-light-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-byol-medium-utilization-reserved-instances.min.js")
-    PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/oracle/previous-generation/pricing-byol-heavy-utilization-reserved-instances.min.js")
-    PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/previous-generation/sqlserver-byol-light-ri.min.js")
-    PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/previous-generation/sqlserver-byol-medium-ri.min.js")
-    PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/previous-generation/sqlserver-byol-heavy-ri.min.js")
-    PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MYSQL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/mysql-standard.min.js")
+    PG_RDS_MYSQL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/mysql-multiAZ.min.js")        
+    PG_RDS_ORACLE_LICENSED_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/oracle-se1-license-included-standard.min.js")
+    PG_RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/oracle-se1-license-included-multiAZ.min.js")    
+    PG_RDS_ORACLE_BYOL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/oracle-se-byol-standard.min.js")
+    PG_RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/oracle-se-byol-multiAZ.min.js")
+    PG_RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-ex-light-ri.min.js")
-    PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-ex-medium-ri.min.js")
-    PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-ex-heavy-ri.min.js")
-    PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-web-light-ri.min.js")
-    PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-web-medium-ri.min.js")
-    PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-web-heavy-ri.min.js")
-    PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-se-light-ri.min.js")
-    PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
+    PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/sqlserver/previous-generation/sqlserver-li-se-medium-ri.min.js")
-    PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
-        "rds/sqlserver/previous-generation/sqlserver-li-se-heavy-ri.min.js")
+    PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/sqlserver/previous-generation/sqlserver-li-se-heavy-ri.min.js")        
+    PG_RDS_MSSQL_BYOL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/sql-server-se-byol-standard.min.js")
+    PG_RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/sql-server-se-byol-multiAZ.min.js")    
+    PG_RDS_POSTGRESQL_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/postgresql-standard.min.js")
+    PG_RDS_POSTGRESQL_MULTIAZ_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/previous-generation/reserved-instances/postgresql-multiAZ.min.js")     
+
     
     RDS_MULTIAZ_TYPES = [
         "single",
@@ -1390,82 +1401,89 @@ class RDSPrices(AWSPrices):
     
     }
     
-    RDS_ONDEMAND_STANDARD_TYPE_BY_URL = {
-        RDS_MYSQL_STANDARD_ON_DEMAND_URL : ["gpl","mysql"],
-        RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL : ["postgresql","postgres"],
-        RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL : ["included","oracle-se1"],
-        RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL : ["byol","oracle"],
+    RDS_ONDEMAND_TYPE_BY_URL = {
+        RDS_MYSQL_ON_DEMAND_URL : ["gpl","mysql"],        
+        RDS_ORACLE_LICENSED_ON_DEMAND_URL : ["included","oracle-se1"],
+        RDS_ORACLE_BYOL_ON_DEMAND_URL : ["byol","oracle"],
         RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL : ["included","sqlserver-ex"],
         RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL : ["included","sqlserver-web"],
         RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL : ["included","sqlserver-se"],
-        RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL : ["byol","sqlserver"],
-        PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL : ["gpl","mysql"],
-        PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL : ["postgresql","postgres"],
-        PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL : ["included","oracle-se1"],
-        PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL : ["byol","oracle"],
+        RDS_MSSQL_BYOL_ON_DEMAND_URL : ["byol","sqlserver"],
+        RDS_POSTGRESQL_ON_DEMAND_URL : ["postgresql","postgres"],
+        PG_RDS_MYSQL_ON_DEMAND_URL : ["gpl","mysql"],        
+        PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL : ["included","oracle-se1"],
+        PG_RDS_ORACLE_BYOL_ON_DEMAND_URL : ["byol","oracle"],
         PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL : ["included","sqlserver-ex"],
         PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL : ["included","sqlserver-web"],
         PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL : ["included","sqlserver-se"],
-        PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL : ["byol","sqlserver"]
+        PG_RDS_MSSQL_BYOL_ON_DEMAND_URL : ["byol","sqlserver"],
+        PG_RDS_POSTGRESQL_ON_DEMAND_URL : ["postgresql","postgres"]
     }
+
     
     RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL = {
         RDS_MYSQL_MULTIAZ_ON_DEMAND_URL : ["gpl","mysql"],
-        RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL : ["postgresql","postgres"],
         RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL: ["included","oracle-se1"],
         RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","oracle"],
+        RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL : ["included","sqlserver-se"],
+        RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","sqlserver"],
+        RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL : ["postgresql","postgres"],
         PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL : ["gpl","mysql"],
-        PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL : ["postgresql","postgres"],
         PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL: ["included","oracle-se1"],
-        PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","oracle"]
+        PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","oracle"],
+        PG_RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL : ["included","sqlserver-se"],
+        PG_RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","sqlserver"],
+        PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL : ["postgresql","postgres"]
     }
     
-    RDS_RESERVED_TYPE_BY_URL = {
-        RDS_MYSQL_RESERVED_LIGHT_URL : ["gpl","mysql","light"],
-        RDS_MYSQL_RESERVED_MEDIUM_URL : ["gpl","mysql","medium"],
-        RDS_MYSQL_RESERVED_HEAVY_URL : ["gpl","mysql","heavy"],
-        RDS_POSTGRESQL_RESERVED_HEAVY_URL : ["postgresql","postgres","heavy"],
-        RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL : ["included","oracle-se1","light"],
-        RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL : ["included","oracle-se1","medium"],
-        RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL : ["included","oracle-se1","heavy"],
-        RDS_ORACLE_BYOL_RESERVED_LIGHT_URL : ["byol","oracle","light"],
-        RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL : ["byol","oracle","medium"],
-        RDS_ORACLE_BYOL_RESERVED_HEAVY_URL : ["byol","oracle","heavy"],
-        RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL : ["byol","sqlserver","light"],
-        RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL : ["byol","sqlserver","medium"],
-        RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL : ["byol","sqlserver","heavy"],
-        RDS_SQLSERVER_EX_RESERVED_LIGHT_URL : ["included","sqlserver-ex","light"],
-        RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL : ["included","sqlserver-ex","medium"],
-        RDS_SQLSERVER_EX_RESERVED_HEAVY_URL : ["included","sqlserver-ex","heavy"],
-        RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL : ["included","sqlserver-web","light"],
-        RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL : ["included","sqlserver-web","medium"],
-        RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL : ["included","sqlserver-web","heavy"],
-        RDS_SQLSERVER_SE_RESERVED_LIGHT_URL : ["included","sqlserver-se","light"],
-        RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL : ["included","sqlserver-se","medium"],
-        RDS_SQLSERVER_SE_RESERVED_HEAVY_URL : ["included","sqlserver-se","heavy"],
-        PG_RDS_MYSQL_RESERVED_LIGHT_URL : ["gpl","mysql","light"],
-        PG_RDS_MYSQL_RESERVED_MEDIUM_URL : ["gpl","mysql","medium"],
-        PG_RDS_MYSQL_RESERVED_HEAVY_URL : ["gpl","mysql","heavy"],
-        PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL : ["postgresql","postgres","heavy"],
-        PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL : ["included","oracle-se1","light"],
-        PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL : ["included","oracle-se1","medium"],
-        PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL : ["included","oracle-se1","heavy"],
-        PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL : ["byol","oracle","light"],
-        PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL : ["byol","oracle","medium"],
-        PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL : ["byol","oracle","heavy"],
-        PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL : ["byol","sqlserver","light"],
-        PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL : ["byol","sqlserver","medium"],
-        PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL : ["byol","sqlserver","heavy"],
-        PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL : ["included","sqlserver-ex","light"],
-        PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL : ["included","sqlserver-ex","medium"],
-        PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL : ["included","sqlserver-ex","heavy"],
-        PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL : ["included","sqlserver-web","light"],
-        PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL : ["included","sqlserver-web","medium"],
-        PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL : ["included","sqlserver-web","heavy"],
-        PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL : ["included","sqlserver-se","light"],
-        PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL : ["included","sqlserver-se","medium"],
-        PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL : ["included","sqlserver-se","heavy"]
+    RDS_RESERVED_TYPE_BY_URL_NEW = {
+        RDS_MYSQL_RESERVED_URL : ["gpl","mysql"],
+        RDS_ORACLE_LICENSED_RESERVED_URL : ["included","oracle-se1"],
+        RDS_ORACLE_BYOL_RESERVED_URL : ["byol","oracle"],
+        RDS_MSSQL_BYOL_RESERVED_URL : ["byol","sqlserver"],
+        RDS_POSTGRESQL_RESERVED_URL : ["postgresql","postgres"],
+        PG_RDS_MYSQL_RESERVED_URL : ["gpl","mysql"],
+        PG_RDS_ORACLE_LICENSED_RESERVED_URL : ["included","oracle-se1"],
+        PG_RDS_ORACLE_BYOL_RESERVED_URL : ["byol","oracle"],
+        PG_RDS_MSSQL_BYOL_RESERVED_URL : ["byol","sqlserver"],
+        PG_RDS_POSTGRESQL_RESERVED_URL : ["postgresql","postgres"]
     }
+    
+    RDS_RESERVED_MULTIAZ_TYPE_BY_URL_NEW = {
+        RDS_MYSQL_MULTIAZ_RESERVED_URL : ["gpl","mysql"],
+        RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL : ["included","oracle-se1"],
+        RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL : ["byol","oracle"],
+        RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL : ["byol","sqlserver"],
+        RDS_POSTGRESQL_MULTIAZ_RESERVED_URL : ["postgresql","postgres"],
+        PG_RDS_MYSQL_MULTIAZ_RESERVED_URL : ["gpl","mysql"],
+        PG_RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL : ["included","oracle-se1"],
+        PG_RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL : ["byol","oracle"],
+        PG_RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL : ["byol","sqlserver"],
+        PG_RDS_POSTGRESQL_MULTIAZ_RESERVED_URL : ["postgresql","postgres"]
+    }                                  
+                                                                        
+    RDS_RESERVED_TYPE_BY_URL_OLD = {                                
+        RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL : ["included","sqlserver-ex","light"],
+        RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL : ["included","sqlserver-ex","medium"],
+        RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL : ["included","sqlserver-ex","heavy"],
+        RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL : ["included","sqlserver-web","light"],
+        RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL : ["included","sqlserver-web","medium"],
+        RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL : ["included","sqlserver-web","heavy"],
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL : ["included","sqlserver-se","light"],
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL : ["included","sqlserver-se","medium"],
+        RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL : ["included","sqlserver-se","heavy"],
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL : ["included","sqlserver-ex","light"],
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL : ["included","sqlserver-ex","medium"],
+        PG_RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL : ["included","sqlserver-ex","heavy"],
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL : ["included","sqlserver-web","light"],
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL : ["included","sqlserver-web","medium"],
+        PG_RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL : ["included","sqlserver-web","heavy"],
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL : ["included","sqlserver-se","light"],
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL : ["included","sqlserver-se","medium"],
+        PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL : ["included","sqlserver-se","heavy"]
+    }
+    
+    
     
     
     INSTANCE_TYPE_MAPPING = {
@@ -1544,7 +1562,7 @@ class RDSPrices(AWSPrices):
         Implementation of method for getting RDS Reserved pricing. 
         
         Returns:
-           result: RDS Reserved pricing in dictionary format.
+           result (dict of dict: dict): RDS Reserved pricing in dictionary format.
                 
         """
     
@@ -1552,52 +1570,50 @@ class RDSPrices(AWSPrices):
     
         currency = self.DEFAULT_CURRENCY
     
-        urls = [
-            self.RDS_MYSQL_RESERVED_LIGHT_URL,
-            self.RDS_MYSQL_RESERVED_MEDIUM_URL,
-            self.RDS_MYSQL_RESERVED_HEAVY_URL,
-            self.RDS_POSTGRESQL_RESERVED_HEAVY_URL,
-            self.RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL,
-            self.RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL,
-            self.RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL,
-            self.RDS_ORACLE_BYOL_RESERVED_LIGHT_URL,
-            self.RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL,
-            self.RDS_ORACLE_BYOL_RESERVED_HEAVY_URL,
-            self.RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL,
-            self.RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL,
-            self.RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL,
-            self.RDS_SQLSERVER_EX_RESERVED_LIGHT_URL,
-            self.RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL,
-            self.RDS_SQLSERVER_EX_RESERVED_HEAVY_URL,
-            self.RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL,
-            self.RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL,
-            self.RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL,
-            self.RDS_SQLSERVER_SE_RESERVED_LIGHT_URL,
-            self.RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL,
-            self.RDS_SQLSERVER_SE_RESERVED_HEAVY_URL,
-            self.PG_RDS_MYSQL_RESERVED_LIGHT_URL,
-            self.PG_RDS_MYSQL_RESERVED_MEDIUM_URL,
-            self.PG_RDS_MYSQL_RESERVED_HEAVY_URL,
-            self.PG_RDS_POSTGRESQL_RESERVED_HEAVY_URL,
-            self.PG_RDS_ORACLE_LICENSE_RESERVED_LIGHT_URL,
-            self.PG_RDS_ORACLE_LICENSE_RESERVED_MEDIUM_URL,
-            self.PG_RDS_ORACLE_LICENSE_RESERVED_HEAVY_URL,
-            self.PG_RDS_ORACLE_BYOL_RESERVED_LIGHT_URL,
-            self.PG_RDS_ORACLE_BYOL_RESERVED_MEDIUM_URL,
-            self.PG_RDS_ORACLE_BYOL_RESERVED_HEAVY_URL,
-            self.PG_RDS_SQLSERVER_BYOL_RESERVED_LIGHT_URL,
-            self.PG_RDS_SQLSERVER_BYOL_RESERVED_MEDIUM_URL,
-            self.PG_RDS_SQLSERVER_BYOL_RESERVED_HEAVY_URL,
-            self.PG_RDS_SQLSERVER_EX_RESERVED_LIGHT_URL,
-            self.PG_RDS_SQLSERVER_EX_RESERVED_MEDIUM_URL,
-            self.PG_RDS_SQLSERVER_EX_RESERVED_HEAVY_URL,
-            self.PG_RDS_SQLSERVER_WEB_RESERVED_LIGHT_URL,
-            self.PG_RDS_SQLSERVER_WEB_RESERVED_MEDIUM_URL,
-            self.PG_RDS_SQLSERVER_WEB_RESERVED_HEAVY_URL,
-            self.PG_RDS_SQLSERVER_SE_RESERVED_LIGHT_URL,
-            self.PG_RDS_SQLSERVER_SE_RESERVED_MEDIUM_URL,
-            self.PG_RDS_SQLSERVER_SE_RESERVED_HEAVY_URL
+        urls_new = [
+                    self.RDS_MYSQL_RESERVED_URL,
+                    self.RDS_MYSQL_MULTIAZ_RESERVED_URL,
+                    self.RDS_ORACLE_LICENSED_RESERVED_URL,
+                    self.RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL,
+                    self.RDS_ORACLE_BYOL_RESERVED_URL,
+                    self.RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL,
+                    self.RDS_MSSQL_BYOL_RESERVED_URL,
+                    self.RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL,
+                    self.RDS_POSTGRESQL_RESERVED_URL,
+                    self.RDS_POSTGRESQL_MULTIAZ_RESERVED_URL,
+                    self.PG_RDS_MYSQL_RESERVED_URL,
+                    self.PG_RDS_MYSQL_MULTIAZ_RESERVED_URL,
+                    self.PG_RDS_ORACLE_LICENSED_RESERVED_URL,
+                    self.PG_RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL,
+                    self.PG_RDS_ORACLE_BYOL_RESERVED_URL,
+                    self.PG_RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL,
+                    self.PG_RDS_MSSQL_BYOL_RESERVED_URL,
+                    self.PG_RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL,
+                    self.PG_RDS_POSTGRESQL_RESERVED_URL,
+                    self.PG_RDS_POSTGRESQL_MULTIAZ_RESERVED_URL
         ]
+                
+        urls_old = [
+                    self.RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL,
+                    self.RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL,
+                    self.RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL,
+                    self.RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL,
+                    self.RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL,
+                    self.RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL,
+                    self.RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL,
+                    self.RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL,
+                    self.RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL,
+                    self.PG_RDS_MSSQL_LICENSED_EX_RESERVED_LIGHT_URL,
+                    self.PG_RDS_MSSQL_LICENSED_EX_RESERVED_MEDIUM_URL,
+                    self.PG_RDS_MSSQL_LICENSED_EX_RESERVED_HEAVY_URL,
+                    self.PG_RDS_MSSQL_LICENSED_WEB_RESERVED_LIGHT_URL,
+                    self.PG_RDS_MSSQL_LICENSED_WEB_RESERVED_MEDIUM_URL,
+                    self.PG_RDS_MSSQL_LICENSED_WEB_RESERVED_HEAVY_URL,
+                    self.PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_LIGHT_URL,
+                    self.PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_MEDIUM_URL,
+                    self.PG_RDS_MSSQL_LICENSED_STANDARD_RESERVED_HEAVY_URL
+        ]
+    
     
         result_regions = []
         result_regions_index = {}
@@ -1608,9 +1624,9 @@ class RDSPrices(AWSPrices):
             "regions" : result_regions
         }
     
-        for u in urls:
-            info = self.RDS_RESERVED_TYPE_BY_URL[u]
-            rdslicense = info[0]
+        for u in urls_old:
+            info = self.RDS_RESERVED_TYPE_BY_URL_OLD[u]
+            dblicense = info[0]
             db = info[1]
             utilization_type = info[2]
     
@@ -1652,7 +1668,7 @@ class RDSPrices(AWSPrices):
                                         instance_types.append({
                                             "type" : _type,
                                             "multiaz" : multiaz,
-                                            "license" : rdslicense,
+                                            "license" : dblicense,
                                             "db" : db,
                                             "utilization" : utilization_type,
                                             "prices" : prices
@@ -1678,6 +1694,101 @@ class RDSPrices(AWSPrices):
                                                 prices["3"]["hourly"] = price
                                             elif price_data["name"] == "yearTerm3Hourly":
                                                 prices["3"]["hourly"] = price
+                                                
+        for u in urls_new:
+            if u in self.RDS_RESERVED_TYPE_BY_URL_NEW:
+                licensedb = self.RDS_RESERVED_TYPE_BY_URL_NEW[u]
+                multiaz = "single";
+            else:
+                licensedb = self.RDS_RESERVED_MULTIAZ_TYPE_BY_URL_NEW[u];
+                multiaz = "multi-az";
+            
+            data = self.load_data(u)
+            
+            if ("config" in data and data["config"] and "regions" 
+                in data["config"] and data["config"]["regions"]):
+                for r in data["config"]["regions"]:
+                    if "region" in r and r["region"]:
+                        region_name = r["region"]
+                        if region_name in result_regions_index:
+                            instance_types = result_regions_index[region_name]["instanceTypes"]
+                        else:
+                            instance_types = []
+                            result_regions.append({
+                                "region" : region_name,
+                                "instanceTypes" : instance_types
+                            })
+                            result_regions_index[region_name] = result_regions[-1]
+    
+                        if "instanceTypes" in r:
+                            for it in r["instanceTypes"]:
+                                instance_type = it["type"]
+                                prices = {
+                                                      "1" : {
+                                                             "noUpfront" : {
+                                                                            "hourly" : None,
+                                                                            "upfront" : None
+                                                                            },
+                                                             "partialUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               },
+                                                             "allUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               }
+                                                             },
+                                                      "3" : {
+                                                             "noUpfront" : {
+                                                                            "hourly" : None,
+                                                                            "upfront" : None
+                                                                            },
+                                                             "partialUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               },
+                                                             "allUpfront":{
+                                                                               "hourly" : None,
+                                                                               "upfront" : None
+                                                                               }
+                                                             }
+                                                      }
+                                instance_types.append({
+                                    "type" : instance_type,
+                                    "multiaz" : multiaz,
+                                    "license" : licensedb[0],
+                                    "db" : licensedb[1],
+                                    "utilization" : "heavy",
+                                    "prices" : prices
+                                })
+                                          
+                                if "terms" in it:
+                                    for s in it["terms"]:
+                                        term=s["term"]
+                                          
+                                        for po_data in s["purchaseOptions"]:
+                                            po=po_data["purchaseOption"]
+                                            
+                                            for price_data in po_data["valueColumns"]:
+                                                price = None
+                                                try:
+                                                    price = float(re.sub("[^0-9\.]", "", 
+                                                                 price_data["prices"][currency]))
+                                                except ValueError:
+                                                    price = None
+                                                        
+                                                if term=="yrTerm1":
+                                                    if price_data["name"] == "upfront":
+                                                        prices["1"][po]["upfront"] = price
+                                                    elif price_data["name"] == "monthlyStar":
+                                                        prices["1"][po]["hourly"] = price/730
+                                                elif term=="yrTerm3":
+                                                    if price_data["name"] == "upfront":
+                                                        prices["3"][po]["upfront"] = price
+                                                    elif price_data["name"] == "monthlyStar":
+                                                        prices["3"][po]["hourly"] = price/730
+    
+                                        
     
         return result
     
@@ -1688,7 +1799,7 @@ class RDSPrices(AWSPrices):
         Implementation of method for getting RDS On-Denand pricing. 
         
         Returns:
-           result: RDS On-Denand pricing in dictionary format.
+           result (dict of dict: dict): RDS On-Denand pricing in dictionary format.
                 
         """
 
@@ -1705,35 +1816,39 @@ class RDSPrices(AWSPrices):
         }
     
         urls = [
-        self.RDS_MYSQL_STANDARD_ON_DEMAND_URL,
-        self.RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL,
-        self.RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL,
-        self.RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL,
-        self.RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL,
-        self.RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL,
-        self.RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL,
-        self.RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL,
-        self.RDS_MYSQL_MULTIAZ_ON_DEMAND_URL,
-        self.RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL,
-        self.RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL,
-        self.RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL,
-        self.PG_RDS_MYSQL_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_POSTGRESQL_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_ORACLE_LICENSED_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_ORACLE_BYOL_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL,
-        self.PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL,
-        self.PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_MSSQL_BYOL_STANDARD_ON_DEMAND_URL,
-        self.PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL,
-        self.PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL,
-        self.PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL,
-        self.PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL
+                self.RDS_MYSQL_ON_DEMAND_URL,
+                self.RDS_MYSQL_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_ORACLE_LICENSED_ON_DEMAND_URL,
+                self.RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_ORACLE_BYOL_ON_DEMAND_URL,
+                self.RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL,
+                self.RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL,
+                self.RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL,
+                self.RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_MSSQL_BYOL_ON_DEMAND_URL,
+                self.RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_POSTGRESQL_ON_DEMAND_URL,
+                self.RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_MYSQL_ON_DEMAND_URL,
+                self.PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL,
+                self.PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_ORACLE_BYOL_ON_DEMAND_URL,
+                self.PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_LICENSED_EXPRESS_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_LICENSED_WEB_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_BYOL_ON_DEMAND_URL,
+                self.PG_RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL,
+                self.PG_RDS_POSTGRESQL_ON_DEMAND_URL,
+                self.PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL
         ]
     
         for u in urls:
-            if u in self.RDS_ONDEMAND_STANDARD_TYPE_BY_URL:
-                licensedb = self.RDS_ONDEMAND_STANDARD_TYPE_BY_URL[u]
+            if u in self.RDS_ONDEMAND_TYPE_BY_URL:
+                licensedb = self.RDS_ONDEMAND_TYPE_BY_URL[u]
                 multiaz = "single";
             else:
                 licensedb = self.RDS_ONDEMAND_MULTIAZ_TYPE_BY_URL[u];
@@ -1771,7 +1886,8 @@ class RDSPrices(AWSPrices):
                             result_regions.append({
                                 "region" : region_name,
                                 "instanceTypes" : instance_types
-                            })
+                            })                 
+                                                       
         return result
     
             
@@ -1785,8 +1901,8 @@ class RDSPrices(AWSPrices):
             u (str): Parameter specifying On-Demand ("ondemand") or 
                 Reserved ("reserved") pricing option.
         
-        Prints:
-           RDS pricing in the Pretty Table format.
+        Returns:
+           Prints RDS pricing in the Pretty Table format.
                 
         """
         try:
@@ -1844,7 +1960,8 @@ class RDSPrices(AWSPrices):
                                        "license", 
                                        "db", 
                                        "utilization", 
-                                       "term", 
+                                       "term",
+                                       "payment_type", 
                                        "price", 
                                        "upfront"])
                 except AttributeError:
@@ -1854,7 +1971,8 @@ class RDSPrices(AWSPrices):
                                      "license", 
                                      "db", 
                                      "utilization", 
-                                     "term", 
+                                     "term",
+                                     "payment_type", 
                                      "price", 
                                      "upfront"]
     
@@ -1869,15 +1987,30 @@ class RDSPrices(AWSPrices):
                     region_name = r["region"]
                     for it in r["instanceTypes"]:
                         for term in it["prices"]:
-                            x.add_row([region_name, 
-                                       it["type"],  
-                                       it["multiaz"], 
-                                       it["license"], 
-                                       it["db"], 
-                                       it["utilization"], 
-                                       term, 
-                                       self.none_as_string(it["prices"][term]["hourly"]),
-                                       self.none_as_string(it["prices"][term]["upfront"])])
+                            if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                                for po in it["prices"][term]:                               
+                                    x.add_row([region_name,
+                                               it["type"],
+                                               it["multiaz"],
+                                               it["license"],
+                                               it["db"],
+                                               it["utilization"],
+                                               term,
+                                               po,
+                                               self.none_as_string(it["prices"][term][po]["hourly"]),
+                                               self.none_as_string(it["prices"][term][po]["upfront"])])
+                            else:
+                                x.add_row([region_name,
+                                           it["type"],
+                                           it["multiaz"],
+                                           it["license"],
+                                           it["db"],
+                                           it["utilization"],
+                                           term,
+                                           "",
+                                           self.none_as_string(it["prices"][term]["hourly"]),
+                                           self.none_as_string(it["prices"][term]["upfront"])])
+
             print x
 
     def save_csv(self,u,path=os.getcwd()+"\\",name=None):
@@ -1894,8 +2027,8 @@ class RDSPrices(AWSPrices):
                 values are "RDS_reserved_pricing.csv" for Reserved
                 and "RDS_ondemand_pricing.csv" for On-Demand.
         
-        Prints:
-           RDS pricing in the CSV format (console).
+        Returns:
+           Prints RDS pricing in the CSV format (console).
                 
         """
         data = None
@@ -1938,7 +2071,7 @@ class RDSPrices(AWSPrices):
                 name="RDS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
             writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,multiaz,license,db,utilization,term,price,upfront"
+            print "region,type,multiaz,license,db,utilization,term,payment_type,price,upfront"
             writer.writerow(["region",
                              "type",
                              "multiaz",
@@ -1946,30 +2079,58 @@ class RDSPrices(AWSPrices):
                              "db",
                              "utilization",
                              "term",
+                             "payment_type",
                              "price",
                              "upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name, 
-                                                              it["type"], 
-                                                              it["multiaz"], 
-                                                              it["license"], 
-                                                              it["db"], 
-                                                              it["utilization"], 
-                                                              term, 
-                                                              self.none_as_string(it["prices"][term]["hourly"]), 
-                                                              self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow([region_name, 
-                                         it["type"], 
-                                         it["multiaz"], 
-                                         it["license"], 
-                                         it["db"], 
-                                         it["utilization"], 
-                                         term, 
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                                                                         it["type"],
+                                                                         it["multiaz"],
+                                                                         it["license"],
+                                                                         it["db"],
+                                                                         it["utilization"],
+                                                                         term,
+                                                                         po,
+                                                                         self.none_as_string(it["prices"][term][po]["hourly"]),
+                                                                         self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow([region_name, 
+                                                 it["type"], 
+                                                 it["multiaz"], 
+                                                 it["license"], 
+                                                 it["db"],
+                                                 it["utilization"], 
+                                                 term, 
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
+                        else:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                                                                     it["type"],
+                                                                     it["multiaz"],
+                                                                     it["license"],
+                                                                     it["db"],
+                                                                     it["utilization"],
+                                                                     term,
+                                                                     "",
+                                                                     self.none_as_string(it["prices"][term]["hourly"]),
+                                                                     self.none_as_string(it["prices"][term]["upfront"]))
+                            writer.writerow([region_name,
+                                             it["type"],
+                                             it["multiaz"],
+                                             it["license"],
+                                             it["db"],
+                                             it["utilization"],
+                                             term,
+                                             "",
+                                             self.none_as_string(it["prices"][term]["hourly"]),
+                                             self.none_as_string(it["prices"][term]["upfront"])])
+                            
+                            
 
 
 class RSPrices(AWSPrices):
@@ -2006,7 +2167,7 @@ class RSPrices(AWSPrices):
         Implementation of method for getting Redshift Reserved pricing. 
         
         Returns:
-           result: Redshift Reserved pricing in dictionary format.
+           result (dict of dict: dict): Redshift Reserved pricing in dictionary format.
                 
         """
 
@@ -2100,30 +2261,17 @@ class RSPrices(AWSPrices):
                                                                          price_data["prices"][currency]))
                                                 except ValueError:
                                                     price = None
-                                                        
+                                                                                                           
                                                 if term=="yrTerm1":
                                                     if price_data["name"] == "upfront":
                                                         prices["1"][po]["upfront"] = price
-                                                        upfr_temp=price
                                                     elif price_data["name"] == "monthlyStar":
-                                                        if price!=0:
-                                                            #Monthly pricing for new Redshift nodes is calculated 
-                                                            #based on effective rates on the AWS website; so the
-                                                            #calculation is used to find the "clean" hourly rate
-                                                            prices["1"][po]["hourly"] = (price*12-upfr_temp)/(12*730)
-                                                        else:
-                                                            prices["1"][po]["hourly"] = price
-                                                        upfr_temp=0
+                                                        prices["1"][po]["hourly"] = price/730
                                                 elif term=="yrTerm3":
                                                     if price_data["name"] == "upfront":
                                                         prices["3"][po]["upfront"] = price
-                                                        upfr_temp=price
                                                     elif price_data["name"] == "monthlyStar":
-                                                        if price!=0:
-                                                            prices["3"][po]["hourly"] = (price*36-upfr_temp)/(36*730)
-                                                            upfr_temp=0
-                                                        else:
-                                                            prices["3"][po]["hourly"]=price
+                                                        prices["3"][po]["hourly"] = price/730
 
     
         return result
@@ -2133,7 +2281,7 @@ class RSPrices(AWSPrices):
         Implementation of method for getting Redshift On-Denand pricing. 
         
         Returns:
-           result: Redshift On-Denand pricing in dictionary format.
+           result (dict of dict: dict): Redshift On-Denand pricing in dictionary format.
                 
         """
         currency = self.DEFAULT_CURRENCY
@@ -2201,8 +2349,8 @@ class RSPrices(AWSPrices):
             u (str): Parameter specifying On-Demand ("ondemand") or 
                 Reserved ("reserved") pricing option.
         
-        Prints:
-           Redshift pricing in the Pretty Table format.
+        Returns:
+           Prints Redshift pricing in the Pretty Table format.
                 
         """
         try:
@@ -2240,9 +2388,9 @@ class RSPrices(AWSPrices):
                 data = self.get_reserved_instances_prices()
                 x = PrettyTable()
                 try:
-                    x.set_field_names(["region", "type", "utilization", "term", "price", "upfront"])
+                    x.set_field_names(["region", "type", "term","payment_type" "price", "upfront"])
                 except AttributeError:
-                    x.field_names = ["region", "type", "utilization", "term", "price", "upfront"]
+                    x.field_names = ["region", "type", "term", "payment_type","price", "upfront"]
     
                 try:
                     x.aligns[-1] = "l"
@@ -2255,9 +2403,13 @@ class RSPrices(AWSPrices):
                     region_name = r["region"]
                     for it in r["instanceTypes"]:
                         for term in it["prices"]:
-                            x.add_row([region_name, it["type"], it["utilization"], 
-                                       term, self.none_as_string(it["prices"][term]["hourly"]), 
-                                       self.none_as_string(it["prices"][term]["upfront"])])
+                            for po in it["prices"][term]:
+                                x.add_row([region_name,
+                                          it["type"],
+                                          term,
+                                          po,
+                                          self.none_as_string(it["prices"][term][po]["hourly"]),
+                                          self.none_as_string(it["prices"][term][po]["upfront"])])
     
             print x
     
@@ -2276,8 +2428,8 @@ class RSPrices(AWSPrices):
                 values are "Redshift_reserved_pricing.csv" for Reserved
                 and "Redshift_ondemand_pricing.csv" for On-Demand.
         
-        Prints:
-           Redshift pricing in the CSV format (console).
+        Returns:
+           Prints Redshift pricing in the CSV format (console).
                 
         """
         if u not in ["ondemand","reserved"]:
@@ -2304,8 +2456,8 @@ class RSPrices(AWSPrices):
                 name="RS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
             writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,term,paymentType,price,upfront"
-            writer.writerow(["region","type","term","paymentType","price","upfront"])
+            print "region,type,term,payment_type,price,upfront"
+            writer.writerow(["region","type","term","payment_type","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
@@ -2348,7 +2500,7 @@ class AllAWSPrices(AWSPrices):
     rds=RDSPrices()
     rs=RSPrices()
     
-    def print_json(self,u):
+    def return_json(self,u):
         """
         Method printing the pricing data in JSON format to Console.
         
@@ -2356,8 +2508,8 @@ class AllAWSPrices(AWSPrices):
             u (str): Parameter specifying On-Demand ("ondemand"), 
                 Reserved ("reserved") or both ("all") pricing option.
         
-        Prints:
-           Pricing data in JSON string format or an error message.
+        Returns:
+           str: Pricing data in JSON string format or an error message.
                 
         """
         if u not in ["ondemand","reserved", "all"]:
@@ -2416,7 +2568,7 @@ class AllAWSPrices(AWSPrices):
                                  "redshift":rs_data_r}
                      }
                 
-            print json.dumps(res)
+            return json.dumps(res)
         
             
     
@@ -2435,8 +2587,8 @@ class AllAWSPrices(AWSPrices):
                 "FULL_ondemand_pricing.csv" for On-Demand and
                 "FULL_all_pricing.csv" for both.
         
-        Prints:
-           Full pricing in the CSV format (console).
+        Returns:
+           Prints Full pricing in the CSV format (console).
                 
         """   
         
@@ -2635,30 +2787,57 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
-                                                                       region_name, 
-                                                                       it["type"], 
-                                                                       it["multiaz"], 
-                                                                       it["license"], 
-                                                                       it["db"], 
-                                                                       "", 
-                                                                       it["utilization"], 
-                                                                       term, 
-                                                                       "",
-                                                                       self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                       self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow(["rds",
-                                         region_name, 
-                                         it["type"], 
-                                         it["multiaz"], 
-                                         it["license"], 
-                                         it["db"],
-                                         "", 
-                                         it["utilization"], 
-                                         term, 
-                                         "",
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                                                               region_name, 
+                                                                               it["type"], 
+                                                                               it["multiaz"], 
+                                                                               it["license"], 
+                                                                               it["db"], 
+                                                                               "", 
+                                                                               it["utilization"], 
+                                                                               term, 
+                                                                               po,
+                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                               self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow(["rds",
+                                                 region_name, 
+                                                 it["type"], 
+                                                 it["multiaz"], 
+                                                 it["license"], 
+                                                 it["db"],
+                                                 "", 
+                                                 it["utilization"], 
+                                                 term, 
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
+                        else:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                                                           region_name,
+                                                                           it["type"],
+                                                                           it["multiaz"],
+                                                                           it["license"],
+                                                                           it["db"],
+                                                                           "",
+                                                                           it["utilization"],
+                                                                           term,
+                                                                           "",
+                                                                           self.none_as_string(it["prices"][term]["hourly"]),
+                                                                           self.none_as_string(it["prices"][term]["upfront"]))
+                            writer.writerow(["rds",
+                                             region_name,
+                                             it["type"],
+                                             it["multiaz"],
+                                             it["license"],
+                                             it["db"],
+                                             "",
+                                             it["utilization"],
+                                             term,
+                                             "",
+                                             self.none_as_string(it["prices"][term]["hourly"]),
+                                             self.none_as_string(it["prices"][term]["upfront"])])                
                         
                 
             for r in rs_data["regions"]:
@@ -2916,32 +3095,61 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
-                                                                          "rds",
-                                                                          region_name, 
-                                                                          it["type"], 
-                                                                          it["multiaz"], 
-                                                                          it["license"], 
-                                                                          it["db"], 
-                                                                          "", 
-                                                                          it["utilization"], 
-                                                                          term, 
-                                                                          "",
-                                                                          self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                          self.none_as_string(it["prices"][term]["upfront"]))
-                        writer.writerow(["reserved",
-                                         "rds",
-                                         region_name, 
-                                         it["type"], 
-                                         it["multiaz"], 
-                                         it["license"], 
-                                         it["db"],
-                                         "", 
-                                         it["utilization"], 
-                                         term, 
-                                         "",
-                                         self.none_as_string(it["prices"][term]["hourly"]), 
-                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                                                                   "rds",
+                                                                                   region_name, 
+                                                                                   it["type"], 
+                                                                                   it["multiaz"], 
+                                                                                   it["license"], 
+                                                                                   it["db"], 
+                                                                                   "", 
+                                                                                   it["utilization"], 
+                                                                                   term, 
+                                                                                   po,
+                                                                                   self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                                   self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow(["reserved",
+                                                 "rds",
+                                                 region_name, 
+                                                 it["type"], 
+                                                 it["multiaz"], 
+                                                 it["license"], 
+                                                 it["db"],
+                                                 "", 
+                                                 it["utilization"], 
+                                                 term, 
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
+                        else:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                                                               "rds",
+                                                                               region_name,
+                                                                               it["type"],
+                                                                               it["multiaz"],
+                                                                               it["license"],
+                                                                               it["db"],
+                                                                               "",
+                                                                               it["utilization"],
+                                                                               term,
+                                                                               "",
+                                                                               self.none_as_string(it["prices"][term]["hourly"]),
+                                                                               self.none_as_string(it["prices"][term]["upfront"]))
+                            writer.writerow(["reserved",
+                                             "rds",
+                                             region_name,
+                                             it["type"],
+                                             it["multiaz"],
+                                             it["license"],
+                                             it["db"],
+                                             "",
+                                             it["utilization"],
+                                             term,
+                                             "",
+                                             self.none_as_string(it["prices"][term]["hourly"]),
+                                             self.none_as_string(it["prices"][term]["upfront"])])
                         
                 
             for r in rs_data_r["regions"]:
