@@ -40,5 +40,5 @@ the data to the AWS pricing pages.
 Both current and previous generation instance prices are retrieved.
 
 
-More information and description of classes contained in the module can be found in Sphinx documentation HTML located at https://github.com/ilia-semenov/awspricingfull/blob/master/docs/_build/html/ folder.
+More information and description of classes contained in the module can be found in Sphinx documentation HTML located at https://github.com/ilia-semenov/awspricingfull/tree/master/docs_html folder.
 
