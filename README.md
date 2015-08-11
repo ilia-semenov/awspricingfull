@@ -23,6 +23,8 @@ Written by Ilia Semenov (@ilia-semenov)
 
 Based on the project by Eran Sandler (@erans): https://github.com/erans/ec2instancespricing
 
+Compatibility: Python 2
+
 AWS instance pricing retrieval for EC2, RDS, ElastiCache and Redshift. On-Demand and Reserved pricing schemes covered both for previous and current generation instance types. Contains the most recent updates (new EC2 Reservation pricing scheme, D2 instances and more).
 
 Module is designed to retrieve the AWS prices for 
