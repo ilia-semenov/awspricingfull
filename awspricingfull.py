@@ -418,10 +418,6 @@ class EC2Prices(AWSPrices):
                                                                                }
                                                              },
                                                       "3" : {
-                                                             "noUpfront" : {
-                                                                            "hourly" : None,
-                                                                            "upfront" : None
-                                                                            },
                                                              "partialUpfront":{
                                                                                "hourly" : None,
                                                                                "upfront" : None
