@@ -1735,10 +1735,6 @@ class RDSPrices(AWSPrices):
                                                                                }
                                                              },
                                                       "3" : {
-                                                             "noUpfront" : {
-                                                                            "hourly" : None,
-                                                                            "upfront" : None
-                                                                            },
                                                              "partialUpfront":{
                                                                                "hourly" : None,
                                                                                "upfront" : None
@@ -2221,10 +2217,6 @@ class RSPrices(AWSPrices):
                                                                                }
                                                              },
                                                       "3" : {
-                                                             "noUpfront" : {
-                                                                            "hourly" : None,
-                                                                            "upfront" : None
-                                                                            },
                                                              "partialUpfront":{
                                                                                "hourly" : None,
                                                                                "upfront" : None
