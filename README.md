@@ -1,5 +1,34 @@
 # awspricingfull.py
 
+------------------------------------------
+
+**MINOR UPDATE 03/24/2016 AND FUTURE DEVELOPMENT ROADMAP**
+
+**Update**
+
+* Seoul region (ap-northeast-2) is added to dictionaries
+* Tool is tested to produce accurate up-to-date results
+
+**Roadmap**
+
+As there had been no AWS updates affecting pricing sheets since June 2015, I stopped the active development of the script and was just checking it from time to time. Moreover, **in December 2015 AWS introduced their own pricing API** which was a great thing.
+However, yesterday I had to update my work-related DBs with the new Seoul region pricing, and found out that AWS API implementation is not straightforward:
+
+* Every region should be accessed separately
+* Parsing needed
+* Overall, major development effort is neded to use the API
+
+That is why I came back to my good old tool, added Seoul region into it, and found out that it still produces the top-notch results that I was able to use right away. At the sam=e time I decided to continue the development of the tool, and here is the roadmap for the nearest time:
+
+* DynamoDB pricing - OD and Reservations
+* Dictionary dependency fix - make the tool tolerate AWS changes (such as new regions introductions)
+
+**Please, let me know what else would be good to have in the resulting uniform output of the tool.**
+
+
+**P.S. Program is fully functional and up-to-date.**
+
+
 -------------------------------------
 
 **MAJOR UPDATE 06/19/2015: Version 2.0 of program**
