@@ -5,7 +5,7 @@
     <title>Awspricingfull: Full AWS Instance Pricing in CSV and JSON formats (EC2, RDS, ElastiCache, Redshift) by ilia-semenov</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -20,7 +20,40 @@
 
     <section class="main-content">
       <h1>
-<a id="awspricingfullpy" class="anchor" href="#awspricingfullpy" aria-hidden="true"><span class="octicon octicon-link"></span></a>awspricingfull.py</h1>
+<a id="awspricingfullpy" class="anchor" href="#awspricingfullpy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>awspricingfull.py</h1>
+
+<hr>
+
+<p><strong>MINOR UPDATE 03/24/2016 AND FUTURE DEVELOPMENT ROADMAP</strong></p>
+
+<p><strong>Update</strong></p>
+
+<ul>
+<li>Seoul region (ap-northeast-2) is added to dictionaries</li>
+<li>Tool is tested to produce accurate up-to-date results</li>
+</ul>
+
+<p><strong>Roadmap</strong></p>
+
+<p>As there had been no AWS updates affecting pricing sheets since June 2015, I stopped the active development of the script and was just checking it from time to time. Moreover, <strong>in December 2015 AWS introduced their own pricing API</strong> which was a great thing.
+However, yesterday I had to update my work-related DBs with the new Seoul region pricing, and found out that AWS API implementation is not straightforward:</p>
+
+<ul>
+<li>Every region should be accessed separately</li>
+<li>Parsing needed</li>
+<li>Overall, major development effort is neded to use the API</li>
+</ul>
+
+<p>That is why I came back to my good old tool, added Seoul region into it, and found out that it still produces the top-notch results that I was able to use right away. At the sam=e time I decided to continue the development of the tool, and here is the roadmap for the nearest time:</p>
+
+<ul>
+<li>DynamoDB pricing - OD and Reservations</li>
+<li>Dictionary dependency fix - make the tool tolerate AWS changes (such as new regions introductions)</li>
+</ul>
+
+<p><strong>Please, let me know what else would be good to have in the resulting uniform output of the tool.</strong></p>
+
+<p><strong>P.S. Program is fully functional and up-to-date.</strong></p>
 
 <hr>
 
@@ -49,6 +82,8 @@
 <p>Written by Ilia Semenov (<a href="https://github.com/ilia-semenov" class="user-mention">@ilia-semenov</a>)</p>
 
 <p>Based on the project by Eran Sandler (<a href="https://github.com/erans" class="user-mention">@erans</a>): <a href="https://github.com/erans/ec2instancespricing">https://github.com/erans/ec2instancespricing</a></p>
+
+<p>Compatibility: Python 2</p>
 
 <p>AWS instance pricing retrieval for EC2, RDS, ElastiCache and Redshift. On-Demand and Reserved pricing schemes covered both for previous and current generation instance types. Contains the most recent updates (new EC2 Reservation pricing scheme, D2 instances and more).</p>
 
@@ -79,4 +114,3 @@ the data to the AWS pricing pages.</p>
   
   </body>
 </html>
-
