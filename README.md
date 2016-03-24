@@ -1,5 +1,6 @@
 # awspricingfull.py
 
+http://ilia-semenov.github.io/awspricingfull
 ------------------------------------------
 
 **MINOR UPDATE 03/24/2016 AND FUTURE DEVELOPMENT ROADMAP**
