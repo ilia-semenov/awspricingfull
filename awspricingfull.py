@@ -1232,7 +1232,8 @@ class RDSPrices(AWSPrices):
         "sqlserver-ex",
         "sqlserver-web",
         "sqlserver-se",
-        "sqlserver"
+        "sqlserver",
+        "aurora"
     ]
     
 
@@ -1265,6 +1266,12 @@ class RDSPrices(AWSPrices):
         "rds/postgresql/pricing-standard-deployments.min.js")
     RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
         "rds/postgresql/pricing-multiAZ-deployments.min.js")
+    RDS_AURORA_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/aurora/pricing-multiAZ-deployments.min.js")
+    RDS_MARIADB_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/mariadb/pricing-standard-deployments.min.js")
+    RDS_MARIADB_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/mariadb/pricing-multiAZ-deployments.min.js")    
   
     PG_RDS_MYSQL_ON_DEMAND_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/mysql/previous-generation/pricing-standard-deployments.min.js")
@@ -1294,6 +1301,10 @@ class RDSPrices(AWSPrices):
         "rds/postgresql/previous-generation/pricing-standard-deployments.min.js")
     PG_RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL=("http://a0.awsstatic.com/pricing/1/"+
         "rds/postgresql/previous-generation/pricing-multiAZ-deployments.min.js")
+    
+    
+    
+    
 
     
     RDS_MYSQL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
@@ -1333,7 +1344,13 @@ class RDSPrices(AWSPrices):
     RDS_POSTGRESQL_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
         "rds/reserved-instances/postgresql-standard.min.js")
     RDS_POSTGRESQL_MULTIAZ_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
-        "rds/reserved-instances/postgresql-multiAZ.min.js")            
+        "rds/reserved-instances/postgresql-multiAZ.min.js")
+    RDS_AURORA_MULTIAZ_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/aurora-standard.min.js")            
+    RDS_MARIADB_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/mariadb-standard.min.js")
+    RDS_MARIADB_MULTIAZ_RESERVED_URL=("http://a0.awsstatic.com/pricing/1/"+
+        "rds/reserved-instances/mariadb-multiAZ.min.js")    
     
     PG_RDS_MYSQL_RESERVED_URL = ("http://a0.awsstatic.com/pricing/1/"+
         "rds/previous-generation/reserved-instances/mysql-standard.min.js")
@@ -1400,8 +1417,7 @@ class RDSPrices(AWSPrices):
         "Micro Instances - Previous Generation - Single-AZ" : "single",
         "Micro Instances - Previous Generation - Multi-AZ" : "multi-az",
         "Standard Instances - Previous Generation - Single-AZ" : "single",
-        "Standard Instances - Previous Generation - Multi-AZ" : "multi-az"
-    
+        "Standard Instances - Previous Generation - Multi-AZ" : "multi-az"    
     }
     
     RDS_ONDEMAND_TYPE_BY_URL = {
@@ -1413,6 +1429,7 @@ class RDSPrices(AWSPrices):
         RDS_MSSQL_LICENSED_STANDARD_ON_DEMAND_URL : ["included","sqlserver-se"],
         RDS_MSSQL_BYOL_ON_DEMAND_URL : ["byol","sqlserver"],
         RDS_POSTGRESQL_ON_DEMAND_URL : ["postgresql","postgres"],
+        RDS_MARIADB_ON_DEMAND_URL : ["gpl","mariadb"],
         PG_RDS_MYSQL_ON_DEMAND_URL : ["gpl","mysql"],        
         PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL : ["included","oracle-se1"],
         PG_RDS_ORACLE_BYOL_ON_DEMAND_URL : ["byol","oracle"],
@@ -1431,6 +1448,8 @@ class RDSPrices(AWSPrices):
         RDS_MSSQL_LICENSED_STANDARD_MULTIAZ_ON_DEMAND_URL : ["included","sqlserver-se"],
         RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","sqlserver"],
         RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL : ["postgresql","postgres"],
+        RDS_AURORA_MULTIAZ_ON_DEMAND_URL : ["aurora","aurora"],
+        RDS_MARIADB_MULTIAZ_ON_DEMAND_URL : ["gpl","mariadb"],
         PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL : ["gpl","mysql"],
         PG_RDS_ORACLE_LICENSED_MULTIAZ_ON_DEMAND_URL: ["included","oracle-se1"],
         PG_RDS_ORACLE_BYOL_MULTIAZ_ON_DEMAND_URL : ["byol","oracle"],
@@ -1445,6 +1464,7 @@ class RDSPrices(AWSPrices):
         RDS_ORACLE_BYOL_RESERVED_URL : ["byol","oracle"],
         RDS_MSSQL_BYOL_RESERVED_URL : ["byol","sqlserver"],
         RDS_POSTGRESQL_RESERVED_URL : ["postgresql","postgres"],
+        RDS_MARIADB_RESERVED_URL : ["gpl","mariadb"],        
         PG_RDS_MYSQL_RESERVED_URL : ["gpl","mysql"],
         PG_RDS_ORACLE_LICENSED_RESERVED_URL : ["included","oracle-se1"],
         PG_RDS_ORACLE_BYOL_RESERVED_URL : ["byol","oracle"],
@@ -1458,6 +1478,8 @@ class RDSPrices(AWSPrices):
         RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL : ["byol","oracle"],
         RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL : ["byol","sqlserver"],
         RDS_POSTGRESQL_MULTIAZ_RESERVED_URL : ["postgresql","postgres"],
+        RDS_AURORA_MULTIAZ_RESERVED_URL : ["aurora","aurora"],
+        RDS_MARIADB_MULTIAZ_RESERVED_URL : ["gpl","mariadb"],  
         PG_RDS_MYSQL_MULTIAZ_RESERVED_URL : ["gpl","mysql"],
         PG_RDS_ORACLE_LICENSED_MULTIAZ_RESERVED_URL : ["included","oracle-se1"],
         PG_RDS_ORACLE_BYOL_MULTIAZ_RESERVED_URL : ["byol","oracle"],
@@ -1584,6 +1606,9 @@ class RDSPrices(AWSPrices):
                     self.RDS_MSSQL_BYOL_MULTIAZ_RESERVED_URL,
                     self.RDS_POSTGRESQL_RESERVED_URL,
                     self.RDS_POSTGRESQL_MULTIAZ_RESERVED_URL,
+                    self.RDS_AURORA_MULTIAZ_RESERVED_URL,
+                    self.RDS_MARIADB_RESERVED_URL,
+                    self.RDS_MARIADB_MULTIAZ_RESERVED_URL,                   
                     self.PG_RDS_MYSQL_RESERVED_URL,
                     self.PG_RDS_MYSQL_MULTIAZ_RESERVED_URL,
                     self.PG_RDS_ORACLE_LICENSED_RESERVED_URL,
@@ -1833,6 +1858,9 @@ class RDSPrices(AWSPrices):
                 self.RDS_MSSQL_BYOL_MULTIAZ_ON_DEMAND_URL,
                 self.RDS_POSTGRESQL_ON_DEMAND_URL,
                 self.RDS_POSTGRESQL_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_AURORA_MULTIAZ_ON_DEMAND_URL,
+                self.RDS_MARIADB_ON_DEMAND_URL,
+                self.RDS_MARIADB_MULTIAZ_ON_DEMAND_URL,  
                 self.PG_RDS_MYSQL_ON_DEMAND_URL,
                 self.PG_RDS_MYSQL_MULTIAZ_ON_DEMAND_URL,
                 self.PG_RDS_ORACLE_LICENSED_ON_DEMAND_URL,
@@ -3187,5 +3215,671 @@ class AllAWSPrices(AWSPrices):
                                              self.none_as_string(it["prices"][term][po]["hourly"]), 
                                              self.none_as_string(it["prices"][term][po]["upfront"])])
     
+
+class AllAWSPrices2(AWSPrices):
+    """
+    Class for retrieving the instance pricing for 4 AWS Services:
+        EC2, RDS, ElastiCache and Redshift. Child of :class:`awspricingfull.AWSPrices` class.
+        Creates one column for EC2 OS and RDS DB types.
     
+    Attributes:
+        ec2 (EC2Prices): instance of :class:`awspricingfull.EC2Prices` class containing methods
+            for EC2 pricing retrieval.
+        elc (ELCPrices): instance of :class:`awspricingfull.ELCPrices` class containing methods
+            for ElastiCache pricing retrieval.    
+        rds (RDSPrices): instance of :class:`awspricingfull.RDSPrices` class containing methods
+            for RDS pricing retrieval.            
+        rs (RSPrices): instance of :class:`awspricingfull.RSPrices` class containing methods
+            for Redshift pricing retrieval.                       
+    """
+        
+    ec2=EC2Prices()
+    elc=ELCPrices()
+    rds=RDSPrices()
+    rs=RSPrices()
+    
+    def return_json(self,u):
+        """
+        Method printing the pricing data in JSON format to Console.
+        
+        Args:
+            u (str): Parameter specifying On-Demand ("ondemand"), 
+                Reserved ("reserved") or both ("all") pricing option.
+        
+        Returns:
+           str: Pricing data in JSON string format or an error message.
+                
+        """
+        if u not in ["ondemand","reserved", "all"]:
+            print("Function requires Reservation parameter at the first"+
+                  "position. Possible values:"+
+                  "\"ondemand\" or \"reserved\" or \"all\".")
+        else:
+            
+            if u=="ondemand":
+                ec2_data=self.ec2.get_ondemand_instances_prices()
+                elc_data=self.elc.get_ondemand_instances_prices()
+                rds_data=self.rds.get_ondemand_instances_prices()
+                rs_data=self.rs.get_ondemand_instances_prices()
+                
+                res={
+                     "ec2":ec2_data,
+                     "elasticache":elc_data,
+                     "rds":rds_data,
+                     "redshift":rs_data
+                     }
+                
+                        
+            elif u=="reserved":
+                ec2_data=self.ec2.get_reserved_instances_prices()
+                elc_data=self.elc.get_reserved_instances_prices()
+                rds_data=self.rds.get_reserved_instances_prices()
+                rs_data=self.rs.get_reserved_instances_prices()
+                
+                res={
+                     "ec2":ec2_data,
+                     "elasticache":elc_data,
+                     "rds":rds_data,
+                     "redshift":rs_data
+                     }
+                
+            elif u=="all":
+                ec2_data_od=self.ec2.get_ondemand_instances_prices()
+                elc_data_od=self.elc.get_ondemand_instances_prices()
+                rds_data_od=self.rds.get_ondemand_instances_prices()
+                rs_data_od=self.rs.get_ondemand_instances_prices()
+                ec2_data_r=self.ec2.get_reserved_instances_prices()
+                elc_data_r=self.elc.get_reserved_instances_prices()
+                rds_data_r=self.rds.get_reserved_instances_prices()
+                rs_data_r=self.rs.get_reserved_instances_prices()
+                
+                res={
+                     "ondemand":{
+                                  "ec2":ec2_data_od,
+                                  "elasticache":elc_data_od,
+                                  "rds":rds_data_od,
+                                  "redshift":rs_data_od},
+                     "reserved":{
+                                 "ec2":ec2_data_r,
+                                 "elasticache":elc_data_r,
+                                 "rds":rds_data_r,
+                                 "redshift":rs_data_r}
+                     }
+                
+            return json.dumps(res)
+        
+            
+    
+    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+        """
+        Method saving the full pricing data in CSV format to the
+            cpecified location.
+
+        Args:
+            u (str): Parameter specifying On-Demand ("ondemand"),
+                Reserved ("reserved") or both ("all") pricing option.
+            path (str): System path for saving the data file. Current
+                directory is the the defauilt value.
+            name (str): The desired name of the file. The default
+                values are "FULL_reserved_pricing.csv" for Reserved,
+                "FULL_ondemand_pricing.csv" for On-Demand and
+                "FULL_all_pricing.csv" for both.
+        
+        Returns:
+           Prints Full pricing in the CSV format (console).
+                
+        """   
+        
+        if u not in ["ondemand","reserved","all"]:
+            print("Function requires Reservation parameter at the first"+
+                  "position. Possible values:"+
+                  "\"ondemand\" or \"reserved\" or \"all\".")     
+
+        elif u=="ondemand":
+            
+            if name is None:
+                name="FULL_ondemand_pricing.csv"
+            
+            ec2_data=self.ec2.get_ondemand_instances_prices()
+            elc_data=self.elc.get_ondemand_instances_prices()
+            rds_data=self.rds.get_ondemand_instances_prices()
+            rs_data=self.rs.get_ondemand_instances_prices()
+                       
+            writer = csv.writer(open(path+name, 'wb'))
+            print "service,region,type,multiaz,license,os/db,price"
+            writer.writerow(["service",
+                             "region",
+                             "type",
+                             "multiaz",
+                             "license",
+                             "os/db",
+                             "price"])
+            
+            
+            for r in ec2_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    writer.writerow(["ec2",
+                                     region_name,
+                                     it["type"],
+                                     "",
+                                     "",
+                                     it["os"],
+                                     self.none_as_string(it["price"])])
+                    print "%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                                                       region_name, 
+                                                       it["type"], 
+                                                       "",
+                                                       "",
+                                                       it["os"], 
+                                                       self.none_as_string(it["price"]))
+            
+            for r in elc_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    writer.writerow(["elasticache",
+                                     region_name,
+                                     it["type"],
+                                     "",
+                                     "",
+                                     "",
+                                     self.none_as_string(it["price"])])
+                    print "%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                                                       region_name, 
+                                                       it["type"],
+                                                       "",
+                                                       "",
+                                                       "",
+                                                       self.none_as_string(it["price"]))
+            
+            for r in rds_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    print "%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                                       region_name, 
+                                                       it["type"], 
+                                                       it["multiaz"], 
+                                                       it["license"], 
+                                                       it["db"],
+                                                       self.none_as_string(it["price"]))
+                    writer.writerow(["rds",
+                                     region_name, 
+                                     it["type"], 
+                                     it["multiaz"], 
+                                     it["license"], 
+                                     it["db"],
+                                     self.none_as_string(it["price"])])
+            
+            for r in rs_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    writer.writerow(["redshift",
+                                     region_name,
+                                     it["type"],
+                                     "",
+                                     "",
+                                     "",
+                                     self.none_as_string(it["price"])])
+                    print "%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                                                       region_name, 
+                                                       it["type"], 
+                                                       "",
+                                                       "",
+                                                       "",
+                                                       self.none_as_string(it["price"]))
+        
+        elif u=="reserved":
+            if name is None:
+                name="FULL_reserved_pricing.csv"
+            
+            ec2_data=self.ec2.get_reserved_instances_prices()
+            elc_data=self.elc.get_reserved_instances_prices()
+            rds_data=self.rds.get_reserved_instances_prices()
+            rs_data=self.rs.get_reserved_instances_prices()
+                       
+            writer = csv.writer(open(path+name, 'wb'))
+            print "service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront"
+            writer.writerow(["service",
+                             "region",
+                             "type",
+                             "multiaz",
+                             "license",
+                             "os/db",
+                             "utilization",
+                             "term",
+                             "payment_type",
+                             "price",
+                             "upfront"])
+            
+            
+            for r in ec2_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                                                                           region_name, 
+                                                                           it["type"], 
+                                                                           "",
+                                                                           "",
+                                                                           it["os"], 
+                                                                           "heavy", 
+                                                                           term, 
+                                                                           po, 
+                                                                           self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["ec2",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             it["os"], 
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+            
+            for r in elc_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                                                                       region_name, 
+                                                                       it["type"],
+                                                                       "",
+                                                                       "",
+                                                                       "",
+                                                                       it["utilization"], 
+                                                                       term, 
+                                                                       "",
+                                                                       self.none_as_string(it["prices"][term]["hourly"]), 
+                                                                       self.none_as_string(it["prices"][term]["upfront"]))
+                        writer.writerow(["elasticache",
+                                         region_name, 
+                                         it["type"],
+                                         "",
+                                         "",
+                                         "",
+                                         it["utilization"], 
+                                         term,
+                                         "", 
+                                         self.none_as_string(it["prices"][term]["hourly"]), 
+                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        
+            for r in rds_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                                                               region_name, 
+                                                                               it["type"], 
+                                                                               it["multiaz"], 
+                                                                               it["license"], 
+                                                                               it["db"], 
+                                                                               it["utilization"], 
+                                                                               term, 
+                                                                               po,
+                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                               self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow(["rds",
+                                                 region_name, 
+                                                 it["type"], 
+                                                 it["multiaz"], 
+                                                 it["license"], 
+                                                 it["db"],
+                                                 it["utilization"], 
+                                                 term, 
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
+                        else:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                                                           region_name,
+                                                                           it["type"],
+                                                                           it["multiaz"],
+                                                                           it["license"],
+                                                                           it["db"],
+                                                                           it["utilization"],
+                                                                           term,
+                                                                           "",
+                                                                           self.none_as_string(it["prices"][term]["hourly"]),
+                                                                           self.none_as_string(it["prices"][term]["upfront"]))
+                            writer.writerow(["rds",
+                                             region_name,
+                                             it["type"],
+                                             it["multiaz"],
+                                             it["license"],
+                                             it["db"],
+                                             it["utilization"],
+                                             term,
+                                             "",
+                                             self.none_as_string(it["prices"][term]["hourly"]),
+                                             self.none_as_string(it["prices"][term]["upfront"])])                
+                        
+                
+            for r in rs_data["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                                                                           region_name, 
+                                                                           it["type"], 
+                                                                           "",
+                                                                           "",
+                                                                           "",
+                                                                           "heavy", 
+                                                                           term, 
+                                                                           po, 
+                                                                           self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["redshift",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             "",
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+        elif u=="all":
+            if name is None:
+                name="FULL_all_pricing.csv"
+            
+            ec2_data_od=self.ec2.get_ondemand_instances_prices()
+            elc_data_od=self.elc.get_ondemand_instances_prices()
+            rds_data_od=self.rds.get_ondemand_instances_prices()
+            rs_data_od=self.rs.get_ondemand_instances_prices()
+            ec2_data_r=self.ec2.get_reserved_instances_prices()
+            elc_data_r=self.elc.get_reserved_instances_prices()
+            rds_data_r=self.rds.get_reserved_instances_prices()
+            rs_data_r=self.rs.get_reserved_instances_prices()
+                       
+            writer = csv.writer(open(path+name, 'wb'))
+            print "reserved_od,service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront"
+            
+            
+            
+            writer.writerow(["reserved_od",
+                             "service",
+                             "region",
+                             "type",
+                             "multiaz",
+                             "license",
+                             "os/db",
+                             "utilization",
+                             "term",
+                             "payment_type",
+                             "price",
+                             "upfront"])
+
+           
+            
+            for r in ec2_data_od["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    writer.writerow(["ondemand",
+                                      "ec2",
+                                      region_name, 
+                                      it["type"], 
+                                      "",
+                                      "",
+                                      it["os"], 
+                                      "", 
+                                      "", 
+                                      "", 
+                                      self.none_as_string(it["price"]), 
+                                      ""])
+                    
+                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                                                                      "ec2",
+                                                                      region_name, 
+                                                                      it["type"], 
+                                                                      "",
+                                                                      "",
+                                                                      it["os"], 
+                                                                      "", 
+                                                                      "", 
+                                                                      "", 
+                                                                      self.none_as_string(it["price"]), 
+                                                                      "")
+            
+            for r in elc_data_od["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                                                                      "elasticache",
+                                                                      region_name, 
+                                                                      it["type"],
+                                                                      "",
+                                                                      "",
+                                                                      "",
+                                                                      "", 
+                                                                      "", 
+                                                                      "",
+                                                                      self.none_as_string(it["price"]), 
+                                                                      "")
+                    writer.writerow(["ondemand",
+                                      "elasticache",
+                                      region_name, 
+                                      it["type"],
+                                      "",
+                                      "",
+                                      "",
+                                      "", 
+                                      "", 
+                                      "",
+                                      self.none_as_string(it["price"]), 
+                                      ""])
+                        
+            for r in rds_data_od["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                                                                      "rds",
+                                                                      region_name, 
+                                                                      it["type"], 
+                                                                      it["multiaz"], 
+                                                                      it["license"], 
+                                                                      it["db"], 
+                                                                      "", 
+                                                                      "", 
+                                                                      "",
+                                                                      self.none_as_string(it["price"]), 
+                                                                      "")
+                    writer.writerow(["ondemand",
+                                      "rds",
+                                      region_name, 
+                                      it["type"], 
+                                      it["multiaz"], 
+                                      it["license"], 
+                                      it["db"], 
+                                      "", 
+                                      "", 
+                                      "",
+                                      self.none_as_string(it["price"]), 
+                                      ""])
+                        
+                
+            for r in rs_data_od["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    writer.writerow(["ondemand",
+                                      "redshift",
+                                      region_name, 
+                                      it["type"], 
+                                      "",
+                                      "",
+                                      "", 
+                                      "", 
+                                      "", 
+                                      "", 
+                                      self.none_as_string(it["price"]), 
+                                      ""])
+                    
+                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                                                                      "redshift",
+                                                                      region_name, 
+                                                                      it["type"], 
+                                                                      "",
+                                                                      "",
+                                                                      "",
+                                                                      "", 
+                                                                      "", 
+                                                                      "", 
+                                                                      self.none_as_string(it["price"]), 
+                                                                      "")
+
+            
+            
+            for r in ec2_data_r["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                                                                              "ec2",
+                                                                              region_name, 
+                                                                              it["type"], 
+                                                                              "",
+                                                                              "",
+                                                                              it["os"], 
+                                                                              "heavy", 
+                                                                              term, 
+                                                                              po, 
+                                                                              self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["reserved",
+                                             "ec2",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             it["os"], 
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+            
+            for r in elc_data_r["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                                                                          "elasticache",
+                                                                          region_name, 
+                                                                          it["type"],
+                                                                          "",
+                                                                          "",
+                                                                          "",
+                                                                          it["utilization"], 
+                                                                          term, 
+                                                                          "",
+                                                                          self.none_as_string(it["prices"][term]["hourly"]), 
+                                                                          self.none_as_string(it["prices"][term]["upfront"]))
+                        writer.writerow(["reserved",
+                                         "elasticache",
+                                         region_name, 
+                                         it["type"],
+                                         "",
+                                         "",
+                                         "",
+                                         it["utilization"], 
+                                         term,
+                                         "", 
+                                         self.none_as_string(it["prices"][term]["hourly"]), 
+                                         self.none_as_string(it["prices"][term]["upfront"])])
+                        
+            for r in rds_data_r["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                                                                   "rds",
+                                                                                   region_name, 
+                                                                                   it["type"], 
+                                                                                   it["multiaz"], 
+                                                                                   it["license"], 
+                                                                                   it["db"], 
+                                                                                   it["utilization"], 
+                                                                                   term, 
+                                                                                   po,
+                                                                                   self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                                   self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow(["reserved",
+                                                 "rds",
+                                                 region_name, 
+                                                 it["type"], 
+                                                 it["multiaz"], 
+                                                 it["license"], 
+                                                 it["db"],
+                                                 it["utilization"], 
+                                                 term, 
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
+                        else:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                                                               "rds",
+                                                                               region_name,
+                                                                               it["type"],
+                                                                               it["multiaz"],
+                                                                               it["license"],
+                                                                               it["db"],
+                                                                               it["utilization"],
+                                                                               term,
+                                                                               "",
+                                                                               self.none_as_string(it["prices"][term]["hourly"]),
+                                                                               self.none_as_string(it["prices"][term]["upfront"]))
+                            writer.writerow(["reserved",
+                                             "rds",
+                                             region_name,
+                                             it["type"],
+                                             it["multiaz"],
+                                             it["license"],
+                                             it["db"],
+                                             it["utilization"],
+                                             term,
+                                             "",
+                                             self.none_as_string(it["prices"][term]["hourly"]),
+                                             self.none_as_string(it["prices"][term]["upfront"])])
+                        
+                
+            for r in rs_data_r["regions"]:
+                region_name = r["region"]
+                for it in r["instanceTypes"]:
+                    for term in it["prices"]:
+                        for po in it["prices"][term]:
+                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                                                                              "redshift",
+                                                                              region_name, 
+                                                                              it["type"], 
+                                                                              "",
+                                                                              "",
+                                                                              "",
+                                                                              "heavy", 
+                                                                              term, 
+                                                                              po, 
+                                                                              self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                            writer.writerow(["reserved",
+                                             "redshift",
+                                             region_name, 
+                                             it["type"], 
+                                             "",
+                                             "",
+                                             "",
+                                             "heavy", 
+                                             term, 
+                                             po, 
+                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
+                                             self.none_as_string(it["prices"][term][po]["upfront"])])   
     
