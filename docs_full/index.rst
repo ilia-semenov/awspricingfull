@@ -1,5 +1,5 @@
 .. awspricingfull documentation master file, created by
-   sphinx-quickstart on Fri Jun 12 17:13:08 2015.
+   sphinx-quickstart on Tue May 03 16:52:37 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -11,7 +11,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 .. automodule:: awspricingfull
-
 
 
 Indices and tables

@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to awspricingfull’s documentation! &mdash; awspricingfull 2.0 documentation</title>
+    <title>Welcome to awspricingfull’s documentation! &mdash; awspricingfull 3.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,26 +23,18 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="awspricingfull 2.0 documentation" href="#" /> 
+    <link rel="top" title="awspricingfull 3.0 documentation" href="#" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="#">awspricingfull 2.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="welcome-to-awspricingfull-s-documentation">
 <h1>Welcome to awspricingfull&#8217;s documentation!<a class="headerlink" href="#welcome-to-awspricingfull-s-documentation" title="Permalink to this headline">¶</a></h1>
@@ -51,28 +43,30 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-awspricingfull"></span><p>AWS Instances (EC2, ElastiCache, RDS, Redshift) pricing retrieval project.</p>
+<span class="target" id="module-awspricingfull"></span><p>AWS Instances (EC2, ElastiCache, RDS, Redshift, DynamoDB) pricing retrieval project.</p>
 <p>Project contains one module which is designed to retrieve the AWS prices for
-four major AWS services that have reserved instances involved: EC2, ElastiCache,
-RDS and Redshift. The prices either On-Demand or Reserved (specified by user) can
+five major AWS services that have reserved capacity involved: EC2, ElastiCache,
+RDS, Redshift and DynamoDB. The prices either On-Demand or Reserved (specified by user) can
 be retrieved to Command Line in JSON, Table (Prettytable) or CSV formats. CSV format
 option also saves the csv file to the folder specified by user, which is the main
 use case.</p>
-<p>The undocumented AWS pricing APIa are used as the sources. The same APIs  serve
+<p>The undocumented AWS pricing APIs are used as the sources. The same APIs  serve
 the data to the AWS pricing pages.
 Both current and previous generation instance prices are retrieved.</p>
-<p>Latest update: New pricing scheme (noUpfront, allUpfront, PartialUpfront) compatibility for RDS and Redshift is added. Minor bugs fixed.</p>
+<p>Update 2.0: New pricing scheme (noUpfront, allUpfront, PartialUpfront) compatibility for RDS and Redshift is added. Minor bugs fixed.</p>
+<p>Update 3.0: DynamoDB throughput capacity pricing is added. MariaDB and Aurora are added to RDS. New schema for AllPrices table introduced
+(DB and OS columns merged).</p>
 <p>Created: 25 March, 2015</p>
-<p>Updated: 19 June, 2015</p>
+<p>Updated: 3 May, 2016</p>
 <p>&#64;author: Ilia Semenov</p>
-<p>&#64;version: 2.0</p>
+<p>&#64;version: 3.0</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 </div>
 
@@ -80,20 +74,28 @@ Both current and previous generation instance prices are retrieved.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Welcome to awspricingfull&#8217;s documentation!</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -101,30 +103,26 @@ Both current and previous generation instance prices are retrieved.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="#">awspricingfull 2.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
     <div class="footer">
-        &copy; Copyright 2015, Ilia Semenov.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      &copy;2016, Ilia Semenov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
     </div>
+
+    
+
+    
   </body>
 </html>

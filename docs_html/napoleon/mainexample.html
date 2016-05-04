@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mainexample module &mdash; awspricingfull 2.0 documentation</title>
+    <title>mainexample module &mdash; awspricingfull 3.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,26 +23,18 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="awspricingfull 2.0 documentation" href="../index.html" /> 
+    <link rel="top" title="awspricingfull 3.0 documentation" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../index.html">awspricingfull 2.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-mainexample">
 <span id="mainexample-module"></span><h1>mainexample module<a class="headerlink" href="#module-mainexample" title="Permalink to this headline">¶</a></h1>
@@ -50,36 +42,44 @@
 <p>Call the class corresponding to your needs (EC2Prices(), RDSPrices(), etc.),
 and use any method with parameters needed. See the awspricingfull documentation for reference.</p>
 <p>In a nutshell: To save CSV use save_csv method for instance of any of the functional classes
-(EC2Prices() - EC2, RDSPrices() - RDS, ELCPrices() - ElastiCache, RSPrices() - Redshift).
+(EC2Prices() - EC2, RDSPrices() - RDS, ELCPrices() - ElastiCache, RSPrices() - Redshift, DDBPrices() - DynamoDB).
 With save_csv use &#8220;reserved&#8221; or &#8220;ondemand&#8221; as first parameter, your path as second (home
 dir by default) and file name as third (conventional default). Also, to save prices for all
 the products use AllAWSPrices() class and same save_csv method with small difference - you
 can set the first parameter to &#8220;all&#8221; which will return all the pricing (reserved and on-demand
 for all the services).</p>
-<p>Method print_table is available for EC2Prices(), RDSPrices(), ELCPrices(), RSPrices(). It outputs
+<p>Method print_table is available for EC2Prices(), RDSPrices(), ELCPrices(), RSPrices(), DDBPrices(). It outputs
 the pricing in a table format to console. Prettytable library is required. Method takes only one parameter:
 &#8220;reserved&#8221; or &#8220;ondemand&#8221;. Not available for AllAWSPrices().</p>
 <p>Method print_json is available for all classes. It returns the pricing in a JSON format
 and does not output it to console. Method takes only one parameter: &#8220;reserved&#8221; or &#8220;ondemand&#8221;
 and additional &#8220;all&#8221; for AllAWSPrices().</p>
 <p>Created: Mar 26, 2015</p>
-<p>Updated: June 19, 2015</p>
+<p>Updated: May 3, 2016</p>
 <p>&#64;author: Ilia Semenov</p>
-<p>&#64;version: 2.0</p>
+<p>&#64;version: 3.0</p>
 </div>
 
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/napoleon/mainexample.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/napoleon/mainexample.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -87,30 +87,26 @@ and additional &#8220;all&#8221; for AllAWSPrices().</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../index.html">awspricingfull 2.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
     <div class="footer">
-        &copy; Copyright 2015, Ilia Semenov.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      &copy;2016, Ilia Semenov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/napoleon/mainexample.txt"
+          rel="nofollow">Page source</a>
     </div>
+
+    
+
+    
   </body>
 </html>

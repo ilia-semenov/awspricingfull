@@ -5,14 +5,14 @@ Call the class corresponding to your needs (EC2Prices(), RDSPrices(), etc.),
 and use any method with parameters needed. See the awspricingfull documentation for reference.
 
 In a nutshell: To save CSV use save_csv method for instance of any of the functional classes 
-(EC2Prices() - EC2, RDSPrices() - RDS, ELCPrices() - ElastiCache, RSPrices() - Redshift). 
+(EC2Prices() - EC2, RDSPrices() - RDS, ELCPrices() - ElastiCache, RSPrices() - Redshift, DDBPrices() - DynamoDB). 
 With save_csv use "reserved" or "ondemand" as first parameter, your path as second (home 
 dir by default) and file name as third (conventional default). Also, to save prices for all 
 the products use AllAWSPrices() class and same save_csv method with small difference - you 
 can set the first parameter to "all" which will return all the pricing (reserved and on-demand 
 for all the services).
 
-Method print_table is available for EC2Prices(), RDSPrices(), ELCPrices(), RSPrices(). It outputs 
+Method print_table is available for EC2Prices(), RDSPrices(), ELCPrices(), RSPrices(), DDBPrices(). It outputs 
 the pricing in a table format to console. Prettytable library is required. Method takes only one parameter:
 "reserved" or "ondemand". Not available for AllAWSPrices().
 
@@ -22,11 +22,11 @@ and additional "all" for AllAWSPrices().
 
 Created: Mar 26, 2015
 
-Updated: June 19, 2015
+Updated: May 3, 2016
 
 @author: Ilia Semenov
 
-@version: 2.0
+@version: 3.0
 '''
 import awspricingfull
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     
     '''
     1. Create 1nstance of the class needed: EC2Prices() - EC2, RDSPrices() - RDS, 
-    ELCPrices() - ElastiCache, RSPrices() - Redshift, AllAWSPrices() - full pricing.
+    ELCPrices() - ElastiCache, RSPrices() - Redshift, DDBPrices - DynamoDB, AllAWSPrices() - full pricing.
     2. Run the method needed: return_json, print_table, save_csv.
     '''
     
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     FULL PRICING
     '''
     
-    allpricing=awspricingfull.AllAWSPrices() #Full Pricing class instance
+    allpricing=awspricingfull.AllAWSPrices2() #Full Pricing class instance
     
     #print (allpricing.return_json("ondemand")) #JSON - On-Demand Pricing: All Services
     #print (allpricing.return_json("reserved"))  #JSON - Reserved Pricing: All Services
@@ -100,5 +100,15 @@ if __name__ == '__main__':
     #rspricing.save_csv("ondemand") #CSV - On-Demand Pricing: Redshift
     #rspricing.save_csv("reserved") #CSV - Reserved Pricing: Redshift
 
+    '''
+    DYNAMODB
+    '''    
+    #ddbpricing=awspricingfull.DDBPrices() #DynamoDB Pricing class instance         
     
+    #print (ddbpricing.return_json("ondemand")) #JSON - On-Demand Pricing: DynamoDB
+    #print (ddbpricing.return_json("reserved")) #JSON - Reserved Pricing: DynamoDB
+    #ddbpricing.print_table("ondemand") #PrettyTable - On-Demand Pricing: DynamoDB
+    #ddbpricing.print_table("reserved") #PrettyTable - Reserved Pricing: DynamoDB
+    #ddbpricing.save_csv("ondemand") #CSV - On-Demand Pricing: DynamoDB
+    #ddbpricing.save_csv("reserved") #CSV - Reserved Pricing: DynamoDB    
 
