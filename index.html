@@ -38,6 +38,17 @@
 <a id="httpilia-semenovgithubioawspricingfull" class="anchor" href="#httpilia-semenovgithubioawspricingfull" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="http://ilia-semenov.github.io/awspricingfull">http://ilia-semenov.github.io/awspricingfull</a>
 </h2>
 
+<p><strong>MAJOR UPDATE 04/05/2016: Version 3.0 of program</strong></p>
+
+<ul>
+<li>DyanoDB throughput (Read/Write) pricing is introduced</li>
+<li>Minor bug fixes</li>
+</ul>
+
+<p><strong>Program is fully functional and up-to-date.</strong></p>
+
+<hr>
+
 <p><strong>ROADMAP</strong></p>
 
 <p>As there had been no AWS updates affecting pricing sheets since June 2015, I stopped the active development of the script and was just checking it from time to time. Moreover, <strong>in December 2015 AWS introduced their own pricing API</strong> which was a great thing.
@@ -52,13 +63,11 @@ However, yesterday I had to update my work-related DBs with the new Seoul region
 <p>That is why I came back to my good old tool, added Seoul region into it, and found out that it still produces the top-notch results that I was able to use right away. At the sam=e time I decided to continue the development of the tool, and here is the roadmap for the nearest time:</p>
 
 <ul>
-<li>DynamoDB pricing - OD and Reservations</li>
 <li>Dictionary dependency fix - make the tool tolerate AWS changes (such as new regions introductions)</li>
+<li>Dedicated instances pricing</li>
 </ul>
 
 <p><strong>Please, let me know what else would be good to have in the resulting uniform output of the tool.</strong></p>
-
-<p><strong>P.S. Program is fully functional and up-to-date.</strong></p>
 
 <hr>
 
@@ -66,7 +75,7 @@ However, yesterday I had to update my work-related DBs with the new Seoul region
 
 <ul>
 <li>Aurora and MariaDB are added to RDS</li>
-<li>New table schema is introduces with the separate method: now columns OS (EC2) and DB (RDS) are merged as they do not intersect; the old schema is still available</li>
+<li>New table schema is introduced with the separate method: now columns OS (EC2) and DB (RDS) are merged as they do not intersect; the old schema is still available</li>
 </ul>
 
 <hr>
@@ -136,7 +145,17 @@ the data to the AWS pricing pages.</p>
       </footer>
     </div>
 
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-77440021-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
