@@ -89,7 +89,8 @@ class AWSPrices(object):
     "ap-northeast-2",
     "sa-east-1",
     "eu-central-1",
-    "us-gov-west-1"
+    "us-gov-west-1",
+    "ap-south-1"
     ]
     
     JSON_NAME_TO_REGIONS_API = {
@@ -111,7 +112,9 @@ class AWSPrices(object):
     "sa-east-1" : "sa-east-1",
     "eu-central-1":"eu-central-1",
     "us-gov-west-1":"us-gov-west-1",
-    "eu-frankfurt":"eu-central-1"
+    "eu-frankfurt":"eu-central-1",
+    "ap-south-1":"ap-south-1",
+    "apac-mumbai":"ap-south-1"
     }
     
     def load_data(self,url):
@@ -1813,12 +1816,18 @@ class RDSPrices(AWSPrices):
                                                     if price_data["name"] == "upfront":
                                                         prices["1"][po]["upfront"] = price
                                                     elif price_data["name"] == "monthlyStar":
-                                                        prices["1"][po]["hourly"] = price/730
+                                                        if price==None:
+                                                            prices["1"][po]["hourly"] = 0
+                                                        else:                                                          
+                                                            prices["1"][po]["hourly"] = price/730
                                                 elif term=="yrTerm3":
                                                     if price_data["name"] == "upfront":
                                                         prices["3"][po]["upfront"] = price
                                                     elif price_data["name"] == "monthlyStar":
-                                                        prices["3"][po]["hourly"] = price/730
+                                                        if price==None:
+                                                            prices["3"][po]["hourly"] = 0
+                                                        else:                                                          
+                                                            prices["3"][po]["hourly"] = price/730
     
                                         
     
