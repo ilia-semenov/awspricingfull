@@ -3,6 +3,14 @@
 http://ilia-semenov.github.io/awspricingfull
 ------------------------------------------
 
+**MINOR UPDATE 07/01/2016: Mumbai Region**
+
+* Mumbai region (ap-south-1) is added to the script
+* Minor bug fixes
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------------
 **MAJOR UPDATE 04/05/2016: Version 3.0 of program**
 
 * DyanoDB throughput (Read/Write) pricing is introduced
