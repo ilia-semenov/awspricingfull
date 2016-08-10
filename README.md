@@ -13,7 +13,7 @@ http://ilia-semenov.github.io/awspricingfull
 -------------------------------------------
 **MAJOR UPDATE 04/05/2016: Version 3.0 of program**
 
-* DyanoDB throughput (Read/Write) pricing is introduced
+* DynamoDB throughput (Read/Write) pricing is introduced
 * Minor bug fixes
 
 **Program is fully functional and up-to-date.**
