@@ -43,6 +43,7 @@ Update 3.0: DynamoDB throughput capacity pricing is added. MariaDB and Aurora ar
 
 Created: 25 March, 2015
 
+
 Updated: 3 May, 2016
 
 @author: Ilia Semenov
@@ -50,9 +51,11 @@ Updated: 3 May, 2016
 @version: 3.0
 """
 
+# Python 2/3 compatible
+from six.moves import urllib
 
-import urllib2
 import csv
+from os.path import join
 import re
 try:
     import simplejson as json
@@ -129,7 +132,8 @@ class AWSPrices(object):
                
         """
           
-        f = urllib2.urlopen(url).read()
+        f = urllib.request.urlopen(url).read()
+        f = f.decode('utf-8')
         f = re.sub("/\\*[^\x00]+\\*/", "", f, 0, re.M)
         f = re.sub("([a-zA-Z0-9]+):", "\"\\1\":", f)
         f = re.sub(";", "\n", f)
@@ -567,8 +571,8 @@ class EC2Prices(AWSPrices):
         try:
             from prettytable import PrettyTable
         except ImportError:
-            print ("ERROR: Please install 'prettytable' using pip:"+
-                    "pip install prettytable")
+            print(("ERROR: Please install 'prettytable' using pip:"+
+                    "pip install prettytable"))
     
         data = None
         
@@ -623,13 +627,13 @@ class EC2Prices(AWSPrices):
                                             self.none_as_string(it["prices"][term][po]["hourly"]),
                                             self.none_as_string(it["prices"][term][po]["upfront"])])                    
     
-            print x
+            print(x)
 
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the EC2 pricing data in CSV format to the
-            cpecified location.
+            specified location.
 
         Args:
             u (str): Parameter specifying On-Demand ("ondemand") or 
@@ -644,6 +648,7 @@ class EC2Prices(AWSPrices):
            Prints EC2 pricing in the CSV format (console).
                 
         """
+
         if u not in ["ondemand","reserved"]:
             print("Function requires 1 parameter. Possible values:"
                   "\"ondemand\" or \"reserved\".")
@@ -652,43 +657,46 @@ class EC2Prices(AWSPrices):
             if name is None:
                 name="EC2_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,os,price"
-            writer.writerow(["region","type","os","price"])
-            for r in data["regions"]:
-                region_name = r["region"]
-                for it in r["instanceTypes"]:
-                    writer.writerow([region_name,it["type"],it["os"],self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s" % (region_name, 
-                                           it["type"], 
-                                           it["os"], 
-                                           self.none_as_string(it["price"]))
+            with open(join(path, name), 'w') as csv_fp:
+                writer = csv.writer(csv_fp)
+                print("region,type,os,price")
+                writer.writerow(["region","type","os","price"])
+                for r in data["regions"]:
+                    region_name = r["region"]
+                    for it in r["instanceTypes"]:
+                        writer.writerow([region_name,it["type"],it["os"],self.none_as_string(it["price"])])
+                        print("%s,%s,%s,%s" % (region_name,
+                                               it["type"],
+                                               it["os"],
+                                               self.none_as_string(it["price"])))
+
         elif u == "reserved":
             if name is None:
                 name="EC2_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,os,term,payment_type,price,upfront"
-            writer.writerow(["region","type","os","term","payment_type","price","upfront"])
-            for r in data["regions"]:
-                region_name = r["region"]
-                for it in r["instanceTypes"]:
-                    for term in it["prices"]:
-                        for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s" % (region_name, 
-                                                            it["type"], 
-                                                            it["os"], 
-                                                            term, 
-                                                            po, 
-                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                            self.none_as_string(it["prices"][term][po]["upfront"]))
-                            writer.writerow([region_name, 
-                                             it["type"], 
-                                             it["os"], 
-                                             term, 
-                                             po, 
-                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+            with open(join(path, name), 'w') as csv_fp:
+                writer = csv.writer(csv_fp)
+                print("region,type,os,term,payment_type,price,upfront")
+                writer.writerow(["region","type","os","term","payment_type","price","upfront"])
+                for r in data["regions"]:
+                    region_name = r["region"]
+                    for it in r["instanceTypes"]:
+                        for term in it["prices"]:
+                            for po in it["prices"][term]:
+                                print("%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                                                                it["type"],
+                                                                it["os"],
+                                                                term,
+                                                                po,
+                                                                self.none_as_string(it["prices"][term][po]["hourly"]),
+                                                                self.none_as_string(it["prices"][term][po]["upfront"])))
+                                writer.writerow([region_name,
+                                                 it["type"],
+                                                 it["os"],
+                                                 term,
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]),
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
 
 
 class ELCPrices(AWSPrices):
@@ -951,8 +959,8 @@ class ELCPrices(AWSPrices):
         try:
             from prettytable import PrettyTable
         except ImportError:
-            print ("ERROR: Please install 'prettytable' using pip: "+
-                   "pip install prettytable")
+            print(("ERROR: Please install 'prettytable' using pip: "+
+                   "pip install prettytable"))
        
 
         data = None
@@ -1006,10 +1014,10 @@ class ELCPrices(AWSPrices):
                                        self.none_as_string(it["prices"][term]["hourly"]), 
                                        self.none_as_string(it["prices"][term]["upfront"])])
     
-            print x
+            print(x)
     
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the ELC pricing data in CSV format to the
             cpecified location.
@@ -1028,41 +1036,41 @@ class ELCPrices(AWSPrices):
                 
         """
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
             
         elif u == "ondemand":
             if name is None:
                 name="ELC_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()         
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,price"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,price")
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     writer.writerow([region_name,it["type"],
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s" % (region_name, it["type"], 
-                                        self.none_as_string(it["price"]))
+                    print("%s,%s,%s" % (region_name, it["type"], 
+                                        self.none_as_string(it["price"])))
         elif u == "reserved":
             if name is None:
                 name="ELC_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,utilization,term,price,upfront"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,utilization,term,price,upfront")
             writer.writerow(["region","type","utilization","term","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s" % (region_name, 
+                        print("%s,%s,%s,%s,%s,%s" % (region_name, 
                                                      it["type"], 
                                                      it["utilization"], 
                                                      term, 
                                                      self.none_as_string(it["prices"][term]["hourly"]), 
-                                                     self.none_as_string(it["prices"][term]["upfront"]))
+                                                     self.none_as_string(it["prices"][term]["upfront"])))
                         writer.writerow([region_name, 
                                          it["type"], 
                                          it["utilization"], 
@@ -1952,13 +1960,13 @@ class RDSPrices(AWSPrices):
         try:
             from prettytable import PrettyTable
         except ImportError:
-            print "ERROR: Please install 'prettytable' using pip:    pip install prettytable"       
+            print("ERROR: Please install 'prettytable' using pip:    pip install prettytable")       
         data = None
         
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
         else:
             
             if u == "ondemand":
@@ -2055,9 +2063,9 @@ class RDSPrices(AWSPrices):
                                            self.none_as_string(it["prices"][term]["hourly"]),
                                            self.none_as_string(it["prices"][term]["upfront"])])
 
-            print x
+            print(x)
 
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the RDS pricing data in CSV format to the
             cpecified location.
@@ -2078,16 +2086,16 @@ class RDSPrices(AWSPrices):
         data = None
         
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
         
         elif u == "ondemand":
             if name is None:
                 name="RDS_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()   
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,multiaz,license,db,price"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,multiaz,license,db,price")
             writer.writerow(["region",
                              "type",
                              "multiaz",
@@ -2097,12 +2105,12 @@ class RDSPrices(AWSPrices):
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s" % (region_name, 
+                    print("%s,%s,%s,%s,%s,%s" % (region_name, 
                                                  it["type"], 
                                                  it["multiaz"], 
                                                  it["license"], 
                                                  it["db"], 
-                                                 self.none_as_string(it["price"]))
+                                                 self.none_as_string(it["price"])))
                     writer.writerow([region_name, 
                                      it["type"], 
                                      it["multiaz"], 
@@ -2114,8 +2122,8 @@ class RDSPrices(AWSPrices):
             if name is None:
                 name="RDS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,multiaz,license,db,utilization,term,payment_type,price,upfront"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,multiaz,license,db,utilization,term,payment_type,price,upfront")
             writer.writerow(["region",
                              "type",
                              "multiaz",
@@ -2132,7 +2140,7 @@ class RDSPrices(AWSPrices):
                     for term in it["prices"]:
                         if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
                             for po in it["prices"][term]:
-                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                                print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
                                                                          it["type"],
                                                                          it["multiaz"],
                                                                          it["license"],
@@ -2141,7 +2149,7 @@ class RDSPrices(AWSPrices):
                                                                          term,
                                                                          po,
                                                                          self.none_as_string(it["prices"][term][po]["hourly"]),
-                                                                         self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                         self.none_as_string(it["prices"][term][po]["upfront"])))
                                 writer.writerow([region_name, 
                                                  it["type"], 
                                                  it["multiaz"], 
@@ -2153,7 +2161,7 @@ class RDSPrices(AWSPrices):
                                                  self.none_as_string(it["prices"][term][po]["hourly"]), 
                                                  self.none_as_string(it["prices"][term][po]["upfront"])])
                         else:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (region_name,
                                                                      it["type"],
                                                                      it["multiaz"],
                                                                      it["license"],
@@ -2162,7 +2170,7 @@ class RDSPrices(AWSPrices):
                                                                      term,
                                                                      "",
                                                                      self.none_as_string(it["prices"][term]["hourly"]),
-                                                                     self.none_as_string(it["prices"][term]["upfront"]))
+                                                                     self.none_as_string(it["prices"][term]["upfront"])))
                             writer.writerow([region_name,
                                              it["type"],
                                              it["multiaz"],
@@ -2397,14 +2405,14 @@ class RSPrices(AWSPrices):
         try:
             from prettytable import PrettyTable
         except ImportError:
-            print "ERROR: Please install 'prettytable' using pip:    pip install prettytable"
+            print("ERROR: Please install 'prettytable' using pip:    pip install prettytable")
        
         data = None
         
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
         else:
             
             if u == "ondemand":
@@ -2452,10 +2460,10 @@ class RSPrices(AWSPrices):
                                           self.none_as_string(it["prices"][term][po]["hourly"]),
                                           self.none_as_string(it["prices"][term][po]["upfront"])])
     
-            print x
+            print(x)
     
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the Redshift pricing data in CSV format to the
             cpecified location.
@@ -2474,42 +2482,42 @@ class RSPrices(AWSPrices):
                 
         """
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
             
         elif u == "ondemand":
             if name is None:
                 name="RS_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,price"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,price")
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     writer.writerow([region_name,it["type"],self.none_as_string(it["price"])])
-                    print "%s,%s,%s" % (region_name, 
+                    print("%s,%s,%s" % (region_name, 
                                            it["type"], 
-                                           self.none_as_string(it["price"]))
+                                           self.none_as_string(it["price"])))
         elif u == "reserved":
             if name is None:
                 name="RS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,term,payment_type,price,upfront"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("region,type,term,payment_type,price,upfront")
             writer.writerow(["region","type","term","payment_type","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s" % (region_name, 
+                            print("%s,%s,%s,%s,%s,%s" % (region_name, 
                                                             it["type"],  
                                                             term, 
                                                             po, 
                                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                            self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                            self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow([region_name, 
                                              it["type"],
                                              term, 
@@ -2722,14 +2730,14 @@ class DDBPrices(AWSPrices):
         try:
             from prettytable import PrettyTable
         except ImportError:
-            print "ERROR: Please install 'prettytable' using pip:    pip install prettytable"
+            print("ERROR: Please install 'prettytable' using pip:    pip install prettytable")
        
         data = None
         
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
         else:
             
             if u == "ondemand":
@@ -2777,10 +2785,10 @@ class DDBPrices(AWSPrices):
                                           self.none_as_string(it["prices"][term][po]["hourly"]),
                                           self.none_as_string(it["prices"][term][po]["upfront"])])
     
-            print x
+            print(x)
     
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the DynamoDB pricing data in CSV format to the
             cpecified location.
@@ -2799,42 +2807,42 @@ class DDBPrices(AWSPrices):
                 
         """
         if u not in ["ondemand","reserved"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\".")
+                  "\"ondemand\" or \"reserved\"."))
             
         elif u == "ondemand":
             if name is None:
                 name="DDB_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,price"
+            writer = csv.writer(open(path+name, 'w'))
+            print("region,type,price")
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     writer.writerow([region_name,it["type"],self.none_as_string(it["price"])])
-                    print "%s,%s,%s" % (region_name, 
+                    print("%s,%s,%s" % (region_name, 
                                            it["type"], 
-                                           self.none_as_string(it["price"]))
+                                           self.none_as_string(it["price"])))
         elif u == "reserved":
             if name is None:
                 name="DDB_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,term,payment_type,price,upfront"
+            writer = csv.writer(open(path+name, 'w'))
+            print("region,type,term,payment_type,price,upfront")
             writer.writerow(["region","type","term","payment_type","price","upfront"])
             for r in data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s" % (region_name, 
+                            print("%s,%s,%s,%s,%s,%s" % (region_name, 
                                                             it["type"],  
                                                             term, 
                                                             po, 
                                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                            self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                            self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow([region_name, 
                                              it["type"],
                                              term, 
@@ -2885,9 +2893,9 @@ class AllAWSPrices(AWSPrices):
                 
         """
         if u not in ["ondemand","reserved", "all"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\" or \"all\".")
+                  "\"ondemand\" or \"reserved\" or \"all\"."))
         else:
             
             if u=="ondemand":
@@ -2973,9 +2981,9 @@ class AllAWSPrices(AWSPrices):
         """   
         
         if u not in ["ondemand","reserved","all"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\" or \"all\".")     
+                  "\"ondemand\" or \"reserved\" or \"all\"."))     
 
         elif u=="ondemand":
             
@@ -2988,8 +2996,8 @@ class AllAWSPrices(AWSPrices):
             rs_data=self.rs.get_ondemand_instances_prices()
             ddb_data=self.ddb.get_ondemand_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "service,region,type,multiaz,license,db,os,price"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("service,region,type,multiaz,license,db,os,price")
             writer.writerow(["service",
                              "region",
                              "type",
@@ -3011,14 +3019,14 @@ class AllAWSPrices(AWSPrices):
                                      "",
                                      it["os"],
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        "",
                                                        it["os"], 
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
             
             for r in elc_data["regions"]:
                 region_name = r["region"]
@@ -3031,26 +3039,26 @@ class AllAWSPrices(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
                                                        region_name, 
                                                        it["type"],
                                                        "",
                                                        "",
                                                        "",
                                                        "",
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
             
             for r in rds_data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                        region_name, 
                                                        it["type"], 
                                                        it["multiaz"], 
                                                        it["license"], 
                                                        it["db"],
                                                        "", 
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
                     writer.writerow(["rds",
                                      region_name, 
                                      it["type"], 
@@ -3071,14 +3079,14 @@ class AllAWSPrices(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        "",
                                                        "", 
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
             for r in ddb_data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
@@ -3090,14 +3098,14 @@ class AllAWSPrices(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        "",
                                                        "", 
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
         
         
         
@@ -3111,8 +3119,8 @@ class AllAWSPrices(AWSPrices):
             rs_data=self.rs.get_reserved_instances_prices()
             ddb_data=self.ddb.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront")
             writer.writerow(["service",
                              "region",
                              "type",
@@ -3132,7 +3140,7 @@ class AllAWSPrices(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -3143,7 +3151,7 @@ class AllAWSPrices(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["ec2",
                                              region_name, 
                                              it["type"], 
@@ -3161,7 +3169,7 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
                                                                        region_name, 
                                                                        it["type"],
                                                                        "",
@@ -3172,7 +3180,7 @@ class AllAWSPrices(AWSPrices):
                                                                        term, 
                                                                        "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                       self.none_as_string(it["prices"][term]["upfront"]))
+                                                                       self.none_as_string(it["prices"][term]["upfront"])))
                         writer.writerow(["elasticache",
                                          region_name, 
                                          it["type"],
@@ -3192,7 +3200,7 @@ class AllAWSPrices(AWSPrices):
                     for term in it["prices"]:
                         if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
                             for po in it["prices"][term]:
-                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                                                region_name, 
                                                                                it["type"], 
                                                                                it["multiaz"], 
@@ -3203,7 +3211,7 @@ class AllAWSPrices(AWSPrices):
                                                                                term, 
                                                                                po,
                                                                                self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                               self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                               self.none_as_string(it["prices"][term][po]["upfront"])))
                                 writer.writerow(["rds",
                                                  region_name, 
                                                  it["type"], 
@@ -3217,7 +3225,7 @@ class AllAWSPrices(AWSPrices):
                                                  self.none_as_string(it["prices"][term][po]["hourly"]), 
                                                  self.none_as_string(it["prices"][term][po]["upfront"])])
                         else:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                                            region_name,
                                                                            it["type"],
                                                                            it["multiaz"],
@@ -3228,7 +3236,7 @@ class AllAWSPrices(AWSPrices):
                                                                            term,
                                                                            "",
                                                                            self.none_as_string(it["prices"][term]["hourly"]),
-                                                                           self.none_as_string(it["prices"][term]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term]["upfront"])))
                             writer.writerow(["rds",
                                              region_name,
                                              it["type"],
@@ -3248,7 +3256,7 @@ class AllAWSPrices(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -3259,7 +3267,7 @@ class AllAWSPrices(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["redshift",
                                              region_name, 
                                              it["type"], 
@@ -3279,7 +3287,7 @@ class AllAWSPrices(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -3290,7 +3298,7 @@ class AllAWSPrices(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["dynamodb",
                                              region_name, 
                                              it["type"], 
@@ -3319,8 +3327,8 @@ class AllAWSPrices(AWSPrices):
             rs_data_r=self.rs.get_reserved_instances_prices()
             ddb_data_r=self.ddb.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "reserved_od,service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront"
+            writer = csv.writer(open(join(path, name), 'w'))
+            print("reserved_od,service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront")
             
             
             
@@ -3357,7 +3365,7 @@ class AllAWSPrices(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "ec2",
                                                                       region_name, 
                                                                       it["type"], 
@@ -3369,12 +3377,12 @@ class AllAWSPrices(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
             
             for r in elc_data_od["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "elasticache",
                                                                       region_name, 
                                                                       it["type"],
@@ -3386,7 +3394,7 @@ class AllAWSPrices(AWSPrices):
                                                                       "", 
                                                                       "",
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
                     writer.writerow(["ondemand",
                                       "elasticache",
                                       region_name, 
@@ -3404,7 +3412,7 @@ class AllAWSPrices(AWSPrices):
             for r in rds_data_od["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "rds",
                                                                       region_name, 
                                                                       it["type"], 
@@ -3416,7 +3424,7 @@ class AllAWSPrices(AWSPrices):
                                                                       "", 
                                                                       "",
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
                     writer.writerow(["ondemand",
                                       "rds",
                                       region_name, 
@@ -3449,7 +3457,7 @@ class AllAWSPrices(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "redshift",
                                                                       region_name, 
                                                                       it["type"], 
@@ -3461,7 +3469,7 @@ class AllAWSPrices(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
 
             for r in ddb_data_od["regions"]:
                 region_name = r["region"]
@@ -3480,7 +3488,7 @@ class AllAWSPrices(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "dynamodb",
                                                                       region_name, 
                                                                       it["type"], 
@@ -3492,14 +3500,14 @@ class AllAWSPrices(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")            
+                                                                      ""))            
             
             for r in ec2_data_r["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "ec2",
                                                                               region_name, 
                                                                               it["type"], 
@@ -3511,7 +3519,7 @@ class AllAWSPrices(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "ec2",
                                              region_name, 
@@ -3530,7 +3538,7 @@ class AllAWSPrices(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                           "elasticache",
                                                                           region_name, 
                                                                           it["type"],
@@ -3542,7 +3550,7 @@ class AllAWSPrices(AWSPrices):
                                                                           term, 
                                                                           "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                          self.none_as_string(it["prices"][term]["upfront"]))
+                                                                          self.none_as_string(it["prices"][term]["upfront"])))
                         writer.writerow(["reserved",
                                          "elasticache",
                                          region_name, 
@@ -3563,7 +3571,7 @@ class AllAWSPrices(AWSPrices):
                     for term in it["prices"]:
                         if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
                             for po in it["prices"][term]:
-                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
                                                                                    "rds",
                                                                                    region_name, 
                                                                                    it["type"], 
@@ -3575,7 +3583,7 @@ class AllAWSPrices(AWSPrices):
                                                                                    term, 
                                                                                    po,
                                                                                    self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                                   self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                                   self.none_as_string(it["prices"][term][po]["upfront"])))
                                 writer.writerow(["reserved",
                                                  "rds",
                                                  region_name, 
@@ -3590,7 +3598,7 @@ class AllAWSPrices(AWSPrices):
                                                  self.none_as_string(it["prices"][term][po]["hourly"]), 
                                                  self.none_as_string(it["prices"][term][po]["upfront"])])
                         else:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
                                                                                "rds",
                                                                                region_name,
                                                                                it["type"],
@@ -3602,7 +3610,7 @@ class AllAWSPrices(AWSPrices):
                                                                                term,
                                                                                "",
                                                                                self.none_as_string(it["prices"][term]["hourly"]),
-                                                                               self.none_as_string(it["prices"][term]["upfront"]))
+                                                                               self.none_as_string(it["prices"][term]["upfront"])))
                             writer.writerow(["reserved",
                                              "rds",
                                              region_name,
@@ -3623,7 +3631,7 @@ class AllAWSPrices(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "redshift",
                                                                               region_name, 
                                                                               it["type"], 
@@ -3635,7 +3643,7 @@ class AllAWSPrices(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "redshift",
                                              region_name, 
@@ -3656,7 +3664,7 @@ class AllAWSPrices(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "dynamodb",
                                                                               region_name, 
                                                                               it["type"], 
@@ -3668,7 +3676,7 @@ class AllAWSPrices(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "dynamodb",
                                              region_name, 
@@ -3721,9 +3729,9 @@ class AllAWSPrices2(AWSPrices):
                 
         """
         if u not in ["ondemand","reserved", "all"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\" or \"all\".")
+                  "\"ondemand\" or \"reserved\" or \"all\"."))
         else:
             
             if u=="ondemand":
@@ -3809,9 +3817,9 @@ class AllAWSPrices2(AWSPrices):
         """   
         
         if u not in ["ondemand","reserved","all"]:
-            print("Function requires Reservation parameter at the first"+
+            print(("Function requires Reservation parameter at the first"+
                   "position. Possible values:"+
-                  "\"ondemand\" or \"reserved\" or \"all\".")     
+                  "\"ondemand\" or \"reserved\" or \"all\"."))     
 
         elif u=="ondemand":
             
@@ -3824,8 +3832,8 @@ class AllAWSPrices2(AWSPrices):
             rs_data=self.rs.get_ondemand_instances_prices()
             ddb_data=self.ddb.get_ondemand_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "service,region,type,multiaz,license,os/db,price"
+            writer = csv.writer(open(path+name, 'w'))
+            print("service,region,type,multiaz,license,os/db,price")
             writer.writerow(["service",
                              "region",
                              "type",
@@ -3845,13 +3853,13 @@ class AllAWSPrices2(AWSPrices):
                                      "",
                                      it["os"],
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                    print("%s,%s,%s,%s,%s,%s,%s" % ("ec2",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        it["os"], 
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
             
             for r in elc_data["regions"]:
                 region_name = r["region"]
@@ -3863,24 +3871,24 @@ class AllAWSPrices2(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                    print("%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
                                                        region_name, 
                                                        it["type"],
                                                        "",
                                                        "",
                                                        "",
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
             
             for r in rds_data["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                    print("%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                        region_name, 
                                                        it["type"], 
                                                        it["multiaz"], 
                                                        it["license"], 
                                                        it["db"],
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
                     writer.writerow(["rds",
                                      region_name, 
                                      it["type"], 
@@ -3899,13 +3907,13 @@ class AllAWSPrices2(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                    print("%s,%s,%s,%s,%s,%s,%s" % ("redshift",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        "",
-                                                       self.none_as_string(it["price"]))
+                                                       self.none_as_string(it["price"])))
                     
             for r in ddb_data["regions"]:
                 region_name = r["region"]
@@ -3918,13 +3926,13 @@ class AllAWSPrices2(AWSPrices):
                                      "",
                                      "",
                                      self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
+                    print("%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
                                                        region_name, 
                                                        it["type"], 
                                                        "",
                                                        "",
                                                        "",
-                                                       self.none_as_string(it["price"]))                    
+                                                       self.none_as_string(it["price"])))                    
         
         elif u=="reserved":
             if name is None:
@@ -3936,8 +3944,8 @@ class AllAWSPrices2(AWSPrices):
             rs_data=self.rs.get_reserved_instances_prices()
             ddb_data=self.ddb.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront"
+            writer = csv.writer(open(path+name, 'w'))
+            print("service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront")
             writer.writerow(["service",
                              "region",
                              "type",
@@ -3956,7 +3964,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ec2",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -3966,7 +3974,7 @@ class AllAWSPrices2(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["ec2",
                                              region_name, 
                                              it["type"], 
@@ -3983,7 +3991,7 @@ class AllAWSPrices2(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
+                        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("elasticache",
                                                                        region_name, 
                                                                        it["type"],
                                                                        "",
@@ -3993,7 +4001,7 @@ class AllAWSPrices2(AWSPrices):
                                                                        term, 
                                                                        "",
                                                                        self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                       self.none_as_string(it["prices"][term]["upfront"]))
+                                                                       self.none_as_string(it["prices"][term]["upfront"])))
                         writer.writerow(["elasticache",
                                          region_name, 
                                          it["type"],
@@ -4012,7 +4020,7 @@ class AllAWSPrices2(AWSPrices):
                     for term in it["prices"]:
                         if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
                             for po in it["prices"][term]:
-                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                                print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                                                region_name, 
                                                                                it["type"], 
                                                                                it["multiaz"], 
@@ -4022,7 +4030,7 @@ class AllAWSPrices2(AWSPrices):
                                                                                term, 
                                                                                po,
                                                                                self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                               self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                               self.none_as_string(it["prices"][term][po]["upfront"])))
                                 writer.writerow(["rds",
                                                  region_name, 
                                                  it["type"], 
@@ -4035,7 +4043,7 @@ class AllAWSPrices2(AWSPrices):
                                                  self.none_as_string(it["prices"][term][po]["hourly"]), 
                                                  self.none_as_string(it["prices"][term][po]["upfront"])])
                         else:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("rds",
                                                                            region_name,
                                                                            it["type"],
                                                                            it["multiaz"],
@@ -4045,7 +4053,7 @@ class AllAWSPrices2(AWSPrices):
                                                                            term,
                                                                            "",
                                                                            self.none_as_string(it["prices"][term]["hourly"]),
-                                                                           self.none_as_string(it["prices"][term]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term]["upfront"])))
                             writer.writerow(["rds",
                                              region_name,
                                              it["type"],
@@ -4064,7 +4072,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("redshift",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -4074,7 +4082,7 @@ class AllAWSPrices2(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["redshift",
                                              region_name, 
                                              it["type"], 
@@ -4092,7 +4100,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("dynamodb",
                                                                            region_name, 
                                                                            it["type"], 
                                                                            "",
@@ -4102,7 +4110,7 @@ class AllAWSPrices2(AWSPrices):
                                                                            term, 
                                                                            po, 
                                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                           self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                           self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["dynamodb",
                                              region_name, 
                                              it["type"], 
@@ -4130,8 +4138,8 @@ class AllAWSPrices2(AWSPrices):
             rs_data_r=self.rs.get_reserved_instances_prices()
             ddb_data_r=self.ddb.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
-            print "reserved_od,service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront"
+            writer = csv.writer(open(path+name, 'w'))
+            print("reserved_od,service,region,type,multiaz,license,os/db,utilization,term,payment_type,price,upfront")
             
             
             
@@ -4166,7 +4174,7 @@ class AllAWSPrices2(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "ec2",
                                                                       region_name, 
                                                                       it["type"], 
@@ -4177,12 +4185,12 @@ class AllAWSPrices2(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
             
             for r in elc_data_od["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "elasticache",
                                                                       region_name, 
                                                                       it["type"],
@@ -4193,7 +4201,7 @@ class AllAWSPrices2(AWSPrices):
                                                                       "", 
                                                                       "",
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
                     writer.writerow(["ondemand",
                                       "elasticache",
                                       region_name, 
@@ -4210,7 +4218,7 @@ class AllAWSPrices2(AWSPrices):
             for r in rds_data_od["regions"]:
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "rds",
                                                                       region_name, 
                                                                       it["type"], 
@@ -4221,7 +4229,7 @@ class AllAWSPrices2(AWSPrices):
                                                                       "", 
                                                                       "",
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
                     writer.writerow(["ondemand",
                                       "rds",
                                       region_name, 
@@ -4252,7 +4260,7 @@ class AllAWSPrices2(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "redshift",
                                                                       region_name, 
                                                                       it["type"], 
@@ -4263,7 +4271,7 @@ class AllAWSPrices2(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")
+                                                                      ""))
 
             for r in ddb_data_od["regions"]:
                 region_name = r["region"]
@@ -4281,7 +4289,7 @@ class AllAWSPrices2(AWSPrices):
                                       self.none_as_string(it["price"]), 
                                       ""])
                     
-                    print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
+                    print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("ondemand",
                                                                       "dynamodb",
                                                                       region_name, 
                                                                       it["type"], 
@@ -4292,7 +4300,7 @@ class AllAWSPrices2(AWSPrices):
                                                                       "", 
                                                                       "", 
                                                                       self.none_as_string(it["price"]), 
-                                                                      "")                         
+                                                                      ""))                         
 
             
             
@@ -4301,7 +4309,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "ec2",
                                                                               region_name, 
                                                                               it["type"], 
@@ -4312,7 +4320,7 @@ class AllAWSPrices2(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "ec2",
                                              region_name, 
@@ -4330,7 +4338,7 @@ class AllAWSPrices2(AWSPrices):
                 region_name = r["region"]
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
-                        print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                           "elasticache",
                                                                           region_name, 
                                                                           it["type"],
@@ -4341,7 +4349,7 @@ class AllAWSPrices2(AWSPrices):
                                                                           term, 
                                                                           "",
                                                                           self.none_as_string(it["prices"][term]["hourly"]), 
-                                                                          self.none_as_string(it["prices"][term]["upfront"]))
+                                                                          self.none_as_string(it["prices"][term]["upfront"])))
                         writer.writerow(["reserved",
                                          "elasticache",
                                          region_name, 
@@ -4361,7 +4369,7 @@ class AllAWSPrices2(AWSPrices):
                     for term in it["prices"]:
                         if "noUpfront" in it["prices"][term] or "partialUpfront" in it["prices"][term] or "allUpfront" in it["prices"][term]:
                             for po in it["prices"][term]:
-                                print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                                print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
                                                                                    "rds",
                                                                                    region_name, 
                                                                                    it["type"], 
@@ -4372,7 +4380,7 @@ class AllAWSPrices2(AWSPrices):
                                                                                    term, 
                                                                                    po,
                                                                                    self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                                   self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                                   self.none_as_string(it["prices"][term][po]["upfront"])))
                                 writer.writerow(["reserved",
                                                  "rds",
                                                  region_name, 
@@ -4386,7 +4394,7 @@ class AllAWSPrices2(AWSPrices):
                                                  self.none_as_string(it["prices"][term][po]["hourly"]), 
                                                  self.none_as_string(it["prices"][term][po]["upfront"])])
                         else:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( "reserved",
                                                                                "rds",
                                                                                region_name,
                                                                                it["type"],
@@ -4397,7 +4405,7 @@ class AllAWSPrices2(AWSPrices):
                                                                                term,
                                                                                "",
                                                                                self.none_as_string(it["prices"][term]["hourly"]),
-                                                                               self.none_as_string(it["prices"][term]["upfront"]))
+                                                                               self.none_as_string(it["prices"][term]["upfront"])))
                             writer.writerow(["reserved",
                                              "rds",
                                              region_name,
@@ -4417,7 +4425,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "redshift",
                                                                               region_name, 
                                                                               it["type"], 
@@ -4428,7 +4436,7 @@ class AllAWSPrices2(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "redshift",
                                              region_name, 
@@ -4447,7 +4455,7 @@ class AllAWSPrices2(AWSPrices):
                 for it in r["instanceTypes"]:
                     for term in it["prices"]:
                         for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
+                            print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % ("reserved",
                                                                               "dynamodb",
                                                                               region_name, 
                                                                               it["type"], 
@@ -4458,7 +4466,7 @@ class AllAWSPrices2(AWSPrices):
                                                                               term, 
                                                                               po, 
                                                                               self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                                              self.none_as_string(it["prices"][term][po]["upfront"]))
+                                                                              self.none_as_string(it["prices"][term][po]["upfront"])))
                             writer.writerow(["reserved",
                                              "dynamodb",
                                              region_name, 
