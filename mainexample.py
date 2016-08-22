@@ -43,19 +43,19 @@ if __name__ == '__main__':
     FULL PRICING
     '''
     
-    allpricing=awspricingfull.AllAWSPrices() #Full Pricing class instance
+    #allpricing=awspricingfull.AllAWSPrices() #Full Pricing class instance
     
     #print (allpricing.return_json("ondemand")) #JSON - On-Demand Pricing: All Services
     #print (allpricing.return_json("reserved"))  #JSON - Reserved Pricing: All Services
     #print (allpricing.return_json("all")) #JSON - Full Pricing: All Services
     #allpricing.save_csv("ondemand") #CSV - On-Demand Pricing: All Services
     #allpricing.save_csv("reserved") #CSV - Reserved Pricing: All Services
-    allpricing.save_csv("all") #CSV - Full Pricing: All Services
+    #allpricing.save_csv("all") #CSV - Full Pricing: All Services
     
     '''
     EC2
     '''
-    #ec2pricing=awspricingfull.EC2Prices() #EC2 Pricing class instance         
+    #ec2pricing=awspricingfull.EC2Prices() #EC2 Pricing class instance
     
     #print (ec2pricing.return_json("ondemand")) #JSON - On-Demand Pricing: EC2
     #print (ec2pricing.return_json("reserved")) #JSON - Reserved Pricing: EC2
@@ -67,14 +67,14 @@ if __name__ == '__main__':
     '''
     RDS
     '''
-    #rdspricing=awspricingfull.RDSPrices() #RDS Pricing class instance         
+    rdspricing=awspricingfull.RDSPrices() #RDS Pricing class instance
     
     #print (rdspricing.return_json("ondemand")) #JSON - On-Demand Pricing: RDS
     #print (rdspricing.return_json("reserved")) #JSON - Reserved Pricing: RDS
     #rdspricing.print_table("ondemand") #PrettyTable - On-Demand Pricing: RDS
     #rdspricing.print_table("reserved") #PrettyTable - Reserved Pricing: RDS
-    #rdspricing.save_csv("ondemand") #CSV - On-Demand Pricing: RDS
-    #rdspricing.save_csv("reserved") #CSV - Reserved Pricing: RDS
+    rdspricing.save_csv("ondemand") #CSV - On-Demand Pricing: RDS
+    rdspricing.save_csv("reserved") #CSV - Reserved Pricing: RDS
 
     '''
     ELASTICACHE

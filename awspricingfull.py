@@ -49,6 +49,7 @@ Updated: 19 June, 2015
 
 import urllib2
 import csv
+from os.path import join
 import re
 try:
     import simplejson as json
@@ -617,7 +618,7 @@ class EC2Prices(AWSPrices):
             print x
 
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the EC2 pricing data in CSV format to the
             cpecified location.
@@ -635,6 +636,7 @@ class EC2Prices(AWSPrices):
            Prints EC2 pricing in the CSV format (console).
                 
         """
+
         if u not in ["ondemand","reserved"]:
             print("Function requires 1 parameter. Possible values:"
                   "\"ondemand\" or \"reserved\".")
@@ -643,43 +645,46 @@ class EC2Prices(AWSPrices):
             if name is None:
                 name="EC2_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,os,price"
-            writer.writerow(["region","type","os","price"])
-            for r in data["regions"]:
-                region_name = r["region"]
-                for it in r["instanceTypes"]:
-                    writer.writerow([region_name,it["type"],it["os"],self.none_as_string(it["price"])])
-                    print "%s,%s,%s,%s" % (region_name, 
-                                           it["type"], 
-                                           it["os"], 
-                                           self.none_as_string(it["price"]))
+            with open(join(path, name), 'wb') as csv_fp:
+                writer = csv.writer(csv_fp)
+                print "region,type,os,price"
+                writer.writerow(["region","type","os","price"])
+                for r in data["regions"]:
+                    region_name = r["region"]
+                    for it in r["instanceTypes"]:
+                        writer.writerow([region_name,it["type"],it["os"],self.none_as_string(it["price"])])
+                        print "%s,%s,%s,%s" % (region_name,
+                                               it["type"],
+                                               it["os"],
+                                               self.none_as_string(it["price"]))
+
         elif u == "reserved":
             if name is None:
                 name="EC2_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
-            print "region,type,os,term,payment_type,price,upfront"
-            writer.writerow(["region","type","os","term","payment_type","price","upfront"])
-            for r in data["regions"]:
-                region_name = r["region"]
-                for it in r["instanceTypes"]:
-                    for term in it["prices"]:
-                        for po in it["prices"][term]:
-                            print "%s,%s,%s,%s,%s,%s,%s" % (region_name, 
-                                                            it["type"], 
-                                                            it["os"], 
-                                                            term, 
-                                                            po, 
-                                                            self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                                            self.none_as_string(it["prices"][term][po]["upfront"]))
-                            writer.writerow([region_name, 
-                                             it["type"], 
-                                             it["os"], 
-                                             term, 
-                                             po, 
-                                             self.none_as_string(it["prices"][term][po]["hourly"]), 
-                                             self.none_as_string(it["prices"][term][po]["upfront"])])
+            with open(join(path, name), 'wb') as csv_fp:
+                writer = csv.writer(csv_fp)
+                print "region,type,os,term,payment_type,price,upfront"
+                writer.writerow(["region","type","os","term","payment_type","price","upfront"])
+                for r in data["regions"]:
+                    region_name = r["region"]
+                    for it in r["instanceTypes"]:
+                        for term in it["prices"]:
+                            for po in it["prices"][term]:
+                                print "%s,%s,%s,%s,%s,%s,%s" % (region_name,
+                                                                it["type"],
+                                                                it["os"],
+                                                                term,
+                                                                po,
+                                                                self.none_as_string(it["prices"][term][po]["hourly"]),
+                                                                self.none_as_string(it["prices"][term][po]["upfront"]))
+                                writer.writerow([region_name,
+                                                 it["type"],
+                                                 it["os"],
+                                                 term,
+                                                 po,
+                                                 self.none_as_string(it["prices"][term][po]["hourly"]),
+                                                 self.none_as_string(it["prices"][term][po]["upfront"])])
 
 class ELCPrices(AWSPrices):
     """
@@ -999,7 +1004,7 @@ class ELCPrices(AWSPrices):
             print x
     
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the ELC pricing data in CSV format to the
             cpecified location.
@@ -1026,7 +1031,7 @@ class ELCPrices(AWSPrices):
             if name is None:
                 name="ELC_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()         
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,price"
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
@@ -1040,7 +1045,7 @@ class ELCPrices(AWSPrices):
             if name is None:
                 name="ELC_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,utilization,term,price,upfront"
             writer.writerow(["region","type","utilization","term","price","upfront"])
             for r in data["regions"]:
@@ -2013,7 +2018,7 @@ class RDSPrices(AWSPrices):
 
             print x
 
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the RDS pricing data in CSV format to the
             cpecified location.
@@ -2042,7 +2047,7 @@ class RDSPrices(AWSPrices):
             if name is None:
                 name="RDS_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()   
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,multiaz,license,db,price"
             writer.writerow(["region",
                              "type",
@@ -2070,7 +2075,7 @@ class RDSPrices(AWSPrices):
             if name is None:
                 name="RDS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,multiaz,license,db,utilization,term,payment_type,price,upfront"
             writer.writerow(["region",
                              "type",
@@ -2414,7 +2419,7 @@ class RSPrices(AWSPrices):
             print x
     
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the Redshift pricing data in CSV format to the
             cpecified location.
@@ -2441,7 +2446,7 @@ class RSPrices(AWSPrices):
             if name is None:
                 name="RS_ondemand_pricing.csv"
             data = self.get_ondemand_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,price"
             writer.writerow(["region","type","price"])
             for r in data["regions"]:
@@ -2455,7 +2460,7 @@ class RSPrices(AWSPrices):
             if name is None:
                 name="RS_reserved_pricing.csv"
             data = self.get_reserved_instances_prices()
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "region,type,term,payment_type,price,upfront"
             writer.writerow(["region","type","term","payment_type","price","upfront"])
             for r in data["regions"]:
@@ -2572,7 +2577,7 @@ class AllAWSPrices(AWSPrices):
         
             
     
-    def save_csv(self,u,path=os.getcwd()+"\\",name=None):
+    def save_csv(self,u,path=os.getcwd(),name=None):
         """
         Method saving the full pricing data in CSV format to the
             cpecified location.
@@ -2607,7 +2612,7 @@ class AllAWSPrices(AWSPrices):
             rds_data=self.rds.get_ondemand_instances_prices()
             rs_data=self.rs.get_ondemand_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "service,region,type,multiaz,license,db,os,price"
             writer.writerow(["service",
                              "region",
@@ -2708,7 +2713,7 @@ class AllAWSPrices(AWSPrices):
             rds_data=self.rds.get_reserved_instances_prices()
             rs_data=self.rs.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront"
             writer.writerow(["service",
                              "region",
@@ -2882,7 +2887,7 @@ class AllAWSPrices(AWSPrices):
             rds_data_r=self.rds.get_reserved_instances_prices()
             rs_data_r=self.rs.get_reserved_instances_prices()
                        
-            writer = csv.writer(open(path+name, 'wb'))
+            writer = csv.writer(open(join(path, name), 'wb'))
             print "reserved_od,service,region,type,multiaz,license,db,os,utilization,term,payment_type,price,upfront"
             
             
