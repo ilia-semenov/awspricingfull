@@ -1,5 +1,55 @@
 # awspricingfull.py
 
+http://ilia-semenov.github.io/awspricingfull
+------------------------------------------
+
+**MINOR UPDATE 07/01/2016: Mumbai Region**
+
+* Mumbai region (ap-south-1) is added to the script
+* Minor bug fixes
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------------
+**MAJOR UPDATE 04/05/2016: Version 3.0 of program**
+
+* DynamoDB throughput (Read/Write) pricing is introduced
+* Minor bug fixes
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------------
+
+**ROADMAP**
+
+As there had been no AWS updates affecting pricing sheets since June 2015, I stopped the active development of the script and was just checking it from time to time. Moreover, **in December 2015 AWS introduced their own pricing API** which was a great thing.
+However, yesterday I had to update my work-related DBs with the new Seoul region pricing, and found out that AWS API implementation is not straightforward:
+
+* Every region should be accessed separately
+* Parsing needed
+* Overall, major development effort is neded to use the API
+
+That is why I came back to my good old tool, added Seoul region into it, and found out that it still produces the top-notch results that I was able to use right away. At the sam=e time I decided to continue the development of the tool, and here is the roadmap for the nearest time:
+
+* Dictionary dependency fix - make the tool tolerate AWS changes (such as new regions introductions)
+* Dedicated instances pricing
+
+**Please, let me know what else would be good to have in the resulting uniform output of the tool.**
+
+------------------------------------
+
+**MINOR UPDATE 04/06/2016**
+
+* Aurora and MariaDB are added to RDS
+* New table schema is introduced with the separate method: now columns OS (EC2) and DB (RDS) are merged as they do not intersect; the old schema is still available
+
+---------------------------------------
+
+**MINOR UPDATE 03/24/2016**
+
+* Seoul region (ap-northeast-2) is added to dictionaries
+* Tool is tested to produce accurate up-to-date results
+
 -------------------------------------
 
 **MAJOR UPDATE 06/19/2015: Version 2.0 of program**
