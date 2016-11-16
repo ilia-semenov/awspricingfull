@@ -2,7 +2,17 @@
 
 http://ilia-semenov.github.io/awspricingfull
 ------------------------------------------
+**MINOR UPDATE 11/16/2016: Ohio Region**
 
+* Ohio region (us-east-2) is added to the script
+* Minor bug fixes
+
+
+**NOTE: Only Standard reservations are included. Convertible reservations are in roadmap.**
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------------
 **MINOR UPDATE 07/01/2016: Mumbai Region**
 
 * Mumbai region (ap-south-1) is added to the script
@@ -23,7 +33,7 @@ http://ilia-semenov.github.io/awspricingfull
 **ROADMAP**
 
 As there had been no AWS updates affecting pricing sheets since June 2015, I stopped the active development of the script and was just checking it from time to time. Moreover, **in December 2015 AWS introduced their own pricing API** which was a great thing.
-However, yesterday I had to update my work-related DBs with the new Seoul region pricing, and found out that AWS API implementation is not straightforward:
+However, when I had to update my work-related DBs with the new Seoul region pricing, I found out that AWS API implementation is not straightforward:
 
 * Every region should be accessed separately
 * Parsing needed
@@ -31,6 +41,7 @@ However, yesterday I had to update my work-related DBs with the new Seoul region
 
 That is why I came back to my good old tool, added Seoul region into it, and found out that it still produces the top-notch results that I was able to use right away. At the sam=e time I decided to continue the development of the tool, and here is the roadmap for the nearest time:
 
+* Include convertible reserved instance pricing
 * Dictionary dependency fix - make the tool tolerate AWS changes (such as new regions introductions)
 * Dedicated instances pricing
 
