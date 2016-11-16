@@ -22,11 +22,11 @@ and additional "all" for AllAWSPrices().
 
 Created: Mar 26, 2015
 
-Updated: May 3, 2016
+Updated: Nov 16, 2016
 
 @author: Ilia Semenov
 
-@version: 3.0
+@version: 3.1
 '''
 import awspricingfull
 

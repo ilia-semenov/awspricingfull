@@ -41,13 +41,13 @@ Update 3.0: DynamoDB throughput capacity pricing is added. MariaDB and Aurora ar
 (DB and OS columns merged).
 
 
-Created: 25 March, 2015
+Created: Mar 26, 2015
 
-Updated: 3 May, 2016
+Updated: Nov 16, 2016
 
 @author: Ilia Semenov
 
-@version: 3.0
+@version: 3.1
 """
 
 
@@ -80,6 +80,7 @@ class AWSPrices(object):
     
     REGIONS = [
     "us-east-1",
+    "us-east-2",
     "us-west-1",
     "us-west-2",
     "eu-west-1",
@@ -96,6 +97,7 @@ class AWSPrices(object):
     JSON_NAME_TO_REGIONS_API = {
     "us-east" : "us-east-1",
     "us-east-1" : "us-east-1",
+    "us-east-2" : "us-east-2",
     "us-west" : "us-west-1",
     "us-west-1" : "us-west-1",
     "us-west-2" : "us-west-2",
@@ -462,12 +464,12 @@ class EC2Prices(AWSPrices):
                                                 except ValueError:
                                                     price = None
                                                         
-                                                if term=="yrTerm1":
+                                                if term=="yrTerm1Standard":
                                                     if price_data["name"] == "upfront":
                                                         prices["1"][po]["upfront"] = price
                                                     elif price_data["name"] == "monthlyStar":
                                                         prices["1"][po]["hourly"] = price/730
-                                                elif term=="yrTerm3":
+                                                elif term=="yrTerm3Standard":
                                                     if price_data["name"] == "upfront":
                                                         prices["3"][po]["upfront"] = price
                                                     elif price_data["name"] == "monthlyStar":
@@ -2624,13 +2626,25 @@ class DDBPrices(AWSPrices):
                                                 price = None
                                             
                                             if term == "yrTerm1":
-                                                prices["1"]["partialUpfront"]["upfront"] = price / 100
+                                                if price==None:
+                                                    prices["1"]["partialUpfront"]["upfront"] = 0
+                                                else:                                                
+                                                    prices["1"]["partialUpfront"]["upfront"] = price / 100
                                             elif term == "yrTerm1Hourly":
-                                                prices["1"]["partialUpfront"]["hourly"] = price / 100
+                                                if price==None:
+                                                    prices["1"]["partialUpfront"]["hourly"] = 0
+                                                else:
+                                                    prices["1"]["partialUpfront"]["hourly"] = price / 100
                                             elif term == "yrTerm3":
-                                                prices["3"]["partialUpfront"]["upfront"] = price / 100
+                                                if price==None:
+                                                    prices["3"]["partialUpfront"]["upfront"] = 0
+                                                else:
+                                                    prices["3"]["partialUpfront"]["upfront"] = price / 100
                                             elif term == "yrTerm3Hourly":
-                                                prices["3"]["partialUpfront"]["hourly"] = price / 100
+                                                if price==None:
+                                                    prices["3"]["partialUpfront"]["hourly"] = 0
+                                                else:
+                                                    prices["3"]["partialUpfront"]["hourly"] = price / 100
 
 
     
