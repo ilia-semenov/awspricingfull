@@ -1,0 +1,8 @@
+title: "Awspricingfull: Full AWS Instance Pricing in CSV and JSON formats (EC2, RDS, ElastiCache, Redshift, DynamoDB)"
+description: AWS instance pricing retrieval for EC2, RDS, ElastiCache, Redshift and DynamoDB. On-Demand and Reserved pricing schemes covered both for previous and current generation instance types.
+google_analytics: UA-77440021-1
+show_downloads: true
+theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
