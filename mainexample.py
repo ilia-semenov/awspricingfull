@@ -22,11 +22,11 @@ and additional "all" for AllAWSPrices().
 
 Created: Mar 26, 2015
 
-Updated: Nov 16, 2016
+Updated: Feb 14, 2017
 
 @author: Ilia Semenov
 
-@version: 3.1
+@version: 3.2
 '''
 import awspricingfull
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     '''
     EC2
     '''
-    #ec2pricing=awspricingfull.EC2Prices() #EC2 Pricing class instance         
+    ec2pricing=awspricingfull.EC2Prices() #EC2 Pricing class instance         
     
     #print (ec2pricing.return_json("ondemand")) #JSON - On-Demand Pricing: EC2
     #print (ec2pricing.return_json("reserved")) #JSON - Reserved Pricing: EC2
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     '''
     RDS
     '''
-    #rdspricing=awspricingfull.RDSPrices() #RDS Pricing class instance         
+    rdspricing=awspricingfull.RDSPrices() #RDS Pricing class instance         
     
     #print (rdspricing.return_json("ondemand")) #JSON - On-Demand Pricing: RDS
     #print (rdspricing.return_json("reserved")) #JSON - Reserved Pricing: RDS
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     '''
     ELASTICACHE
     '''
-    #elcpricing=awspricingfull.ELCPrices() #ElastiCache Pricing class instance         
+    elcpricing=awspricingfull.ELCPrices() #ElastiCache Pricing class instance         
     
     #print (elcpricing.return_json("ondemand")) #JSON - On-Demand Pricing: ElastiCache
     #print (elcpricing.return_json("reserved")) #JSON - Reserved Pricing: ElastiCache
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     '''
     REDSHIFT
     '''    
-    #rspricing=awspricingfull.RSPrices() #Redshift Pricing class instance         
+    rspricing=awspricingfull.RSPrices() #Redshift Pricing class instance         
     
     #print (rspricing.return_json("ondemand")) #JSON - On-Demand Pricing: Redshift
     #print (rspricing.return_json("reserved")) #JSON - Reserved Pricing: Redshift
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     '''
     DYNAMODB
     '''    
-    #ddbpricing=awspricingfull.DDBPrices() #DynamoDB Pricing class instance         
+    ddbpricing=awspricingfull.DDBPrices() #DynamoDB Pricing class instance         
     
     #print (ddbpricing.return_json("ondemand")) #JSON - On-Demand Pricing: DynamoDB
     #print (ddbpricing.return_json("reserved")) #JSON - Reserved Pricing: DynamoDB

@@ -43,11 +43,11 @@ Update 3.0: DynamoDB throughput capacity pricing is added. MariaDB and Aurora ar
 
 Created: Mar 26, 2015
 
-Updated: Nov 16, 2016
+Updated: Feb 14, 2017
 
 @author: Ilia Semenov
 
-@version: 3.1
+@version: 3.2
 """
 
 
@@ -91,7 +91,9 @@ class AWSPrices(object):
     "sa-east-1",
     "eu-central-1",
     "us-gov-west-1",
-    "ap-south-1"
+    "ap-south-1",
+    "ca-central-1",
+    "eu-west-2"
     ]
     
     JSON_NAME_TO_REGIONS_API = {
@@ -116,7 +118,9 @@ class AWSPrices(object):
     "us-gov-west-1":"us-gov-west-1",
     "eu-frankfurt":"eu-central-1",
     "ap-south-1":"ap-south-1",
-    "apac-mumbai":"ap-south-1"
+    "apac-mumbai":"ap-south-1",
+    "ca-central-1":"ca-central-1",
+    "eu-west-2":"eu-west-2"   
     }
     
     def load_data(self,url):
