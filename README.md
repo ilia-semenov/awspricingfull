@@ -2,6 +2,15 @@
 
 http://ilia-semenov.github.io/awspricingfull
 ------------------------------------------
+**MINOR UPDATE 02/14/2017: Canada Central and London Regions**
+
+* Canada Central region (ca-central-1) is added to the script
+* London region (eu-west-2) is added to the script
+
+
+**Program is fully functional and up-to-date.**
+
+-------------------------------------------
 **MINOR UPDATE 11/16/2016: Ohio Region**
 
 * Ohio region (us-east-2) is added to the script
