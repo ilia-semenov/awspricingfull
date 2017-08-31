@@ -226,6 +226,8 @@ class EC2Prices(AWSPrices):
             API URL - EC2 Windows SQL Reserved, Current Generation.
         INSTANCES_RESERVED_WINSQLWEB_URL (str): Undocumented AWS Pricing
             API URL - EC2 Windows SQL Web Reserved, Current Generation.
+        INSTANCES_RESERVED_WINSQLENTERPRISE_URL (str): Undocumented AWS Pricing
+            API URL - EC2 Windows SQL Enterprise Reserved, Current Generation.
         PG_INSTANCES_RESERVED_LINUX_URL (str): Undocumented AWS Pricing
             API URL - EC2 Linux Reserved, Previous Generation.
         PG_INSTANCES_RESERVED_RHEL_URL (str): Undocumented AWS Pricing
@@ -238,6 +240,8 @@ class EC2Prices(AWSPrices):
             API URL - EC2 Windows SQL Reserved, Previous Generation.
         PG_INSTANCES_RESERVED_WINSQLWEB_URL (str): Undocumented AWS Pricing
             API URL - EC2 Windows SQL Web Reserved, Previous Generation.
+        PG_INSTANCES_RESERVED_WINSQLENTERPRISE_URL (str): Undocumented AWS Pricing
+            API URL - EC2 Windows SQL Enterprise Reserved, Previous Generation.
         INSTANCES_ONDEMAND_LINUX_URL (str): Undocumented AWS Pricing
             API URL - EC2 Linux On-Demand, Current Generation.
         INSTANCES_ONDEMAND_RHEL_URL (str): Undocumented AWS Pricing
@@ -250,6 +254,8 @@ class EC2Prices(AWSPrices):
             API URL - EC2 Windows SQL On-Demand, Current Generation.
         INSTANCES_ONDEMAND_WINSQLWEB_URL (str): Undocumented AWS Pricing
             API URL - EC2 Windows SQL Web On-Demand, Current Generation.
+        INSTANCES_ONDEMAND_WINSQLENTERPRISE_URL (str): Undocumented AWS Pricing
+            API URL - EC2 Windows SQL Enterprise On-Demand, Current Generation.
         PG_INSTANCES_ONDEMAND_LINUX_URL (str): Undocumented AWS Pricing
             API URL - EC2 Linux On-Demand, Previous Generation.
         PG_INSTANCES_ONDEMAND_RHEL_URL (str): Undocumented AWS Pricing
@@ -262,6 +268,8 @@ class EC2Prices(AWSPrices):
             API URL - EC2 Windows SQL On-Demand, Previous Generation.
         PG_INSTANCES_ONDEMAND_WINSQLWEB_URL (str): Undocumented AWS Pricing
             API URL - EC2 Windows SQL Web On-Demand, Previous Generation.
+        PG_INSTANCES_ONDEMAND_WINSQLENTERPRISE_URL (str): Undocumented AWS Pricing
+            API URL - EC2 Windows SQL Enterprise On-Demand, Previous Generation.
         INSTANCES_ONDEMAND_OS_TYPE_BY_URL (dict of str: str): Mapping of 
             On-Dermand urls to OS types.
         INSTANCES_RESERVED_OS_TYPE_BY_URL (dict of str: str): Mapping of 
@@ -283,6 +291,8 @@ class EC2Prices(AWSPrices):
     "mswinSQL-od.min.js")
     INSTANCES_ON_DEMAND_WINSQLWEB_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "mswinSQLWeb-od.min.js")
+    INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
+    "mswinSQLEnterprise-od.min.js")
     
     PG_INSTANCES_ON_DEMAND_LINUX_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "previous-generation/linux-od.min.js")
@@ -296,6 +306,8 @@ class EC2Prices(AWSPrices):
     "previous-generation/mswinSQL-od.min.js")
     PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "previous-generation/mswinSQLWeb-od.min.js")
+    PG_INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
+    "previous-generation/mswinSQLEnterprise-od.min.js")
     
     INSTANCES_RESERVED_LINUX_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "ri-v2/linux-unix-shared.min.js")
@@ -309,6 +321,8 @@ class EC2Prices(AWSPrices):
     "ri-v2/windows-with-sql-server-standard-shared.min.js")
     INSTANCES_RESERVED_WINSQLWEB_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "ri-v2/windows-with-sql-server-web-shared.min.js")
+    INSTANCES_RESERVED_WINSQLENTERPRISE_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
+    "ri-v2/windows-with-sql-server-enterprise-shared.min.js")
     
     PG_INSTANCES_RESERVED_LINUX_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "previous-generation/ri-v2/linux-unix-shared.min.js")
@@ -322,7 +336,8 @@ class EC2Prices(AWSPrices):
     "previous-generation/ri-v2/windows-with-sql-server-standard-shared.min.js")
     PG_INSTANCES_RESERVED_WINSQLWEB_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
     "previous-generation/ri-v2/windows-with-sql-server-web-shared.min.js")
-    
+    PG_INSTANCES_RESERVED_WINSQLENTERPRISE_URL = ("http://a0.awsstatic.com/pricing/1/ec2/"+
+    "previous-generation/ri-v2/windows-with-sql-server-enterprise-shared.min.js")    
     
     
     INSTANCES_ONDEMAND_OS_TYPE_BY_URL = {
@@ -332,12 +347,14 @@ class EC2Prices(AWSPrices):
         INSTANCES_ON_DEMAND_WINDOWS_URL : "mswin",
         INSTANCES_ON_DEMAND_WINSQL_URL : "mswinSQL",
         INSTANCES_ON_DEMAND_WINSQLWEB_URL : "mswinSQLWeb",
+        INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL : "mswinSQLEnterprise",
         PG_INSTANCES_ON_DEMAND_LINUX_URL : "linux",
         PG_INSTANCES_ON_DEMAND_RHEL_URL : "rhel",
         PG_INSTANCES_ON_DEMAND_SLES_URL : "sles",
         PG_INSTANCES_ON_DEMAND_WINDOWS_URL : "mswin",
         PG_INSTANCES_ON_DEMAND_WINSQL_URL : "mswinSQL",
-        PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL : "mswinSQLWeb"       
+        PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL : "mswinSQLWeb",
+        PG_INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL : "mswinSQLEnterprise"
     }
     
     INSTANCES_RESERVED_OS_TYPE_BY_URL = {
@@ -348,12 +365,14 @@ class EC2Prices(AWSPrices):
         INSTANCES_RESERVED_WINDOWS_URL :  "mswin",
         INSTANCES_RESERVED_WINSQL_URL : "mswinSQL",
         INSTANCES_RESERVED_WINSQLWEB_URL : "mswinSQLWeb",
+        INSTANCES_RESERVED_WINSQLENTERPRISE_URL : "mswinSQLEnterprise",
         PG_INSTANCES_RESERVED_LINUX_URL : "linux",
         PG_INSTANCES_RESERVED_RHEL_URL : "rhel",
         PG_INSTANCES_RESERVED_SLES_URL : "sles",
         PG_INSTANCES_RESERVED_WINDOWS_URL :  "mswin",
         PG_INSTANCES_RESERVED_WINSQL_URL : "mswinSQL",
-        PG_INSTANCES_RESERVED_WINSQLWEB_URL : "mswinSQLWeb"
+        PG_INSTANCES_RESERVED_WINSQLWEB_URL : "mswinSQLWeb",
+        PG_INSTANCES_RESERVED_WINSQLENTERPRISE_URL : "mswinSQLEnterprise"
     }
     
     
@@ -378,12 +397,14 @@ class EC2Prices(AWSPrices):
             self.INSTANCES_RESERVED_WINDOWS_URL,
             self.INSTANCES_RESERVED_WINSQL_URL,
             self.INSTANCES_RESERVED_WINSQLWEB_URL,
+            self.INSTANCES_RESERVED_WINSQLENTERPRISE_URL,
             self.PG_INSTANCES_RESERVED_LINUX_URL,
             self.PG_INSTANCES_RESERVED_RHEL_URL,
             self.PG_INSTANCES_RESERVED_SLES_URL,
             self.PG_INSTANCES_RESERVED_WINDOWS_URL,
             self.PG_INSTANCES_RESERVED_WINSQL_URL,
             self.PG_INSTANCES_RESERVED_WINSQLWEB_URL,
+            self.PG_INSTANCES_RESERVED_WINSQLENTERPRISE_URL,
         ]
     
         result_regions = []
@@ -500,12 +521,14 @@ class EC2Prices(AWSPrices):
             self.INSTANCES_ON_DEMAND_WINDOWS_URL,
             self.INSTANCES_ON_DEMAND_WINSQL_URL,
             self.INSTANCES_ON_DEMAND_WINSQLWEB_URL,
+            self.INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL,
             self.PG_INSTANCES_ON_DEMAND_LINUX_URL,
             self.PG_INSTANCES_ON_DEMAND_RHEL_URL,
             self.PG_INSTANCES_ON_DEMAND_SLES_URL,
             self.PG_INSTANCES_ON_DEMAND_WINDOWS_URL,
             self.PG_INSTANCES_ON_DEMAND_WINSQL_URL,
-            self.PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL
+            self.PG_INSTANCES_ON_DEMAND_WINSQLWEB_URL,
+            self.PG_INSTANCES_ON_DEMAND_WINSQLENTERPRISE_URL
         ]
     
         result_regions = []
