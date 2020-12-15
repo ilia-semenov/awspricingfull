@@ -1,6 +1,5 @@
 # awspricingfull.py
 
-http://ilia-semenov.github.io/awspricingfull
 ------------------------------------------
 **UPDATE 12/15/2020: THIS CODE IS DEPRECATED**
 
