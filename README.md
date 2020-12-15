@@ -1,7 +1,7 @@
 # awspricingfull.py
 
 ------------------------------------------
-**UPDATE 12/15/2020: THIS CODE IS DEPRECATED**
+**UPDATE 12/15/2020: THIS CODE IS DEPRECATED, REPO IS ARCHIVED**
 
 * This code is for nostalgic reference only
 * For the past couple years there official AWS API for pricing retrieval: https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html
