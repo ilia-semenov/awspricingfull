@@ -7,9 +7,6 @@
 * For the past couple years there official AWS API for pricing retrieval: https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html
 
 
-**Program is fully functional and up-to-date.**
-
--------------------------------------------
 ------------------------------------------
 **MINOR UPDATE 02/14/2017: Canada Central and London Regions**
 
